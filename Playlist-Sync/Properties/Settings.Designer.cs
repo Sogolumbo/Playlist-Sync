@@ -58,5 +58,17 @@ namespace PlaylistConverterGUI.Properties {
                 this["SourcePlalyistFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ConversionsAsJson {
+            get {
+                return ((string)(this["ConversionsAsJson"]));
+            }
+            set {
+                this["ConversionsAsJson"] = value;
+            }
+        }
     }
 }

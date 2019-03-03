@@ -48,12 +48,13 @@
             this.convertPlaylistsButton.TabIndex = 0;
             this.convertPlaylistsButton.Text = "Convert Playlists";
             this.convertPlaylistsButton.UseVisualStyleBackColor = true;
+            this.convertPlaylistsButton.Click += new System.EventHandler(this.convertPlaylistsButton_Click);
             // 
             // sourcePathLabel
             // 
             this.sourcePathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sourcePathLabel.Location = new System.Drawing.Point(72, 20);
+            this.sourcePathLabel.Location = new System.Drawing.Point(72, 25);
             this.sourcePathLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.sourcePathLabel.Name = "sourcePathLabel";
             this.sourcePathLabel.Size = new System.Drawing.Size(257, 13);
@@ -62,7 +63,7 @@
             // 
             // sourceTypeLabel
             // 
-            this.sourceTypeLabel.Location = new System.Drawing.Point(3, 20);
+            this.sourceTypeLabel.Location = new System.Drawing.Point(3, 25);
             this.sourceTypeLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.sourceTypeLabel.Name = "sourceTypeLabel";
             this.sourceTypeLabel.Size = new System.Drawing.Size(63, 13);
@@ -73,7 +74,7 @@
             // 
             this.targetPathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPathLabel.Location = new System.Drawing.Point(72, 35);
+            this.targetPathLabel.Location = new System.Drawing.Point(72, 40);
             this.targetPathLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.targetPathLabel.Name = "targetPathLabel";
             this.targetPathLabel.Size = new System.Drawing.Size(257, 13);
@@ -85,16 +86,16 @@
             this.PlaylistNamesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PlaylistNamesLabel.Location = new System.Drawing.Point(3, 54);
+            this.PlaylistNamesLabel.Location = new System.Drawing.Point(3, 59);
             this.PlaylistNamesLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 1);
             this.PlaylistNamesLabel.Name = "PlaylistNamesLabel";
-            this.PlaylistNamesLabel.Size = new System.Drawing.Size(326, 29);
+            this.PlaylistNamesLabel.Size = new System.Drawing.Size(326, 24);
             this.PlaylistNamesLabel.TabIndex = 4;
             this.PlaylistNamesLabel.Text = "PlaylistNamesLabel";
             // 
             // targetTypeLabel
             // 
-            this.targetTypeLabel.Location = new System.Drawing.Point(3, 35);
+            this.targetTypeLabel.Location = new System.Drawing.Point(3, 40);
             this.targetTypeLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.targetTypeLabel.Name = "targetTypeLabel";
             this.targetTypeLabel.Size = new System.Drawing.Size(63, 13);
@@ -114,6 +115,7 @@
             this.removeButton.TabIndex = 6;
             this.removeButton.Text = "Remove";
             this.removeButton.UseVisualStyleBackColor = false;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
             // 
             // editButton
             // 
@@ -128,6 +130,7 @@
             this.editButton.TabIndex = 7;
             this.editButton.Text = "Edit";
             this.editButton.UseVisualStyleBackColor = false;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
             // titleLabel
             // 
@@ -135,6 +138,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.06F);
             this.titleLabel.Location = new System.Drawing.Point(4, 4);
+            this.titleLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(325, 17);
             this.titleLabel.TabIndex = 8;

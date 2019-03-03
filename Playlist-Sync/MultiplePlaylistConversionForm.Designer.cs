@@ -38,10 +38,14 @@
             this.conversionsFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.conversionsFlowLayoutPanel.AutoScroll = true;
+            this.conversionsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.conversionsFlowLayoutPanel.Location = new System.Drawing.Point(12, 12);
             this.conversionsFlowLayoutPanel.Name = "conversionsFlowLayoutPanel";
             this.conversionsFlowLayoutPanel.Size = new System.Drawing.Size(626, 339);
             this.conversionsFlowLayoutPanel.TabIndex = 0;
+            this.conversionsFlowLayoutPanel.WrapContents = false;
+            this.conversionsFlowLayoutPanel.SizeChanged += new System.EventHandler(this.conversionsFlowLayoutPanel_SizeChanged);
             // 
             // addConversionButton
             // 
@@ -62,8 +66,9 @@
             this.optionsButton.Name = "optionsButton";
             this.optionsButton.Size = new System.Drawing.Size(185, 58);
             this.optionsButton.TabIndex = 2;
-            this.optionsButton.Text = "Options";
+            this.optionsButton.Text = "Single Playlist Preview";
             this.optionsButton.UseVisualStyleBackColor = true;
+            this.optionsButton.Click += new System.EventHandler(this.optionsButton_Click);
             // 
             // MultiplePlaylistConversionForm
             // 
@@ -75,6 +80,7 @@
             this.Controls.Add(this.conversionsFlowLayoutPanel);
             this.Name = "MultiplePlaylistConversionForm";
             this.Text = "MultiplePlaylistConversion";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MultiplePlaylistConversionForm_FormClosing);
             this.ResumeLayout(false);
 
         }

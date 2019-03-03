@@ -15,10 +15,21 @@ namespace PlaylistConverterGUI
     {
         public EditPlaylistConversionForm(Conversion conversion)
         {
-            Conversion = conversion;
             InitializeComponent();
+
             sourcePlaylistTypeComboBox.DataSource = Enum.GetValues(typeof(PlaylistType));
             targetPlaylistTypeComboBox.DataSource = Enum.GetValues(typeof(PlaylistType));
+
+            Conversion = conversion;
+            titleTextBox.Text = conversion.Title;
+            sourcePlaylistFolderTextBox.Text = conversion.SourcePlaylistFolderPath;
+            sourcePlaylistTypeComboBox.Text = conversion.SourcePlaylistType.ToString();
+            sourceMusicFolderTextBox.Text = conversion.SourceMusicFolderPath;
+            sourceUseSlashAsSeperatorCheckBox.Checked = conversion.SourceUseSlashAsSeperator;
+            targetPlaylistFolderTextBox.Text = conversion.TargetPlaylistFolderPath;
+            targetPlaylistTypeComboBox.Text = conversion.TargetPlaylistType.ToString();
+            targetMusicFolderTextBox.Text = conversion.TargetMusicFolderPath;
+            targetUseSlashAsSeperatorCheckBox.Checked = conversion.TargetUseSlashAsSeperator;
         }
 
         public Conversion Conversion { get; private set; }
@@ -34,10 +45,14 @@ namespace PlaylistConverterGUI
         private void SaveChanges()
         {
             Conversion.Title = titleTextBox.Text;
-            Conversion.SourceFolderPath = sourceFolderPathTextBox.Text;
+            Conversion.SourcePlaylistFolderPath = sourcePlaylistFolderTextBox.Text;
             Conversion.SourcePlaylistType = (PlaylistType)sourcePlaylistTypeComboBox.SelectedItem;
-            Conversion.TargetFolderPath = targetFolderPathTextBox.Text;
+            Conversion.SourceMusicFolderPath = sourceMusicFolderTextBox.Text;
+            Conversion.SourceUseSlashAsSeperator = sourceUseSlashAsSeperatorCheckBox.Checked;
+            Conversion.TargetPlaylistFolderPath = targetPlaylistFolderTextBox.Text;
             Conversion.TargetPlaylistType = (PlaylistType)targetPlaylistTypeComboBox.SelectedItem;
+            Conversion.TargetMusicFolderPath = targetMusicFolderTextBox.Text;
+            Conversion.TargetUseSlashAsSeperator = targetUseSlashAsSeperatorCheckBox.Checked;
 
         }
 

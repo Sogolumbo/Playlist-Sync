@@ -24,6 +24,8 @@ namespace Playlist
 
         public void Convert(string sourceFile, PlaylistType sourceType, string targetFile,  PlaylistType targetType)
         {
+            FileInfo file = new FileInfo(targetFile);
+            file.Directory.Create();
             File.WriteAllText(targetFile, Convert(File.ReadAllLines(sourceFile), sourceType, targetType));
         }
 

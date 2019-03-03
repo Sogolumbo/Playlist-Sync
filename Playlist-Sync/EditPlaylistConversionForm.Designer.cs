@@ -32,30 +32,36 @@
             this.OKButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
-            this.sourceFolderPathLabel = new System.Windows.Forms.Label();
-            this.sourceFolderPathTextBox = new System.Windows.Forms.TextBox();
+            this.sourcePlaylistFolderLabel = new System.Windows.Forms.Label();
+            this.sourcePlaylistFolderTextBox = new System.Windows.Forms.TextBox();
             this.sourcePlaylistTypeLabel = new System.Windows.Forms.Label();
-            this.targetFolderPathLabel = new System.Windows.Forms.Label();
-            this.targetFolderPathTextBox = new System.Windows.Forms.TextBox();
+            this.targetPlaylistFolderLabel = new System.Windows.Forms.Label();
+            this.targetPlaylistFolderTextBox = new System.Windows.Forms.TextBox();
             this.targetPlaylistTypeLabel = new System.Windows.Forms.Label();
             this.sourcePlaylistTypeComboBox = new System.Windows.Forms.ComboBox();
             this.targetPlaylistTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.FoundFilesLabel = new System.Windows.Forms.Label();
+            this.sourceMusicFolderLabel = new System.Windows.Forms.Label();
+            this.sourceMusicFolderTextBox = new System.Windows.Forms.TextBox();
+            this.sourceUseSlashAsSeperatorCheckBox = new System.Windows.Forms.CheckBox();
+            this.targetMusicFolderLabel = new System.Windows.Forms.Label();
+            this.targetMusicFolderTextBox = new System.Windows.Forms.TextBox();
+            this.targetUseSlashAsSeperatorCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // titleTextBox
             // 
             this.titleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.titleTextBox.Location = new System.Drawing.Point(121, 12);
+            this.titleTextBox.Location = new System.Drawing.Point(125, 12);
+            this.titleTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(412, 20);
+            this.titleTextBox.Size = new System.Drawing.Size(408, 20);
             this.titleTextBox.TabIndex = 0;
             // 
             // OKButton
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.Location = new System.Drawing.Point(458, 198);
+            this.OKButton.Location = new System.Drawing.Point(458, 302);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(75, 23);
             this.OKButton.TabIndex = 1;
@@ -66,7 +72,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(377, 198);
+            this.cancelButton.Location = new System.Drawing.Point(377, 302);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
@@ -83,55 +89,55 @@
             this.titleLabel.TabIndex = 3;
             this.titleLabel.Text = "Title:";
             // 
-            // sourceFolderPathLabel
+            // sourcePlaylistFolderLabel
             // 
-            this.sourceFolderPathLabel.AutoSize = true;
-            this.sourceFolderPathLabel.Location = new System.Drawing.Point(12, 41);
-            this.sourceFolderPathLabel.Name = "sourceFolderPathLabel";
-            this.sourceFolderPathLabel.Size = new System.Drawing.Size(101, 13);
-            this.sourceFolderPathLabel.TabIndex = 5;
-            this.sourceFolderPathLabel.Text = "Source Folder Path:";
+            this.sourcePlaylistFolderLabel.AutoSize = true;
+            this.sourcePlaylistFolderLabel.Location = new System.Drawing.Point(12, 53);
+            this.sourcePlaylistFolderLabel.Name = "sourcePlaylistFolderLabel";
+            this.sourcePlaylistFolderLabel.Size = new System.Drawing.Size(111, 13);
+            this.sourcePlaylistFolderLabel.TabIndex = 5;
+            this.sourcePlaylistFolderLabel.Text = "Source Playlist Folder:";
             // 
-            // sourceFolderPathTextBox
+            // sourcePlaylistFolderTextBox
             // 
-            this.sourceFolderPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.sourcePlaylistFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sourceFolderPathTextBox.Location = new System.Drawing.Point(121, 38);
-            this.sourceFolderPathTextBox.Name = "sourceFolderPathTextBox";
-            this.sourceFolderPathTextBox.Size = new System.Drawing.Size(412, 20);
-            this.sourceFolderPathTextBox.TabIndex = 4;
+            this.sourcePlaylistFolderTextBox.Location = new System.Drawing.Point(125, 50);
+            this.sourcePlaylistFolderTextBox.Name = "sourcePlaylistFolderTextBox";
+            this.sourcePlaylistFolderTextBox.Size = new System.Drawing.Size(408, 20);
+            this.sourcePlaylistFolderTextBox.TabIndex = 4;
             // 
             // sourcePlaylistTypeLabel
             // 
             this.sourcePlaylistTypeLabel.AutoSize = true;
-            this.sourcePlaylistTypeLabel.Location = new System.Drawing.Point(12, 67);
+            this.sourcePlaylistTypeLabel.Location = new System.Drawing.Point(12, 79);
             this.sourcePlaylistTypeLabel.Name = "sourcePlaylistTypeLabel";
             this.sourcePlaylistTypeLabel.Size = new System.Drawing.Size(106, 13);
             this.sourcePlaylistTypeLabel.TabIndex = 7;
             this.sourcePlaylistTypeLabel.Text = "Source Playlist Type:";
             // 
-            // targetFolderPathLabel
+            // targetPlaylistFolderLabel
             // 
-            this.targetFolderPathLabel.AutoSize = true;
-            this.targetFolderPathLabel.Location = new System.Drawing.Point(12, 94);
-            this.targetFolderPathLabel.Name = "targetFolderPathLabel";
-            this.targetFolderPathLabel.Size = new System.Drawing.Size(98, 13);
-            this.targetFolderPathLabel.TabIndex = 9;
-            this.targetFolderPathLabel.Text = "Target Folder Path:";
+            this.targetPlaylistFolderLabel.AutoSize = true;
+            this.targetPlaylistFolderLabel.Location = new System.Drawing.Point(12, 164);
+            this.targetPlaylistFolderLabel.Name = "targetPlaylistFolderLabel";
+            this.targetPlaylistFolderLabel.Size = new System.Drawing.Size(108, 13);
+            this.targetPlaylistFolderLabel.TabIndex = 9;
+            this.targetPlaylistFolderLabel.Text = "Target Playlist Folder:";
             // 
-            // targetFolderPathTextBox
+            // targetPlaylistFolderTextBox
             // 
-            this.targetFolderPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.targetPlaylistFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetFolderPathTextBox.Location = new System.Drawing.Point(121, 91);
-            this.targetFolderPathTextBox.Name = "targetFolderPathTextBox";
-            this.targetFolderPathTextBox.Size = new System.Drawing.Size(412, 20);
-            this.targetFolderPathTextBox.TabIndex = 8;
+            this.targetPlaylistFolderTextBox.Location = new System.Drawing.Point(125, 161);
+            this.targetPlaylistFolderTextBox.Name = "targetPlaylistFolderTextBox";
+            this.targetPlaylistFolderTextBox.Size = new System.Drawing.Size(408, 20);
+            this.targetPlaylistFolderTextBox.TabIndex = 8;
             // 
             // targetPlaylistTypeLabel
             // 
             this.targetPlaylistTypeLabel.AutoSize = true;
-            this.targetPlaylistTypeLabel.Location = new System.Drawing.Point(12, 120);
+            this.targetPlaylistTypeLabel.Location = new System.Drawing.Point(12, 190);
             this.targetPlaylistTypeLabel.Name = "targetPlaylistTypeLabel";
             this.targetPlaylistTypeLabel.Size = new System.Drawing.Size(103, 13);
             this.targetPlaylistTypeLabel.TabIndex = 11;
@@ -141,44 +147,99 @@
             // 
             this.sourcePlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sourcePlaylistTypeComboBox.FormattingEnabled = true;
-            this.sourcePlaylistTypeComboBox.Location = new System.Drawing.Point(121, 64);
+            this.sourcePlaylistTypeComboBox.Location = new System.Drawing.Point(125, 76);
             this.sourcePlaylistTypeComboBox.Name = "sourcePlaylistTypeComboBox";
-            this.sourcePlaylistTypeComboBox.Size = new System.Drawing.Size(412, 21);
+            this.sourcePlaylistTypeComboBox.Size = new System.Drawing.Size(408, 21);
             this.sourcePlaylistTypeComboBox.TabIndex = 12;
             // 
             // targetPlaylistTypeComboBox
             // 
             this.targetPlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.targetPlaylistTypeComboBox.FormattingEnabled = true;
-            this.targetPlaylistTypeComboBox.Location = new System.Drawing.Point(121, 117);
+            this.targetPlaylistTypeComboBox.Location = new System.Drawing.Point(125, 187);
             this.targetPlaylistTypeComboBox.Name = "targetPlaylistTypeComboBox";
-            this.targetPlaylistTypeComboBox.Size = new System.Drawing.Size(412, 21);
+            this.targetPlaylistTypeComboBox.Size = new System.Drawing.Size(408, 21);
             this.targetPlaylistTypeComboBox.TabIndex = 13;
             // 
-            // FoundFilesLabel
+            // sourceMusicFolderLabel
             // 
-            this.FoundFilesLabel.AutoSize = true;
-            this.FoundFilesLabel.Location = new System.Drawing.Point(12, 148);
-            this.FoundFilesLabel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
-            this.FoundFilesLabel.Name = "FoundFilesLabel";
-            this.FoundFilesLabel.Size = new System.Drawing.Size(75, 13);
-            this.FoundFilesLabel.TabIndex = 14;
-            this.FoundFilesLabel.Text = "No files found.";
+            this.sourceMusicFolderLabel.AutoSize = true;
+            this.sourceMusicFolderLabel.Location = new System.Drawing.Point(12, 106);
+            this.sourceMusicFolderLabel.Name = "sourceMusicFolderLabel";
+            this.sourceMusicFolderLabel.Size = new System.Drawing.Size(107, 13);
+            this.sourceMusicFolderLabel.TabIndex = 15;
+            this.sourceMusicFolderLabel.Text = "Source Music Folder:";
+            // 
+            // sourceMusicFolderTextBox
+            // 
+            this.sourceMusicFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sourceMusicFolderTextBox.Location = new System.Drawing.Point(125, 103);
+            this.sourceMusicFolderTextBox.Name = "sourceMusicFolderTextBox";
+            this.sourceMusicFolderTextBox.Size = new System.Drawing.Size(408, 20);
+            this.sourceMusicFolderTextBox.TabIndex = 14;
+            // 
+            // sourceUseSlashAsSeperatorCheckBox
+            // 
+            this.sourceUseSlashAsSeperatorCheckBox.AutoSize = true;
+            this.sourceUseSlashAsSeperatorCheckBox.Location = new System.Drawing.Point(12, 131);
+            this.sourceUseSlashAsSeperatorCheckBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.sourceUseSlashAsSeperatorCheckBox.Name = "sourceUseSlashAsSeperatorCheckBox";
+            this.sourceUseSlashAsSeperatorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.sourceUseSlashAsSeperatorCheckBox.Size = new System.Drawing.Size(184, 17);
+            this.sourceUseSlashAsSeperatorCheckBox.TabIndex = 16;
+            this.sourceUseSlashAsSeperatorCheckBox.Text = "Source uses slashes as seperator";
+            this.sourceUseSlashAsSeperatorCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // targetMusicFolderLabel
+            // 
+            this.targetMusicFolderLabel.AutoSize = true;
+            this.targetMusicFolderLabel.Location = new System.Drawing.Point(12, 217);
+            this.targetMusicFolderLabel.Name = "targetMusicFolderLabel";
+            this.targetMusicFolderLabel.Size = new System.Drawing.Size(104, 13);
+            this.targetMusicFolderLabel.TabIndex = 20;
+            this.targetMusicFolderLabel.Text = "Target Music Folder:";
+            // 
+            // targetMusicFolderTextBox
+            // 
+            this.targetMusicFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.targetMusicFolderTextBox.Location = new System.Drawing.Point(125, 214);
+            this.targetMusicFolderTextBox.Name = "targetMusicFolderTextBox";
+            this.targetMusicFolderTextBox.Size = new System.Drawing.Size(408, 20);
+            this.targetMusicFolderTextBox.TabIndex = 19;
+            // 
+            // targetUseSlashAsSeperatorCheckBox
+            // 
+            this.targetUseSlashAsSeperatorCheckBox.AutoSize = true;
+            this.targetUseSlashAsSeperatorCheckBox.Location = new System.Drawing.Point(12, 240);
+            this.targetUseSlashAsSeperatorCheckBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.targetUseSlashAsSeperatorCheckBox.Name = "targetUseSlashAsSeperatorCheckBox";
+            this.targetUseSlashAsSeperatorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.targetUseSlashAsSeperatorCheckBox.Size = new System.Drawing.Size(181, 17);
+            this.targetUseSlashAsSeperatorCheckBox.TabIndex = 21;
+            this.targetUseSlashAsSeperatorCheckBox.Text = "Target uses slashes as seperator";
+            this.targetUseSlashAsSeperatorCheckBox.UseVisualStyleBackColor = true;
             // 
             // EditPlaylistConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(545, 232);
-            this.Controls.Add(this.FoundFilesLabel);
+            this.ClientSize = new System.Drawing.Size(545, 336);
+            this.Controls.Add(this.targetUseSlashAsSeperatorCheckBox);
+            this.Controls.Add(this.targetMusicFolderLabel);
+            this.Controls.Add(this.targetMusicFolderTextBox);
+            this.Controls.Add(this.sourceUseSlashAsSeperatorCheckBox);
+            this.Controls.Add(this.sourceMusicFolderLabel);
+            this.Controls.Add(this.sourceMusicFolderTextBox);
             this.Controls.Add(this.targetPlaylistTypeComboBox);
             this.Controls.Add(this.sourcePlaylistTypeComboBox);
             this.Controls.Add(this.targetPlaylistTypeLabel);
-            this.Controls.Add(this.targetFolderPathLabel);
-            this.Controls.Add(this.targetFolderPathTextBox);
+            this.Controls.Add(this.targetPlaylistFolderLabel);
+            this.Controls.Add(this.targetPlaylistFolderTextBox);
             this.Controls.Add(this.sourcePlaylistTypeLabel);
-            this.Controls.Add(this.sourceFolderPathLabel);
-            this.Controls.Add(this.sourceFolderPathTextBox);
+            this.Controls.Add(this.sourcePlaylistFolderLabel);
+            this.Controls.Add(this.sourcePlaylistFolderTextBox);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.OKButton);
@@ -196,14 +257,19 @@
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label titleLabel;
-        private System.Windows.Forms.Label sourceFolderPathLabel;
-        private System.Windows.Forms.TextBox sourceFolderPathTextBox;
+        private System.Windows.Forms.Label sourcePlaylistFolderLabel;
+        private System.Windows.Forms.TextBox sourcePlaylistFolderTextBox;
         private System.Windows.Forms.Label sourcePlaylistTypeLabel;
-        private System.Windows.Forms.Label targetFolderPathLabel;
-        private System.Windows.Forms.TextBox targetFolderPathTextBox;
+        private System.Windows.Forms.Label targetPlaylistFolderLabel;
+        private System.Windows.Forms.TextBox targetPlaylistFolderTextBox;
         private System.Windows.Forms.Label targetPlaylistTypeLabel;
         private System.Windows.Forms.ComboBox sourcePlaylistTypeComboBox;
         private System.Windows.Forms.ComboBox targetPlaylistTypeComboBox;
-        private System.Windows.Forms.Label FoundFilesLabel;
+        private System.Windows.Forms.Label sourceMusicFolderLabel;
+        private System.Windows.Forms.TextBox sourceMusicFolderTextBox;
+        private System.Windows.Forms.CheckBox sourceUseSlashAsSeperatorCheckBox;
+        private System.Windows.Forms.Label targetMusicFolderLabel;
+        private System.Windows.Forms.TextBox targetMusicFolderTextBox;
+        private System.Windows.Forms.CheckBox targetUseSlashAsSeperatorCheckBox;
     }
 }
