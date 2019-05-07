@@ -16,7 +16,7 @@ namespace PlaylistConverterGUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MultiplePlaylistConversionForm());
+            Application.Run(new PlaylistToolsMenuForm());
         }
     }
 }

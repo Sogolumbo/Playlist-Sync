@@ -61,7 +61,7 @@
             // OKButton
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.Location = new System.Drawing.Point(458, 302);
+            this.OKButton.Location = new System.Drawing.Point(458, 269);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(75, 23);
             this.OKButton.TabIndex = 1;
@@ -72,7 +72,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(377, 302);
+            this.cancelButton.Location = new System.Drawing.Point(377, 269);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
@@ -145,6 +145,8 @@
             // 
             // sourcePlaylistTypeComboBox
             // 
+            this.sourcePlaylistTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sourcePlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sourcePlaylistTypeComboBox.FormattingEnabled = true;
             this.sourcePlaylistTypeComboBox.Location = new System.Drawing.Point(125, 76);
@@ -154,6 +156,8 @@
             // 
             // targetPlaylistTypeComboBox
             // 
+            this.targetPlaylistTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.targetPlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.targetPlaylistTypeComboBox.FormattingEnabled = true;
             this.targetPlaylistTypeComboBox.Location = new System.Drawing.Point(125, 187);
@@ -225,7 +229,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(545, 336);
+            this.ClientSize = new System.Drawing.Size(545, 303);
             this.Controls.Add(this.targetUseSlashAsSeperatorCheckBox);
             this.Controls.Add(this.targetMusicFolderLabel);
             this.Controls.Add(this.targetMusicFolderTextBox);
