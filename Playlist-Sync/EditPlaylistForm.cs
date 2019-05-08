@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Playlist;
+using System.IO;
 
 namespace PlaylistConverterGUI
 {
@@ -68,25 +69,36 @@ namespace PlaylistConverterGUI
                 result = new TreeNode(playlistItem.Name);
 
             result.Tag = playlistItem;
+            if (playlistItem.ItemExists == false)
+            {
+                result.BackColor = Color.DarkRed;
+                result.ForeColor = Color.White;
+            }
+            else
+            {
+                if (playlistItem.Type == PlaylistItemType.Song)
+                {
 
-            if (playlistItem.ArtistLink == NodeLink.Parent)
-            {
-                result.BackColor = Color.LightBlue;
-            }
-            else if (playlistItem.AlbumLink == NodeLink.Parent)
-            {
-                if (playlistItem.ArtistLink == NodeLink.ParentOfParent)
-                {
-                    result.BackColor = Color.LightGreen;
+                    if (playlistItem.ArtistLink == NodeLink.Parent)
+                    {
+                        result.BackColor = Color.LightBlue;
+                    }
+                    else if (playlistItem.AlbumLink == NodeLink.Parent)
+                    {
+                        if (playlistItem.ArtistLink == NodeLink.ParentOfParent)
+                        {
+                            result.BackColor = Color.LightGreen;
+                        }
+                        else
+                        {
+                            result.BackColor = Color.LightYellow;
+                        }
+                    }
+                    else if (playlistItem.AlbumLink == NodeLink.ParentOfParent)
+                    {
+                        result.BackColor = Color.Orange;
+                    }
                 }
-                else
-                {
-                    result.BackColor = Color.LightYellow;
-                }
-            }
-            else if (playlistItem.AlbumLink == NodeLink.ParentOfParent)
-            {
-                result.BackColor = Color.Orange;
             }
             return result;
         }
@@ -102,9 +114,29 @@ namespace PlaylistConverterGUI
             itemNameTextBox.Text = playlistItem.Name;
             itemPathTextBox.Text = playlistItem.Path;
             itemTypeComboBox.Text = playlistItem.Type.ToString();
-            itemTitleTextBox.Text = playlistItem.Title;
-            itemAlbumTextBox.Text = playlistItem.Album;
-            itemArtistTextBox.Text = playlistItem.Artist;
+
+            bool showSongTagData = (playlistItem.ItemExists == true) && (playlistItem.Type == PlaylistItemType.Song);
+            itemTitleTextBox.Enabled = showSongTagData;
+            itemAlbumTextBox.Enabled = showSongTagData;
+            itemArtistTextBox.Enabled = showSongTagData;
+            itemGenreTextBox.Enabled = showSongTagData;
+            itemTrackNumberTextBox.Enabled = showSongTagData;
+            if (showSongTagData)
+            {
+                itemTitleTextBox.Text = playlistItem.Title;
+                itemAlbumTextBox.Text = playlistItem.Album;
+                itemArtistTextBox.Text = playlistItem.Artist;
+                itemGenreTextBox.Text = playlistItem.Genre;
+                itemTrackNumberTextBox.Text = playlistItem.Nr.ToString();
+            }
+            else
+            {
+                itemTitleTextBox.Text = null;
+                itemAlbumTextBox.Text = null;
+                itemArtistTextBox.Text = null;
+                itemGenreTextBox.Text = null;
+                itemTrackNumberTextBox.Text = null;
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -121,10 +153,12 @@ namespace PlaylistConverterGUI
             PlaylistItem selectedPlaylistItem = (PlaylistItem)playlistTreeView.SelectedNode.Tag;
             selectedPlaylistItem.ChangeName(itemNameTextBox.Text, changeFAF);
             selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true
-            //TODO playlistItem.Type = itemTypeComboBox.Text;
-            selectedPlaylistItem.Title = itemTitleTextBox.Text;
-            selectedPlaylistItem.ChangeAlbum(itemAlbumTextBox.Text, false); //TODO true
-            selectedPlaylistItem.ChangeArtist(itemArtistTextBox.Text, false); //TODO true
+            if (selectedPlaylistItem.Type == PlaylistItemType.Song)
+            {
+                selectedPlaylistItem.Title = itemTitleTextBox.Text;
+                selectedPlaylistItem.ChangeAlbum(itemAlbumTextBox.Text, changeFAF);
+                selectedPlaylistItem.ChangeArtist(itemArtistTextBox.Text, changeFAF);
+            }
 
             switch (selectedPlaylistItem.AlbumLink)
             {
@@ -161,8 +195,14 @@ namespace PlaylistConverterGUI
 
 
             /// Write Data to PlaylistFile
-            System.IO.File.WriteAllLines(Playlist.Path + "\\" + Playlist.Name, Playlist.ToPlaylistLines());
+            File.WriteAllLines(Playlist.Path + "\\" + Playlist.Name, Playlist.ToPlaylistLines());
 
+        }
+
+        private void reloadButton_Click(object sender, EventArgs e)
+        {
+            var PlaylistItem = (PlaylistItem)playlistTreeView.Tag;
+            ShowPlaylist(Path.Combine(PlaylistItem.Path, PlaylistItem.Name));
         }
     }
 }

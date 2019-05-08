@@ -15,8 +15,8 @@ namespace Playlist
         public bool SourceUsesSlashesAsDirectorySeperator { get; set; }
         public bool TargetUsesSlashesAsDirectorySeperator { get; set; }
 
-        private List<string> missingLines = new List<string>();
-        private List<string> duplicateLines = new List<string>();
+        private List<string> _missingLines = new List<string>();
+        private List<string> _duplicateLines = new List<string>();
 
         public PathConverter()
         {
@@ -46,7 +46,7 @@ namespace Playlist
 
         private string[] ConvertedLines(string[] playlistLines, bool returnTarget)
         {
-            missingLines.Clear();
+            _missingLines.Clear();
             List<string> result = new List<string>();
             string line = String.Empty;
             Regex FolderPathRegex = new Regex(Regex.Escape(SourceMusicFolderPath));
@@ -68,7 +68,7 @@ namespace Playlist
                 }
                 else
                 {
-                    missingLines.Add(sourceLine);
+                    _missingLines.Add(sourceLine);
                 }
             }
             result = SortAndRemoveDuplicates(result);
@@ -83,12 +83,12 @@ namespace Playlist
 
         public string[] GetMissingLines()
         {
-            return missingLines.ToArray();
+            return _missingLines.ToArray();
         }
 
         private List<string> SortAndRemoveDuplicates (List<string> input)
         {
-            duplicateLines.Clear();
+            _duplicateLines.Clear();
             input.Sort();
             List<string> result = new List<string>();
             for(int i = 0; i < input.Count; i++)
@@ -99,7 +99,7 @@ namespace Playlist
                 }
                 else
                 {
-                    duplicateLines.Add(input[i]);
+                    _duplicateLines.Add(input[i]);
                 }
             }
             return result;
