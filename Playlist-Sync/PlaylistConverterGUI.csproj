@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,12 @@
     </Compile>
     <Compile Include="ConversionElement.Designer.cs">
       <DependentUpon>ConversionElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureMusicLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureMusicLibrary.Designer.cs">
+      <DependentUpon>ConfigureMusicLibrary.cs</DependentUpon>
     </Compile>
     <Compile Include="EditPlaylistConversionForm.cs">
       <SubType>Form</SubType>
@@ -92,6 +99,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConfigureMusicLibrary.resx">
+      <DependentUpon>ConfigureMusicLibrary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConversionElement.resx">
       <DependentUpon>ConversionElement.cs</DependentUpon>
     </EmbeddedResource>

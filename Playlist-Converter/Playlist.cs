@@ -9,15 +9,11 @@ namespace Playlist
 {
     public class PlaylistItem
     {
-        public PlaylistItem(List<PlaylistItem> children, string name, string path, PlaylistItemType type, PlaylistItem parent)
-        {
-            Children = children;
-            Name = name;
-            Path = path;
-            Type = type;
-            Parent = parent;
-        }
-
+        public PlaylistItem(string filepath) : this(
+            File.ReadAllLines(filepath), 
+            System.IO.Path.GetFileName(filepath),
+            filepath.Replace("\\" + System.IO.Path.GetFileName(filepath), ""),
+            null){}
         public PlaylistItem(string[] playlistLines, string playlistName, string playlistPath, PlaylistItem parent)
         {
             Type = PlaylistItemType.Playlist;
@@ -34,6 +30,14 @@ namespace Playlist
             }
 
             Children = GetChildren(playlistStructure, String.Empty, this);
+        }
+        public PlaylistItem(List<PlaylistItem> children, string name, string path, PlaylistItemType type, PlaylistItem parent)
+        {
+            Children = children;
+            Name = name;
+            Path = path;
+            Type = type;
+            Parent = parent;
         }
         public PlaylistItem(List<List<string>> playlistStructure, string name, string path, PlaylistItemType type, PlaylistItem parent)
         {
@@ -52,14 +56,8 @@ namespace Playlist
             GetItemInfo();
         }
 
-        private string FullPath
-        {
-            get
-            {
-                return String.IsNullOrWhiteSpace(Path) ? Name : Path + "\\" + Name;
-            }
-        }
 
+        #region Props and Vars
         public List<PlaylistItem> Children { get; private set; }
         public PlaylistItem Parent { get; set; }
         public string Name { get; private set; }
@@ -71,14 +69,22 @@ namespace Playlist
         public string Artist { get; private set; }
         public NodeLink ArtistLink { get; set; }
         public uint? Nr { get; private set; }
-        public string Genre { get; set; }
+        public string Genre { get; private set; }
         public bool ItemExists { get; private set; }
 
         public event EventHandler<NameChangedEventArgs> NameChanged;
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
+        #endregion
 
-        private MediaInfo.MediaInfo _mediaInfo = new MediaInfo.MediaInfo();
 
+        #region functions
+        public string FullPath
+        {
+            get
+            {
+                return String.IsNullOrWhiteSpace(Path) ? Name : Path + "\\" + Name;
+            }
+        }
         private static List<PlaylistItem> GetChildren(List<List<string>> playlistStructure, string path, PlaylistItem parent)
         {
             Dictionary<string, List<List<string>>> children = new Dictionary<string, List<List<string>>>();
@@ -135,19 +141,6 @@ namespace Playlist
                     break;
             }
         }
-        private void GetMediaInfoOld()
-        {
-            _mediaInfo.Open(System.IO.Path.Combine(Path, Name));
-            Title = _mediaInfo.Get(MediaInfo.StreamKind.General, 0, "Title");
-            Album = _mediaInfo.Get(MediaInfo.StreamKind.General, 0, "Album");
-            Artist = _mediaInfo.Get(MediaInfo.StreamKind.General, 0, "Performer");
-            string number = _mediaInfo.Get(MediaInfo.StreamKind.General, 0, "Part_Number");
-            Nr = String.IsNullOrWhiteSpace(number) ? null : (uint?)uint.Parse(number);
-            Genre = _mediaInfo.Get(MediaInfo.StreamKind.General, 0, "Genre");
-            _mediaInfo.Close();
-
-            CheckParentNodesForAlbumAndArtist();
-        }
         private void CheckParentNodesForAlbumAndArtist()
         {
             PlaylistItem ParentOfParent = Parent?.Parent;
@@ -173,7 +166,9 @@ namespace Playlist
                 ParentOfParent.NameChanged += AlbumNodeChanged;
             }
         }
+        #endregion
 
+        #region changes
         private void AlbumNodeChanged(object sender, NameChangedEventArgs e)
         {
             ChangeAlbum(e.NewName, e.EditFilesAndFolder);
@@ -183,7 +178,7 @@ namespace Playlist
             ChangeArtist(e.NewName, e.EditFilesAndFolder);
         }
 
-        public bool ChangeName(string name, bool editFileOrFolder) //TODO add new form where this changes the name of this item in all playlists if editFileOrFolder is true
+        public bool ChangeName(string name, bool editFileOrFolder)
         {
             var nameChanged = name != Name;
             if (nameChanged)
@@ -250,6 +245,10 @@ namespace Playlist
             {
                 if (moveItem)
                 {
+                    var oldPath = Path;
+                    var newPath = path;
+
+
                     throw new NotImplementedException();
                 }
                 Path = path;
@@ -279,11 +278,10 @@ namespace Playlist
                 Artist = artist;
                 if (editFileOrFolder)
                 {
-                    string filepath = System.IO.Path.Combine(Path, Name);
-                    ItemExists = File.Exists(filepath);
+                    ItemExists = File.Exists(FullPath);
                     if (ItemExists == true)
                     {
-                        var tagFile = TagLib.File.Create(filepath);
+                        var tagFile = TagLib.File.Create(FullPath);
                         if (tagFile.Writeable)
                         {
                             tagFile.Tag.Performers = Artist.Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
@@ -291,14 +289,13 @@ namespace Playlist
                         }
                         else
                         {
-                            throw new Exception("TEST"); //TODO: message
+                            throw new Exception("The artist tag of the file " + FullPath + " could not be changed.");
                         }
                     }
                     else
                     {
-                        throw new FileNotFoundException("The File " + filepath + " was not found. So the artist tag could not be changed.", filepath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the artist tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
-                    //TODO: remove    throw new NotImplementedException("The Artist Tag of " + Name + " could not be changed from \"" + Artist + "\" to \"" + artist + "\" (@ " + Path + "."); //TODO edit Tag
                 }
             }
             return artistChanged;
@@ -311,19 +308,18 @@ namespace Playlist
                 Album = album;
                 if (editFileOrFolder)
                 {
-                    string filepath = System.IO.Path.Combine(Path, Name);
-                    ItemExists = File.Exists(filepath);
+                    string FullPath = System.IO.Path.Combine(Path, Name);
+                    ItemExists = File.Exists(FullPath);
                     if (ItemExists == true)
                     {
-                        var tagFile = TagLib.File.Create(filepath);
+                        var tagFile = TagLib.File.Create(FullPath);
                         tagFile.Tag.Album = Album;
                         tagFile.Save();
                     }
                     else
                     {
-                        throw new FileNotFoundException("The File " + filepath + " was not found. So the album tag could not be changed.", filepath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the album tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
-                    //TODO: remove   throw new NotImplementedException("The Album Tag of " + Name + " could not be changed from \"" + Album + "\" to \"" + album + "\" (@ " + Path + "."); //TODO edit Tag
                 }
             }
             return albumChanged;
@@ -336,19 +332,17 @@ namespace Playlist
                 Title = title;
                 if (editFileOrFolder)
                 {
-                    string filepath = System.IO.Path.Combine(Path, Name);
-                    ItemExists = File.Exists(filepath);
+                    ItemExists = File.Exists(FullPath);
                     if (ItemExists == true)
                     {
-                        var tagFile = TagLib.File.Create(filepath);
+                        var tagFile = TagLib.File.Create(FullPath);
                         tagFile.Tag.Title = Title;
                         tagFile.Save();
                     }
                     else
                     {
-                        throw new FileNotFoundException("The File " + filepath + " was not found. So the title tag could not be changed.", filepath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the title tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
-                    //TODO: remove   throw new NotImplementedException("The Album Tag of " + Name + " could not be changed from \"" + Album + "\" to \"" + album + "\" (@ " + Path + "."); //TODO edit Tag
                 }
             }
             return titleChanged;
@@ -365,23 +359,22 @@ namespace Playlist
                 Nr = number;
                 if (editFileOrFolder)
                 {
-                    string filepath = System.IO.Path.Combine(Path, Name);
-                    ItemExists = File.Exists(filepath);
+                    ItemExists = File.Exists(FullPath);
                     if (ItemExists == true)
                     {
-                        var tagFile = TagLib.File.Create(filepath);
+                        var tagFile = TagLib.File.Create(FullPath);
                         tagFile.Tag.Track = Nr.Value;
                         tagFile.Save();
                     }
                     else
                     {
-                        throw new FileNotFoundException("The File " + filepath + " was not found. So the track number tag could not be changed.", filepath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
-                    //TODO: remove   throw new NotImplementedException("The Album Tag of " + Name + " could not be changed from \"" + Album + "\" to \"" + album + "\" (@ " + Path + "."); //TODO edit Tag
                 }
             }
             return nrChanged;
         }
+        #endregion
 
         public string[] ToPlaylistLines()
         {
@@ -389,7 +382,6 @@ namespace Playlist
             AddLinesOfChildren(result);
             return result.ToArray();
         }
-
         public void AddLinesOfChildren(List<string> result)
         {
             foreach (PlaylistItem item in Children)
@@ -405,6 +397,7 @@ namespace Playlist
             }
         }
 
+        #region event args
         public class UnauthorizedAccessEventArgs : EventArgs
         {
             public UnauthorizedAccessEventArgs(string itemPath, PlaylistItemType type) : base()
@@ -429,6 +422,7 @@ namespace Playlist
             public string NewName { get; set; }
             public bool EditFilesAndFolder { get; set; }
         }
+        #endregion
     }
 
     public enum PlaylistItemType

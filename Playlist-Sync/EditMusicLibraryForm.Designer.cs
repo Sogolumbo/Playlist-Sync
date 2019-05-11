@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.playlistTreeView = new System.Windows.Forms.TreeView();
-            this.playlistNameTextBox = new System.Windows.Forms.TextBox();
             this.itemNameTextBox = new System.Windows.Forms.TextBox();
             this.itemPathTextBox = new System.Windows.Forms.TextBox();
             this.itemTitleTextBox = new System.Windows.Forms.TextBox();
-            this.playlistNameLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -41,10 +39,12 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.choosePlaylistButton = new System.Windows.Forms.Button();
-            this.playlistPathLabel = new System.Windows.Forms.Label();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.artistLinkLabel = new System.Windows.Forms.Label();
+            this.albumLinkLabel = new System.Windows.Forms.Label();
+            this.openPathInKid3Button = new System.Windows.Forms.Button();
             this.itemGenreTextBox = new System.Windows.Forms.TextBox();
+            this.openPathInExplorerButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.itemTrackNumberTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -54,11 +54,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.itemTypeComboBox = new System.Windows.Forms.ComboBox();
             this.changeFilesAndFoldersCheckBox = new System.Windows.Forms.CheckBox();
-            this.reloadButton = new System.Windows.Forms.Button();
-            this.openPathInExplorerButton = new System.Windows.Forms.Button();
-            this.openPathInKid3Button = new System.Windows.Forms.Button();
-            this.openPlaylistInNotepad = new System.Windows.Forms.Button();
+            this.reloadAllButton = new System.Windows.Forms.Button();
+            this.reloadSelectedButton = new System.Windows.Forms.Button();
+            this.foldersListBox = new System.Windows.Forms.ListBox();
+            this.playlistsListBox = new System.Windows.Forms.ListBox();
+            this.changeFoldersButton = new System.Windows.Forms.Button();
+            this.changePlaylistsButton = new System.Windows.Forms.Button();
+            this.MusicFoldersGroupBox = new System.Windows.Forms.GroupBox();
+            this.PlaylistsGroupBox = new System.Windows.Forms.GroupBox();
+            this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
             this.selectedItemGroupBox.SuspendLayout();
+            this.MusicFoldersGroupBox.SuspendLayout();
+            this.PlaylistsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // playlistTreeView
@@ -68,17 +75,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playlistTreeView.Location = new System.Drawing.Point(13, 13);
             this.playlistTreeView.Name = "playlistTreeView";
-            this.playlistTreeView.Size = new System.Drawing.Size(636, 476);
+            this.playlistTreeView.Size = new System.Drawing.Size(636, 655);
             this.playlistTreeView.TabIndex = 0;
             this.playlistTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
-            // 
-            // playlistNameTextBox
-            // 
-            this.playlistNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistNameTextBox.Location = new System.Drawing.Point(731, 42);
-            this.playlistNameTextBox.Name = "playlistNameTextBox";
-            this.playlistNameTextBox.Size = new System.Drawing.Size(336, 20);
-            this.playlistNameTextBox.TabIndex = 1;
             // 
             // itemNameTextBox
             // 
@@ -103,21 +102,11 @@
             this.itemTitleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTitleTextBox.Enabled = false;
-            this.itemTitleTextBox.Location = new System.Drawing.Point(56, 134);
+            this.itemTitleTextBox.Location = new System.Drawing.Point(56, 272);
             this.itemTitleTextBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.itemTitleTextBox.Name = "itemTitleTextBox";
             this.itemTitleTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemTitleTextBox.TabIndex = 5;
-            // 
-            // playlistNameLabel
-            // 
-            this.playlistNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistNameLabel.AutoSize = true;
-            this.playlistNameLabel.Location = new System.Drawing.Point(655, 45);
-            this.playlistNameLabel.Name = "playlistNameLabel";
-            this.playlistNameLabel.Size = new System.Drawing.Size(73, 13);
-            this.playlistNameLabel.TabIndex = 6;
-            this.playlistNameLabel.Text = "Playlist Name:";
             // 
             // label2
             // 
@@ -149,7 +138,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 137);
+            this.label5.Location = new System.Drawing.Point(6, 275);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(30, 13);
             this.label5.TabIndex = 10;
@@ -158,7 +147,7 @@
             // applyButton
             // 
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyButton.Location = new System.Drawing.Point(992, 365);
+            this.applyButton.Location = new System.Drawing.Point(992, 645);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 11;
@@ -169,7 +158,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(911, 365);
+            this.cancelButton.Location = new System.Drawing.Point(911, 645);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
@@ -181,32 +170,12 @@
             // 
             this.openFileDialog.FileName = "playlist";
             // 
-            // choosePlaylistButton
-            // 
-            this.choosePlaylistButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.choosePlaylistButton.Location = new System.Drawing.Point(977, 13);
-            this.choosePlaylistButton.Name = "choosePlaylistButton";
-            this.choosePlaylistButton.Size = new System.Drawing.Size(90, 23);
-            this.choosePlaylistButton.TabIndex = 13;
-            this.choosePlaylistButton.Text = "Choose Playlist";
-            this.choosePlaylistButton.UseVisualStyleBackColor = true;
-            this.choosePlaylistButton.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // playlistPathLabel
-            // 
-            this.playlistPathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistPathLabel.AutoSize = true;
-            this.playlistPathLabel.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.playlistPathLabel.Location = new System.Drawing.Point(655, 65);
-            this.playlistPathLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.playlistPathLabel.Name = "playlistPathLabel";
-            this.playlistPathLabel.Size = new System.Drawing.Size(41, 13);
-            this.playlistPathLabel.TabIndex = 15;
-            this.playlistPathLabel.Text = "filepath";
-            // 
             // selectedItemGroupBox
             // 
             this.selectedItemGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectedItemGroupBox.Controls.Add(this.selectedItemPlaylistsListBox);
+            this.selectedItemGroupBox.Controls.Add(this.artistLinkLabel);
+            this.selectedItemGroupBox.Controls.Add(this.albumLinkLabel);
             this.selectedItemGroupBox.Controls.Add(this.openPathInKid3Button);
             this.selectedItemGroupBox.Controls.Add(this.itemGenreTextBox);
             this.selectedItemGroupBox.Controls.Add(this.openPathInExplorerButton);
@@ -225,28 +194,67 @@
             this.selectedItemGroupBox.Controls.Add(this.label5);
             this.selectedItemGroupBox.Controls.Add(this.label3);
             this.selectedItemGroupBox.Controls.Add(this.label4);
-            this.selectedItemGroupBox.Location = new System.Drawing.Point(658, 89);
-            this.selectedItemGroupBox.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.selectedItemGroupBox.Location = new System.Drawing.Point(658, 237);
             this.selectedItemGroupBox.Name = "selectedItemGroupBox";
-            this.selectedItemGroupBox.Size = new System.Drawing.Size(409, 267);
+            this.selectedItemGroupBox.Size = new System.Drawing.Size(409, 402);
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
+            // 
+            // artistLinkLabel
+            // 
+            this.artistLinkLabel.AutoSize = true;
+            this.artistLinkLabel.Location = new System.Drawing.Point(384, 321);
+            this.artistLinkLabel.Name = "artistLinkLabel";
+            this.artistLinkLabel.Size = new System.Drawing.Size(19, 13);
+            this.artistLinkLabel.TabIndex = 22;
+            this.artistLinkLabel.Text = "↑2";
+            // 
+            // albumLinkLabel
+            // 
+            this.albumLinkLabel.AutoSize = true;
+            this.albumLinkLabel.Location = new System.Drawing.Point(384, 295);
+            this.albumLinkLabel.Name = "albumLinkLabel";
+            this.albumLinkLabel.Size = new System.Drawing.Size(19, 13);
+            this.albumLinkLabel.TabIndex = 21;
+            this.albumLinkLabel.Text = "↑1";
+            // 
+            // openPathInKid3Button
+            // 
+            this.openPathInKid3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openPathInKid3Button.Location = new System.Drawing.Point(280, 98);
+            this.openPathInKid3Button.Name = "openPathInKid3Button";
+            this.openPathInKid3Button.Size = new System.Drawing.Size(123, 23);
+            this.openPathInKid3Button.TabIndex = 20;
+            this.openPathInKid3Button.Text = "Open path in Kid3";
+            this.openPathInKid3Button.UseVisualStyleBackColor = true;
+            this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
             // 
             // itemGenreTextBox
             // 
             this.itemGenreTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemGenreTextBox.Enabled = false;
-            this.itemGenreTextBox.Location = new System.Drawing.Point(56, 238);
+            this.itemGenreTextBox.Location = new System.Drawing.Point(56, 376);
             this.itemGenreTextBox.Name = "itemGenreTextBox";
             this.itemGenreTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemGenreTextBox.TabIndex = 18;
             // 
+            // openPathInExplorerButton
+            // 
+            this.openPathInExplorerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openPathInExplorerButton.Location = new System.Drawing.Point(151, 98);
+            this.openPathInExplorerButton.Name = "openPathInExplorerButton";
+            this.openPathInExplorerButton.Size = new System.Drawing.Size(123, 23);
+            this.openPathInExplorerButton.TabIndex = 19;
+            this.openPathInExplorerButton.Text = "Open path in explorer";
+            this.openPathInExplorerButton.UseVisualStyleBackColor = true;
+            this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 241);
+            this.label8.Location = new System.Drawing.Point(6, 379);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(44, 13);
             this.label8.TabIndex = 19;
@@ -257,7 +265,7 @@
             this.itemTrackNumberTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTrackNumberTextBox.Enabled = false;
-            this.itemTrackNumberTextBox.Location = new System.Drawing.Point(56, 212);
+            this.itemTrackNumberTextBox.Location = new System.Drawing.Point(56, 350);
             this.itemTrackNumberTextBox.Name = "itemTrackNumberTextBox";
             this.itemTrackNumberTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemTrackNumberTextBox.TabIndex = 16;
@@ -265,7 +273,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 215);
+            this.label7.Location = new System.Drawing.Point(6, 353);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(21, 13);
             this.label7.TabIndex = 17;
@@ -276,15 +284,15 @@
             this.itemArtistTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemArtistTextBox.Enabled = false;
-            this.itemArtistTextBox.Location = new System.Drawing.Point(56, 186);
+            this.itemArtistTextBox.Location = new System.Drawing.Point(56, 324);
             this.itemArtistTextBox.Name = "itemArtistTextBox";
-            this.itemArtistTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemArtistTextBox.Size = new System.Drawing.Size(322, 20);
             this.itemArtistTextBox.TabIndex = 14;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 189);
+            this.label6.Location = new System.Drawing.Point(6, 327);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 15;
@@ -295,15 +303,15 @@
             this.itemAlbumTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemAlbumTextBox.Enabled = false;
-            this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 160);
+            this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 298);
             this.itemAlbumTextBox.Name = "itemAlbumTextBox";
-            this.itemAlbumTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemAlbumTextBox.Size = new System.Drawing.Size(322, 20);
             this.itemAlbumTextBox.TabIndex = 12;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 163);
+            this.label1.Location = new System.Drawing.Point(6, 301);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 13;
@@ -325,76 +333,134 @@
             this.changeFilesAndFoldersCheckBox.AutoSize = true;
             this.changeFilesAndFoldersCheckBox.Checked = true;
             this.changeFilesAndFoldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.changeFilesAndFoldersCheckBox.Location = new System.Drawing.Point(661, 369);
+            this.changeFilesAndFoldersCheckBox.Location = new System.Drawing.Point(661, 649);
             this.changeFilesAndFoldersCheckBox.Name = "changeFilesAndFoldersCheckBox";
             this.changeFilesAndFoldersCheckBox.Size = new System.Drawing.Size(190, 17);
             this.changeFilesAndFoldersCheckBox.TabIndex = 17;
             this.changeFilesAndFoldersCheckBox.Text = "Edit corresponding files and folders";
             this.changeFilesAndFoldersCheckBox.UseVisualStyleBackColor = true;
             // 
-            // reloadButton
+            // reloadAllButton
             // 
-            this.reloadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadButton.Location = new System.Drawing.Point(896, 13);
-            this.reloadButton.Name = "reloadButton";
-            this.reloadButton.Size = new System.Drawing.Size(75, 23);
-            this.reloadButton.TabIndex = 18;
-            this.reloadButton.Text = "Reload";
-            this.reloadButton.UseVisualStyleBackColor = true;
-            this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
+            this.reloadAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadAllButton.Location = new System.Drawing.Point(992, 208);
+            this.reloadAllButton.Name = "reloadAllButton";
+            this.reloadAllButton.Size = new System.Drawing.Size(75, 23);
+            this.reloadAllButton.TabIndex = 18;
+            this.reloadAllButton.Text = "Reload All";
+            this.reloadAllButton.UseVisualStyleBackColor = true;
+            this.reloadAllButton.Click += new System.EventHandler(this.reloadButton_Click);
             // 
-            // openPathInExplorerButton
+            // reloadSelectedButton
             // 
-            this.openPathInExplorerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInExplorerButton.Location = new System.Drawing.Point(151, 98);
-            this.openPathInExplorerButton.Name = "openPathInExplorerButton";
-            this.openPathInExplorerButton.Size = new System.Drawing.Size(123, 23);
-            this.openPathInExplorerButton.TabIndex = 19;
-            this.openPathInExplorerButton.Text = "Open path in explorer";
-            this.openPathInExplorerButton.UseVisualStyleBackColor = true;
-            this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
+            this.reloadSelectedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadSelectedButton.Location = new System.Drawing.Point(892, 208);
+            this.reloadSelectedButton.Name = "reloadSelectedButton";
+            this.reloadSelectedButton.Size = new System.Drawing.Size(94, 23);
+            this.reloadSelectedButton.TabIndex = 20;
+            this.reloadSelectedButton.Text = "Reload Selected";
+            this.reloadSelectedButton.UseVisualStyleBackColor = true;
+            this.reloadSelectedButton.Click += new System.EventHandler(this.reloadSelectedButton_Click);
             // 
-            // openPathInKid3Button
+            // foldersListBox
             // 
-            this.openPathInKid3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInKid3Button.Location = new System.Drawing.Point(280, 98);
-            this.openPathInKid3Button.Name = "openPathInKid3Button";
-            this.openPathInKid3Button.Size = new System.Drawing.Size(123, 23);
-            this.openPathInKid3Button.TabIndex = 20;
-            this.openPathInKid3Button.Text = "Open path in Kid3";
-            this.openPathInKid3Button.UseVisualStyleBackColor = true;
-            this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
+            this.foldersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.foldersListBox.FormattingEnabled = true;
+            this.foldersListBox.Location = new System.Drawing.Point(6, 19);
+            this.foldersListBox.Name = "foldersListBox";
+            this.foldersListBox.Size = new System.Drawing.Size(184, 134);
+            this.foldersListBox.TabIndex = 21;
             // 
-            // openPlaylistInNotepad
+            // playlistsListBox
             // 
-            this.openPlaylistInNotepad.Location = new System.Drawing.Point(658, 12);
-            this.openPlaylistInNotepad.Name = "openPlaylistInNotepad";
-            this.openPlaylistInNotepad.Size = new System.Drawing.Size(75, 23);
-            this.openPlaylistInNotepad.TabIndex = 19;
-            this.openPlaylistInNotepad.Text = "Notepad++";
-            this.openPlaylistInNotepad.UseVisualStyleBackColor = true;
-            this.openPlaylistInNotepad.Click += new System.EventHandler(this.openPlaylistInNotepad_Click);
+            this.playlistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playlistsListBox.FormattingEnabled = true;
+            this.playlistsListBox.Location = new System.Drawing.Point(6, 19);
+            this.playlistsListBox.Name = "playlistsListBox";
+            this.playlistsListBox.Size = new System.Drawing.Size(198, 134);
+            this.playlistsListBox.TabIndex = 22;
+            // 
+            // changeFoldersButton
+            // 
+            this.changeFoldersButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.changeFoldersButton.Location = new System.Drawing.Point(6, 160);
+            this.changeFoldersButton.Name = "changeFoldersButton";
+            this.changeFoldersButton.Size = new System.Drawing.Size(184, 23);
+            this.changeFoldersButton.TabIndex = 25;
+            this.changeFoldersButton.Text = "Edit";
+            this.changeFoldersButton.UseVisualStyleBackColor = true;
+            // 
+            // changePlaylistsButton
+            // 
+            this.changePlaylistsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.changePlaylistsButton.Location = new System.Drawing.Point(6, 161);
+            this.changePlaylistsButton.Name = "changePlaylistsButton";
+            this.changePlaylistsButton.Size = new System.Drawing.Size(198, 23);
+            this.changePlaylistsButton.TabIndex = 26;
+            this.changePlaylistsButton.Text = "Edit";
+            this.changePlaylistsButton.UseVisualStyleBackColor = true;
+            // 
+            // MusicFoldersGroupBox
+            // 
+            this.MusicFoldersGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MusicFoldersGroupBox.Controls.Add(this.foldersListBox);
+            this.MusicFoldersGroupBox.Controls.Add(this.changeFoldersButton);
+            this.MusicFoldersGroupBox.Location = new System.Drawing.Point(655, 13);
+            this.MusicFoldersGroupBox.Name = "MusicFoldersGroupBox";
+            this.MusicFoldersGroupBox.Size = new System.Drawing.Size(196, 189);
+            this.MusicFoldersGroupBox.TabIndex = 27;
+            this.MusicFoldersGroupBox.TabStop = false;
+            this.MusicFoldersGroupBox.Text = "Folders";
+            // 
+            // PlaylistsGroupBox
+            // 
+            this.PlaylistsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PlaylistsGroupBox.Controls.Add(this.playlistsListBox);
+            this.PlaylistsGroupBox.Controls.Add(this.changePlaylistsButton);
+            this.PlaylistsGroupBox.Location = new System.Drawing.Point(857, 12);
+            this.PlaylistsGroupBox.Name = "PlaylistsGroupBox";
+            this.PlaylistsGroupBox.Size = new System.Drawing.Size(210, 190);
+            this.PlaylistsGroupBox.TabIndex = 28;
+            this.PlaylistsGroupBox.TabStop = false;
+            this.PlaylistsGroupBox.Text = "Playlists";
+            // 
+            // selectedItemPlaylistsListBox
+            // 
+            this.selectedItemPlaylistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectedItemPlaylistsListBox.FormattingEnabled = true;
+            this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 134);
+            this.selectedItemPlaylistsListBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.selectedItemPlaylistsListBox.Name = "selectedItemPlaylistsListBox";
+            this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(394, 134);
+            this.selectedItemPlaylistsListBox.TabIndex = 27;
             // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1079, 501);
-            this.Controls.Add(this.openPlaylistInNotepad);
-            this.Controls.Add(this.reloadButton);
+            this.ClientSize = new System.Drawing.Size(1079, 680);
+            this.Controls.Add(this.PlaylistsGroupBox);
+            this.Controls.Add(this.MusicFoldersGroupBox);
+            this.Controls.Add(this.reloadSelectedButton);
+            this.Controls.Add(this.reloadAllButton);
             this.Controls.Add(this.changeFilesAndFoldersCheckBox);
             this.Controls.Add(this.selectedItemGroupBox);
-            this.Controls.Add(this.playlistPathLabel);
-            this.Controls.Add(this.choosePlaylistButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.applyButton);
-            this.Controls.Add(this.playlistNameLabel);
-            this.Controls.Add(this.playlistNameTextBox);
             this.Controls.Add(this.playlistTreeView);
             this.Name = "EditMusicLibraryForm";
-            this.Text = "Edit Playlist";
+            this.Text = "Edit Music Library";
             this.selectedItemGroupBox.ResumeLayout(false);
             this.selectedItemGroupBox.PerformLayout();
+            this.MusicFoldersGroupBox.ResumeLayout(false);
+            this.PlaylistsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,11 +469,9 @@
         #endregion
 
         private System.Windows.Forms.TreeView playlistTreeView;
-        private System.Windows.Forms.TextBox playlistNameTextBox;
         private System.Windows.Forms.TextBox itemNameTextBox;
         private System.Windows.Forms.TextBox itemPathTextBox;
         private System.Windows.Forms.TextBox itemTitleTextBox;
-        private System.Windows.Forms.Label playlistNameLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -415,8 +479,6 @@
         private System.Windows.Forms.Button applyButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Button choosePlaylistButton;
-        private System.Windows.Forms.Label playlistPathLabel;
         private System.Windows.Forms.GroupBox selectedItemGroupBox;
         private System.Windows.Forms.ComboBox itemTypeComboBox;
         private System.Windows.Forms.TextBox itemArtistTextBox;
@@ -428,9 +490,18 @@
         private System.Windows.Forms.TextBox itemTrackNumberTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox changeFilesAndFoldersCheckBox;
-        private System.Windows.Forms.Button reloadButton;
+        private System.Windows.Forms.Button reloadAllButton;
         private System.Windows.Forms.Button openPathInExplorerButton;
         private System.Windows.Forms.Button openPathInKid3Button;
-        private System.Windows.Forms.Button openPlaylistInNotepad;
+        private System.Windows.Forms.Label artistLinkLabel;
+        private System.Windows.Forms.Label albumLinkLabel;
+        private System.Windows.Forms.Button reloadSelectedButton;
+        private System.Windows.Forms.ListBox foldersListBox;
+        private System.Windows.Forms.ListBox playlistsListBox;
+        private System.Windows.Forms.Button changeFoldersButton;
+        private System.Windows.Forms.Button changePlaylistsButton;
+        private System.Windows.Forms.GroupBox MusicFoldersGroupBox;
+        private System.Windows.Forms.GroupBox PlaylistsGroupBox;
+        private System.Windows.Forms.ListBox selectedItemPlaylistsListBox;
     }
 }

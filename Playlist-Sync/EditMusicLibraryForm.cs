@@ -19,19 +19,15 @@ namespace PlaylistConverterGUI
         {
             InitializeComponent();
             itemTypeComboBox.DataSource = Enum.GetValues(typeof(PlaylistItemType));
-
         }
         public EditMusicLibraryForm(string playlistFilePath)
         {
             InitializeComponent();
+            ShowPlaylist(playlistFilePath);
         }
 
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            OpenPlaylistDialog();
-        }
-
+        #region fuctions
         private void OpenPlaylistDialog()
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -53,81 +49,34 @@ namespace PlaylistConverterGUI
             playlistTreeView.Tag = Playlist;
             playlistTreeView.Nodes.Add(NodeFromPlaylistItem(Playlist));
             playlistTreeView.ExpandAll();
-
-            playlistNameTextBox.Text = Playlist.Name;
-            playlistPathLabel.Text = Playlist.Path;
+            
         }
-
-        private TreeNode NodeFromPlaylistItem(PlaylistItem playlistItem)
+        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist)
         {
-            TreeNode result;
-
-            if (playlistItem.Children != null)
-                result = new TreeNode(playlistItem.Name, playlistItem.Children?.Select(item => NodeFromPlaylistItem(item)).ToArray());
-            else
-                result = new TreeNode(playlistItem.Name);
-
-            result.Tag = playlistItem;
-            if (playlistItem.ItemExists == false)
+            if (changedTreeNode.Parent != null)
             {
-                result.BackColor = Color.DarkRed;
-                result.ForeColor = Color.White;
-            }
-            else
-            {
-                if (playlistItem.Type == PlaylistItemType.Song)
+                var parent = changedTreeNode.Parent;
+                int index = parent.Nodes.IndexOf(changedTreeNode);
+                var playlistItem = changedTreeNode.Tag as PlaylistItem;
+                playlistTreeView.Nodes.Remove(changedTreeNode);
+                playlistItem.RescanMediaInfo(true);
+                var reloadedNode = NodeFromPlaylistItem(playlistItem);
+                if (changedTreeNode.Text != reloadedNode.Text)
                 {
-
-                    if (playlistItem.ArtistLink == NodeLink.Parent)
+                    index = 0;
+                    while (index < parent.Nodes.Count && reloadedNode.Text.CompareTo(parent.Nodes[index].Text) > 0)
                     {
-                        result.BackColor = Color.LightBlue;
-                    }
-                    else if (playlistItem.AlbumLink == NodeLink.Parent)
-                    {
-                        if (playlistItem.ArtistLink == NodeLink.ParentOfParent)
-                        {
-                            result.BackColor = Color.LightGreen;
-                        }
-                        else
-                        {
-                            result.BackColor = Color.LightYellow;
-                        }
-                    }
-                    else if (playlistItem.AlbumLink == NodeLink.ParentOfParent)
-                    {
-                        result.BackColor = Color.Orange;
+                        index++;
                     }
                 }
+                parent.Nodes.Insert(index, reloadedNode);
+                reloadedNode.ExpandAll();
+                playlistTreeView.SelectedNode = reloadedNode;
             }
-            return result;
-        }
-
-        private void ExplorerToolStripItem_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OpenPathInKid(string path)
-        {
-            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
-            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
-        }
-
-        private void OpenPathInExplorer(string path)
-        {
-            Process.Start("explorer", path);
-        }
-
-        private void OpenPlaylistInNotepad()
-        {
-            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
-            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
-        }
-
-        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            ShowDataOfSelectedNode();
+            else
+            {
+                ShowPlaylist(playlist);
+            }
         }
 
         private void ShowDataOfSelectedNode()
@@ -163,14 +112,85 @@ namespace PlaylistConverterGUI
             bool PathExists = playlistItem.ItemExists || playlistItem.Parent.ItemExists;
             openPathInExplorerButton.Enabled = PathExists;
             openPathInKid3Button.Enabled = PathExists;
+
+            albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
+            artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void OpenPathInKid(string path)
         {
-            ShowDataOfSelectedNode();
+            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
+            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
+        }
+        private void OpenPathInExplorer(string path)
+        {
+            Process.Start("explorer", path);
+        }
+        private void OpenPlaylistInNotepad()
+        {
+            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
+            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
         }
 
-        private void applyButton_Click(object sender, EventArgs e)
+        private TreeNode NodeFromPlaylistItem(PlaylistItem playlistItem)
+        {
+            TreeNode result;
+
+            if (playlistItem.Children != null)
+                result = new TreeNode(playlistItem.Name, playlistItem.Children?.Select(item => NodeFromPlaylistItem(item)).ToArray());
+            else
+                result = new TreeNode(playlistItem.Name);
+
+            result.Tag = playlistItem;
+            if (playlistItem.ItemExists == false)
+            {
+                result.BackColor = Color.DarkRed;
+                result.ForeColor = Color.White;
+            }
+            else
+            {
+                if (playlistItem.Type == PlaylistItemType.Song)
+                {
+
+                    if (playlistItem.ArtistLink == NodeLink.Parent)
+                    {
+                        result.BackColor = Color.LightBlue;
+                    }
+                    else if (playlistItem.AlbumLink == NodeLink.Parent)
+                    {
+                        if (playlistItem.ArtistLink == NodeLink.ParentOfParent)
+                        {
+                            result.BackColor = Color.LightGreen;
+                        }
+                        else
+                        {
+                            result.BackColor = Color.LightCyan;
+                        }
+                    }
+                    else if (playlistItem.AlbumLink == NodeLink.ParentOfParent)
+                    {
+                        result.BackColor = Color.Orange;
+                    }
+                }
+            }
+            return result;
+        }
+        private string linkStateToText(NodeLink linkState)
+        {
+            switch (linkState)
+            {
+                case NodeLink.Parent:
+                    return "\u21911";
+                case NodeLink.ParentOfParent:
+                    return "\u21912";
+                case NodeLink.None:
+                default:
+                    return "-";
+            }
+        }
+
+        private void ApplyChanges()
         {
             bool changeFAF = changeFilesAndFoldersCheckBox.Checked;
 
@@ -179,8 +199,9 @@ namespace PlaylistConverterGUI
             PlaylistItem selectedPlaylistItem = (PlaylistItem)playlistTreeView.SelectedNode.Tag;
             if (selectedPlaylistItem.ItemExists || changeFAF == false)
             {
+                selectedPlaylistItem.UnauthorizedAccess += SelectedPlaylistItem_UnauthorizedAccess;
                 selectedPlaylistItem.ChangeName(itemNameTextBox.Text, changeFAF);
-                selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true
+                selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true (?)
                 if (selectedPlaylistItem.Type == PlaylistItemType.Song)
                 {
                     selectedPlaylistItem.ChangeTitle(itemTitleTextBox.Text, changeFAF);
@@ -193,13 +214,15 @@ namespace PlaylistConverterGUI
                 MessageBox.Show("The file does not exist so it can not be changed!");
             }
 
+            bool ParentChanged = false;
+            bool ParentOfParentChanged = false;
             switch (selectedPlaylistItem.AlbumLink)
             {
                 case NodeLink.Parent:
-                    selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -208,10 +231,10 @@ namespace PlaylistConverterGUI
             switch (selectedPlaylistItem.ArtistLink)
             {
                 case NodeLink.Parent:
-                    selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -219,68 +242,73 @@ namespace PlaylistConverterGUI
             }
 
             PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
-            playlist.ChangeName(playlistNameTextBox.Text, changeFAF);
-
+            //playlist.ChangeName(playlistNameTextBox.Text, changeFAF);
 
             /// Reload View from PlaylistItem
-            ReloadPlaylist(playlistTreeView.SelectedNode, playlist);
-            //TODO: optimize behaviour ( keep focus)
-
+            var highestModifiedNode = playlistTreeView.SelectedNode;
+            if (ParentOfParentChanged)
+            {
+                highestModifiedNode = highestModifiedNode.Parent.Parent;
+            }
+            else if (ParentChanged)
+            {
+                highestModifiedNode = highestModifiedNode.Parent;
+            }
+            ReloadPlaylist(highestModifiedNode, playlist);
 
             /// Write Data to PlaylistFile
             File.WriteAllLines(playlist.Path + "\\" + playlist.Name, playlist.ToPlaylistLines());
-
         }
+        #endregion
 
-        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist)
+        #region EventHandlers
+        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, PlaylistItem.UnauthorizedAccessEventArgs e)
         {
-            if (changedTreeNode.Parent != null)
-            {
-                var parent = changedTreeNode.Parent;
-                int index = parent.Nodes.IndexOf(changedTreeNode);
-                var playlistItem = changedTreeNode.Tag as PlaylistItem;
-                playlistTreeView.Nodes.Remove(changedTreeNode);
-                var reloadedNode = NodeFromPlaylistItem(playlistItem);
-                if (changedTreeNode.Text != reloadedNode.Text)
-                {
-                    index = 0;
-                    while (index < parent.Nodes.Count && reloadedNode.Text.CompareTo(parent.Nodes[index].Text) > 0)
-                    {
-                        index++;
-                    }
-                }
-                parent.Nodes.Insert(index, reloadedNode);
-                reloadedNode.ExpandAll();
-                playlistTreeView.SelectedNode = reloadedNode;
-            }
-            else
-            {
-                ShowPlaylist(playlist);
-            }
+            MessageBox.Show(e.ToString());
         }
 
+        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            ShowDataOfSelectedNode();
+        }
+
+        private void choosePlaylistButton_Click(object sender, EventArgs e)
+        {
+            OpenPlaylistDialog();
+        }
+        private void reloadSelectedButton_Click(object sender, EventArgs e)
+        {
+            ReloadPlaylist(playlistTreeView.SelectedNode, (PlaylistItem)playlistTreeView.Tag);
+        }
         private void reloadButton_Click(object sender, EventArgs e)
         {
             var PlaylistItem = (PlaylistItem)playlistTreeView.Tag;
             ShowPlaylist(Path.Combine(PlaylistItem.Path, PlaylistItem.Name));
         }
 
+        private void openPlaylistInNotepad_Click(object sender, EventArgs e)
+        {
+            OpenPlaylistInNotepad();
+        }
         private void openInExplorerButton_Click(object sender, EventArgs e)
         {
             PlaylistItem playlistItem = (PlaylistItem)selectedItemGroupBox.Tag;
             OpenPathInExplorer(playlistItem.Path);
         }
-
         private void openPathInKid3Button_Click(object sender, EventArgs e)
         {
             PlaylistItem playlistItem = (PlaylistItem)selectedItemGroupBox.Tag;
             OpenPathInKid(playlistItem.Path);
         }
 
-
-        private void openPlaylistInNotepad_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
-            OpenPlaylistInNotepad();
+            ShowDataOfSelectedNode();
         }
+        private void applyButton_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
+        }
+        #endregion
     }
 }

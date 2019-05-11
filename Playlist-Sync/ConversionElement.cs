@@ -49,11 +49,13 @@ namespace PlaylistConverterGUI
         {
             string[] sourceFiles = Directory.GetFiles(Conversion.SourcePlaylistFolderPath);
             sourceFiles = sourceFiles.Where(file => Regex.IsMatch(file, ".+(\\.playlistsync)?\\.(txt|m3u|playlistsync)")).ToArray();
-            PathConverter converter = new PathConverter();
-            converter.SourceMusicFolderPath = Conversion.SourceMusicFolderPath;
-            converter.SourceUsesSlashesAsDirectorySeperator = Conversion.SourceUseSlashAsSeperator;
-            converter.TargetMusicFolderPath = Conversion.TargetMusicFolderPath;
-            converter.TargetUsesSlashesAsDirectorySeperator = Conversion.TargetUseSlashAsSeperator;
+            PathConverter converter = new PathConverter
+            {
+                SourceMusicFolderPath = Conversion.SourceMusicFolderPath,
+                SourceUsesSlashesAsDirectorySeperator = Conversion.SourceUseSlashAsSeperator,
+                TargetMusicFolderPath = Conversion.TargetMusicFolderPath,
+                TargetUsesSlashesAsDirectorySeperator = Conversion.TargetUseSlashAsSeperator
+            };
 
             string targetFile;
             foreach (string sourceFile in sourceFiles)

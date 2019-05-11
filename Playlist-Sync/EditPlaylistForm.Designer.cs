@@ -58,8 +58,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.itemTypeComboBox = new System.Windows.Forms.ComboBox();
             this.changeFilesAndFoldersCheckBox = new System.Windows.Forms.CheckBox();
-            this.reloadButton = new System.Windows.Forms.Button();
+            this.reloadAllButton = new System.Windows.Forms.Button();
             this.openPlaylistInNotepad = new System.Windows.Forms.Button();
+            this.reloadSelectedButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -192,7 +193,7 @@
             this.choosePlaylistButton.TabIndex = 13;
             this.choosePlaylistButton.Text = "Choose Playlist";
             this.choosePlaylistButton.UseVisualStyleBackColor = true;
-            this.choosePlaylistButton.Click += new System.EventHandler(this.button3_Click);
+            this.choosePlaylistButton.Click += new System.EventHandler(this.choosePlaylistButton_Click);
             // 
             // playlistPathLabel
             // 
@@ -369,6 +370,7 @@
             this.changeFilesAndFoldersCheckBox.AutoSize = true;
             this.changeFilesAndFoldersCheckBox.Checked = true;
             this.changeFilesAndFoldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.changeFilesAndFoldersCheckBox.Enabled = false;
             this.changeFilesAndFoldersCheckBox.Location = new System.Drawing.Point(661, 369);
             this.changeFilesAndFoldersCheckBox.Name = "changeFilesAndFoldersCheckBox";
             this.changeFilesAndFoldersCheckBox.Size = new System.Drawing.Size(190, 17);
@@ -376,16 +378,16 @@
             this.changeFilesAndFoldersCheckBox.Text = "Edit corresponding files and folders";
             this.changeFilesAndFoldersCheckBox.UseVisualStyleBackColor = true;
             // 
-            // reloadButton
+            // reloadAllButton
             // 
-            this.reloadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadButton.Location = new System.Drawing.Point(896, 13);
-            this.reloadButton.Name = "reloadButton";
-            this.reloadButton.Size = new System.Drawing.Size(75, 23);
-            this.reloadButton.TabIndex = 18;
-            this.reloadButton.Text = "Reload";
-            this.reloadButton.UseVisualStyleBackColor = true;
-            this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
+            this.reloadAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadAllButton.Location = new System.Drawing.Point(896, 13);
+            this.reloadAllButton.Name = "reloadAllButton";
+            this.reloadAllButton.Size = new System.Drawing.Size(75, 23);
+            this.reloadAllButton.TabIndex = 18;
+            this.reloadAllButton.Text = "Reload All";
+            this.reloadAllButton.UseVisualStyleBackColor = true;
+            this.reloadAllButton.Click += new System.EventHandler(this.reloadButton_Click);
             // 
             // openPlaylistInNotepad
             // 
@@ -397,13 +399,25 @@
             this.openPlaylistInNotepad.UseVisualStyleBackColor = true;
             this.openPlaylistInNotepad.Click += new System.EventHandler(this.openPlaylistInNotepad_Click);
             // 
+            // reloadSelectedButton
+            // 
+            this.reloadSelectedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadSelectedButton.Location = new System.Drawing.Point(796, 13);
+            this.reloadSelectedButton.Name = "reloadSelectedButton";
+            this.reloadSelectedButton.Size = new System.Drawing.Size(94, 23);
+            this.reloadSelectedButton.TabIndex = 20;
+            this.reloadSelectedButton.Text = "Reload Selected";
+            this.reloadSelectedButton.UseVisualStyleBackColor = true;
+            this.reloadSelectedButton.Click += new System.EventHandler(this.reloadSelectedButton_Click);
+            // 
             // EditPlaylistForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 501);
+            this.Controls.Add(this.reloadSelectedButton);
             this.Controls.Add(this.openPlaylistInNotepad);
-            this.Controls.Add(this.reloadButton);
+            this.Controls.Add(this.reloadAllButton);
             this.Controls.Add(this.changeFilesAndFoldersCheckBox);
             this.Controls.Add(this.selectedItemGroupBox);
             this.Controls.Add(this.playlistPathLabel);
@@ -450,11 +464,12 @@
         private System.Windows.Forms.TextBox itemTrackNumberTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox changeFilesAndFoldersCheckBox;
-        private System.Windows.Forms.Button reloadButton;
+        private System.Windows.Forms.Button reloadAllButton;
         private System.Windows.Forms.Button openPathInExplorerButton;
         private System.Windows.Forms.Button openPathInKid3Button;
         private System.Windows.Forms.Button openPlaylistInNotepad;
         private System.Windows.Forms.Label artistLinkLabel;
         private System.Windows.Forms.Label albumLinkLabel;
+        private System.Windows.Forms.Button reloadSelectedButton;
     }
 }

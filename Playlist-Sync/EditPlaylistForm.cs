@@ -28,11 +28,7 @@ namespace PlaylistConverterGUI
         }
 
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            OpenPlaylistDialog();
-        }
-
+        #region fuctions
         private void OpenPlaylistDialog()
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -57,6 +53,87 @@ namespace PlaylistConverterGUI
 
             playlistNameTextBox.Text = Playlist.Name;
             playlistPathLabel.Text = Playlist.Path;
+        }
+        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist)
+        {
+            if (changedTreeNode.Parent != null)
+            {
+                var parent = changedTreeNode.Parent;
+                int index = parent.Nodes.IndexOf(changedTreeNode);
+                var playlistItem = changedTreeNode.Tag as PlaylistItem;
+                playlistTreeView.Nodes.Remove(changedTreeNode);
+                playlistItem.RescanMediaInfo(true);
+                var reloadedNode = NodeFromPlaylistItem(playlistItem);
+                if (changedTreeNode.Text != reloadedNode.Text)
+                {
+                    index = 0;
+                    while (index < parent.Nodes.Count && reloadedNode.Text.CompareTo(parent.Nodes[index].Text) > 0)
+                    {
+                        index++;
+                    }
+                }
+                parent.Nodes.Insert(index, reloadedNode);
+                reloadedNode.ExpandAll();
+                playlistTreeView.SelectedNode = reloadedNode;
+            }
+            else
+            {
+                ShowPlaylist(playlist);
+            }
+        }
+
+        private void ShowDataOfSelectedNode()
+        {
+            PlaylistItem playlistItem = (PlaylistItem)playlistTreeView.SelectedNode.Tag;
+            selectedItemGroupBox.Tag = playlistItem;
+            itemNameTextBox.Text = playlistItem.Name;
+            itemPathTextBox.Text = playlistItem.Path;
+            itemTypeComboBox.Text = playlistItem.Type.ToString();
+
+            bool showSongTagData = (playlistItem.ItemExists == true) && (playlistItem.Type == PlaylistItemType.Song);
+            itemTitleTextBox.Enabled = showSongTagData;
+            itemAlbumTextBox.Enabled = showSongTagData;
+            itemArtistTextBox.Enabled = showSongTagData;
+            itemGenreTextBox.Enabled = showSongTagData;
+            itemTrackNumberTextBox.Enabled = showSongTagData;
+            if (showSongTagData)
+            {
+                itemTitleTextBox.Text = playlistItem.Title;
+                itemAlbumTextBox.Text = playlistItem.Album;
+                itemArtistTextBox.Text = playlistItem.Artist;
+                itemGenreTextBox.Text = playlistItem.Genre;
+                itemTrackNumberTextBox.Text = playlistItem.Nr.ToString();
+            }
+            else
+            {
+                itemTitleTextBox.Text = null;
+                itemAlbumTextBox.Text = null;
+                itemArtistTextBox.Text = null;
+                itemGenreTextBox.Text = null;
+                itemTrackNumberTextBox.Text = null;
+            }
+            bool PathExists = playlistItem.ItemExists || playlistItem.Parent.ItemExists;
+            openPathInExplorerButton.Enabled = PathExists;
+            openPathInKid3Button.Enabled = PathExists;
+
+            albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
+            artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);
+        }
+
+        private void OpenPathInKid(string path)
+        {
+            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
+            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
+        }
+        private void OpenPathInExplorer(string path)
+        {
+            Process.Start("explorer", path);
+        }
+        private void OpenPlaylistInNotepad()
+        {
+            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
+            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
         }
 
         private TreeNode NodeFromPlaylistItem(PlaylistItem playlistItem)
@@ -102,73 +179,6 @@ namespace PlaylistConverterGUI
             }
             return result;
         }
-
-        private void ExplorerToolStripItem_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OpenPathInKid(string path)
-        {
-            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
-            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
-        }
-
-        private void OpenPathInExplorer(string path)
-        {
-            Process.Start("explorer", path);
-        }
-
-        private void OpenPlaylistInNotepad()
-        {
-            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
-            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
-        }
-
-        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            ShowDataOfSelectedNode();
-        }
-
-        private void ShowDataOfSelectedNode()
-        {
-            PlaylistItem playlistItem = (PlaylistItem)playlistTreeView.SelectedNode.Tag;
-            selectedItemGroupBox.Tag = playlistItem;
-            itemNameTextBox.Text = playlistItem.Name;
-            itemPathTextBox.Text = playlistItem.Path;
-            itemTypeComboBox.Text = playlistItem.Type.ToString();
-
-            bool showSongTagData = (playlistItem.ItemExists == true) && (playlistItem.Type == PlaylistItemType.Song);
-            itemTitleTextBox.Enabled = showSongTagData;
-            itemAlbumTextBox.Enabled = showSongTagData;
-            itemArtistTextBox.Enabled = showSongTagData;
-            itemGenreTextBox.Enabled = showSongTagData;
-            itemTrackNumberTextBox.Enabled = showSongTagData;
-            if (showSongTagData)
-            {
-                itemTitleTextBox.Text = playlistItem.Title;
-                itemAlbumTextBox.Text = playlistItem.Album;
-                itemArtistTextBox.Text = playlistItem.Artist;
-                itemGenreTextBox.Text = playlistItem.Genre;
-                itemTrackNumberTextBox.Text = playlistItem.Nr.ToString();
-            }
-            else
-            {
-                itemTitleTextBox.Text = null;
-                itemAlbumTextBox.Text = null;
-                itemArtistTextBox.Text = null;
-                itemGenreTextBox.Text = null;
-                itemTrackNumberTextBox.Text = null;
-            }
-            bool PathExists = playlistItem.ItemExists || playlistItem.Parent.ItemExists;
-            openPathInExplorerButton.Enabled = PathExists;
-            openPathInKid3Button.Enabled = PathExists;
-
-            albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
-            artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);//TODO
-        }
-
         private string linkStateToText(NodeLink linkState)
         {
             switch (linkState)
@@ -183,12 +193,7 @@ namespace PlaylistConverterGUI
             }
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            ShowDataOfSelectedNode();
-        }
-
-        private void applyButton_Click(object sender, EventArgs e)
+        private void ApplyChanges()
         {
             bool changeFAF = changeFilesAndFoldersCheckBox.Checked;
 
@@ -253,69 +258,60 @@ namespace PlaylistConverterGUI
                 highestModifiedNode = highestModifiedNode.Parent;
             }
             ReloadPlaylist(highestModifiedNode, playlist);
-            //TODO: optimize behaviour ( keep focus)
-
 
             /// Write Data to PlaylistFile
             File.WriteAllLines(playlist.Path + "\\" + playlist.Name, playlist.ToPlaylistLines());
-
         }
+        #endregion
 
+        #region EventHandlers
         private void SelectedPlaylistItem_UnauthorizedAccess(object sender, PlaylistItem.UnauthorizedAccessEventArgs e)
         {
             MessageBox.Show(e.ToString());
         }
 
-        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist) //TODO: detect changes in parent/ parent.parent folder
+        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (changedTreeNode.Parent != null)
-            {
-                var parent = changedTreeNode.Parent;
-                int index = parent.Nodes.IndexOf(changedTreeNode);
-                var playlistItem = changedTreeNode.Tag as PlaylistItem;
-                playlistTreeView.Nodes.Remove(changedTreeNode);
-                playlistItem.RescanMediaInfo(true);
-                var reloadedNode = NodeFromPlaylistItem(playlistItem);
-                if (changedTreeNode.Text != reloadedNode.Text)
-                {
-                    index = 0;
-                    while (index < parent.Nodes.Count && reloadedNode.Text.CompareTo(parent.Nodes[index].Text) > 0)
-                    {
-                        index++;
-                    }
-                }
-                parent.Nodes.Insert(index, reloadedNode);
-                reloadedNode.ExpandAll();
-                playlistTreeView.SelectedNode = reloadedNode;
-            }
-            else
-            {
-                ShowPlaylist(playlist);
-            }
+            ShowDataOfSelectedNode();
         }
 
+        private void choosePlaylistButton_Click(object sender, EventArgs e)
+        {
+            OpenPlaylistDialog();
+        }
+        private void reloadSelectedButton_Click(object sender, EventArgs e)
+        {
+            ReloadPlaylist(playlistTreeView.SelectedNode, (PlaylistItem)playlistTreeView.Tag);
+        }
         private void reloadButton_Click(object sender, EventArgs e)
         {
             var PlaylistItem = (PlaylistItem)playlistTreeView.Tag;
             ShowPlaylist(Path.Combine(PlaylistItem.Path, PlaylistItem.Name));
         }
 
+        private void openPlaylistInNotepad_Click(object sender, EventArgs e)
+        {
+            OpenPlaylistInNotepad();
+        }
         private void openInExplorerButton_Click(object sender, EventArgs e)
         {
             PlaylistItem playlistItem = (PlaylistItem)selectedItemGroupBox.Tag;
             OpenPathInExplorer(playlistItem.Path);
         }
-
         private void openPathInKid3Button_Click(object sender, EventArgs e)
         {
             PlaylistItem playlistItem = (PlaylistItem)selectedItemGroupBox.Tag;
             OpenPathInKid(playlistItem.Path);
         }
 
-
-        private void openPlaylistInNotepad_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
-            OpenPlaylistInNotepad();
+            ShowDataOfSelectedNode();
         }
+        private void applyButton_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
+        }
+        #endregion
     }
 }
