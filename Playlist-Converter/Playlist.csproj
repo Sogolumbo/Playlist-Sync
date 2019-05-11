@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversion.cs" />
+    <Compile Include="MusicLibrary.cs" />
     <Compile Include="PlaylistType.cs" />
     <Compile Include="PathConverter.cs" />
     <Compile Include="CommonPathGuesser.cs" />

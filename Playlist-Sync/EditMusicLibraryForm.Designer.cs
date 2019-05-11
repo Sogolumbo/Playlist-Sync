@@ -1,6 +1,6 @@
 ﻿namespace PlaylistConverterGUI
 {
-    partial class EditPlaylistForm
+    partial class EditMusicLibraryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -44,11 +44,7 @@
             this.choosePlaylistButton = new System.Windows.Forms.Button();
             this.playlistPathLabel = new System.Windows.Forms.Label();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
-            this.artistLinkLabel = new System.Windows.Forms.Label();
-            this.albumLinkLabel = new System.Windows.Forms.Label();
-            this.openPathInKid3Button = new System.Windows.Forms.Button();
             this.itemGenreTextBox = new System.Windows.Forms.TextBox();
-            this.openPathInExplorerButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.itemTrackNumberTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -59,6 +55,8 @@
             this.itemTypeComboBox = new System.Windows.Forms.ComboBox();
             this.changeFilesAndFoldersCheckBox = new System.Windows.Forms.CheckBox();
             this.reloadButton = new System.Windows.Forms.Button();
+            this.openPathInExplorerButton = new System.Windows.Forms.Button();
+            this.openPathInKid3Button = new System.Windows.Forms.Button();
             this.openPlaylistInNotepad = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -209,8 +207,6 @@
             // selectedItemGroupBox
             // 
             this.selectedItemGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectedItemGroupBox.Controls.Add(this.artistLinkLabel);
-            this.selectedItemGroupBox.Controls.Add(this.albumLinkLabel);
             this.selectedItemGroupBox.Controls.Add(this.openPathInKid3Button);
             this.selectedItemGroupBox.Controls.Add(this.itemGenreTextBox);
             this.selectedItemGroupBox.Controls.Add(this.openPathInExplorerButton);
@@ -237,35 +233,6 @@
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
             // 
-            // artistLinkLabel
-            // 
-            this.artistLinkLabel.AutoSize = true;
-            this.artistLinkLabel.Location = new System.Drawing.Point(384, 189);
-            this.artistLinkLabel.Name = "artistLinkLabel";
-            this.artistLinkLabel.Size = new System.Drawing.Size(19, 13);
-            this.artistLinkLabel.TabIndex = 22;
-            this.artistLinkLabel.Text = "↑2";
-            // 
-            // albumLinkLabel
-            // 
-            this.albumLinkLabel.AutoSize = true;
-            this.albumLinkLabel.Location = new System.Drawing.Point(384, 163);
-            this.albumLinkLabel.Name = "albumLinkLabel";
-            this.albumLinkLabel.Size = new System.Drawing.Size(19, 13);
-            this.albumLinkLabel.TabIndex = 21;
-            this.albumLinkLabel.Text = "↑1";
-            // 
-            // openPathInKid3Button
-            // 
-            this.openPathInKid3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInKid3Button.Location = new System.Drawing.Point(280, 98);
-            this.openPathInKid3Button.Name = "openPathInKid3Button";
-            this.openPathInKid3Button.Size = new System.Drawing.Size(123, 23);
-            this.openPathInKid3Button.TabIndex = 20;
-            this.openPathInKid3Button.Text = "Open path in Kid3";
-            this.openPathInKid3Button.UseVisualStyleBackColor = true;
-            this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
-            // 
             // itemGenreTextBox
             // 
             this.itemGenreTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -275,17 +242,6 @@
             this.itemGenreTextBox.Name = "itemGenreTextBox";
             this.itemGenreTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemGenreTextBox.TabIndex = 18;
-            // 
-            // openPathInExplorerButton
-            // 
-            this.openPathInExplorerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInExplorerButton.Location = new System.Drawing.Point(151, 98);
-            this.openPathInExplorerButton.Name = "openPathInExplorerButton";
-            this.openPathInExplorerButton.Size = new System.Drawing.Size(123, 23);
-            this.openPathInExplorerButton.TabIndex = 19;
-            this.openPathInExplorerButton.Text = "Open path in explorer";
-            this.openPathInExplorerButton.UseVisualStyleBackColor = true;
-            this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
             // 
             // label8
             // 
@@ -322,7 +278,7 @@
             this.itemArtistTextBox.Enabled = false;
             this.itemArtistTextBox.Location = new System.Drawing.Point(56, 186);
             this.itemArtistTextBox.Name = "itemArtistTextBox";
-            this.itemArtistTextBox.Size = new System.Drawing.Size(322, 20);
+            this.itemArtistTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemArtistTextBox.TabIndex = 14;
             // 
             // label6
@@ -341,7 +297,7 @@
             this.itemAlbumTextBox.Enabled = false;
             this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 160);
             this.itemAlbumTextBox.Name = "itemAlbumTextBox";
-            this.itemAlbumTextBox.Size = new System.Drawing.Size(322, 20);
+            this.itemAlbumTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemAlbumTextBox.TabIndex = 12;
             // 
             // label1
@@ -387,6 +343,28 @@
             this.reloadButton.UseVisualStyleBackColor = true;
             this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
             // 
+            // openPathInExplorerButton
+            // 
+            this.openPathInExplorerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openPathInExplorerButton.Location = new System.Drawing.Point(151, 98);
+            this.openPathInExplorerButton.Name = "openPathInExplorerButton";
+            this.openPathInExplorerButton.Size = new System.Drawing.Size(123, 23);
+            this.openPathInExplorerButton.TabIndex = 19;
+            this.openPathInExplorerButton.Text = "Open path in explorer";
+            this.openPathInExplorerButton.UseVisualStyleBackColor = true;
+            this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
+            // 
+            // openPathInKid3Button
+            // 
+            this.openPathInKid3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openPathInKid3Button.Location = new System.Drawing.Point(280, 98);
+            this.openPathInKid3Button.Name = "openPathInKid3Button";
+            this.openPathInKid3Button.Size = new System.Drawing.Size(123, 23);
+            this.openPathInKid3Button.TabIndex = 20;
+            this.openPathInKid3Button.Text = "Open path in Kid3";
+            this.openPathInKid3Button.UseVisualStyleBackColor = true;
+            this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
+            // 
             // openPlaylistInNotepad
             // 
             this.openPlaylistInNotepad.Location = new System.Drawing.Point(658, 12);
@@ -397,7 +375,7 @@
             this.openPlaylistInNotepad.UseVisualStyleBackColor = true;
             this.openPlaylistInNotepad.Click += new System.EventHandler(this.openPlaylistInNotepad_Click);
             // 
-            // EditPlaylistForm
+            // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -413,7 +391,7 @@
             this.Controls.Add(this.playlistNameLabel);
             this.Controls.Add(this.playlistNameTextBox);
             this.Controls.Add(this.playlistTreeView);
-            this.Name = "EditPlaylistForm";
+            this.Name = "EditMusicLibraryForm";
             this.Text = "Edit Playlist";
             this.selectedItemGroupBox.ResumeLayout(false);
             this.selectedItemGroupBox.PerformLayout();
@@ -454,7 +432,5 @@
         private System.Windows.Forms.Button openPathInExplorerButton;
         private System.Windows.Forms.Button openPathInKid3Button;
         private System.Windows.Forms.Button openPlaylistInNotepad;
-        private System.Windows.Forms.Label artistLinkLabel;
-        private System.Windows.Forms.Label albumLinkLabel;
     }
 }

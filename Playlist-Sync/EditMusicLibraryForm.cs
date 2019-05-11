@@ -13,18 +13,17 @@ using System.Diagnostics;
 
 namespace PlaylistConverterGUI
 {
-    public partial class EditPlaylistForm : Form
+    public partial class EditMusicLibraryForm : Form
     {
-        public EditPlaylistForm()
+        public EditMusicLibraryForm()
         {
             InitializeComponent();
-            OpenPlaylistDialog();
             itemTypeComboBox.DataSource = Enum.GetValues(typeof(PlaylistItemType));
+
         }
-        public EditPlaylistForm(string playlistFilePath)
+        public EditMusicLibraryForm(string playlistFilePath)
         {
             InitializeComponent();
-            ShowPlaylist(playlistFilePath);
         }
 
 
@@ -91,7 +90,7 @@ namespace PlaylistConverterGUI
                         }
                         else
                         {
-                            result.BackColor = Color.LightCyan;
+                            result.BackColor = Color.LightYellow;
                         }
                     }
                     else if (playlistItem.AlbumLink == NodeLink.ParentOfParent)
@@ -164,23 +163,6 @@ namespace PlaylistConverterGUI
             bool PathExists = playlistItem.ItemExists || playlistItem.Parent.ItemExists;
             openPathInExplorerButton.Enabled = PathExists;
             openPathInKid3Button.Enabled = PathExists;
-
-            albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
-            artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);//TODO
-        }
-
-        private string linkStateToText(NodeLink linkState)
-        {
-            switch (linkState)
-            {
-                case NodeLink.Parent:
-                    return "\u21911";
-                case NodeLink.ParentOfParent:
-                    return "\u21912";
-                case NodeLink.None:
-                default:
-                    return "-";
-            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -197,9 +179,8 @@ namespace PlaylistConverterGUI
             PlaylistItem selectedPlaylistItem = (PlaylistItem)playlistTreeView.SelectedNode.Tag;
             if (selectedPlaylistItem.ItemExists || changeFAF == false)
             {
-                selectedPlaylistItem.UnauthorizedAccess += SelectedPlaylistItem_UnauthorizedAccess;
                 selectedPlaylistItem.ChangeName(itemNameTextBox.Text, changeFAF);
-                selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true (?)
+                selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true
                 if (selectedPlaylistItem.Type == PlaylistItemType.Song)
                 {
                     selectedPlaylistItem.ChangeTitle(itemTitleTextBox.Text, changeFAF);
@@ -212,15 +193,13 @@ namespace PlaylistConverterGUI
                 MessageBox.Show("The file does not exist so it can not be changed!");
             }
 
-            bool ParentChanged = false;
-            bool ParentOfParentChanged = false;
             switch (selectedPlaylistItem.AlbumLink)
             {
                 case NodeLink.Parent:
-                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -229,10 +208,10 @@ namespace PlaylistConverterGUI
             switch (selectedPlaylistItem.ArtistLink)
             {
                 case NodeLink.Parent:
-                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -242,17 +221,9 @@ namespace PlaylistConverterGUI
             PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
             playlist.ChangeName(playlistNameTextBox.Text, changeFAF);
 
+
             /// Reload View from PlaylistItem
-            var highestModifiedNode = playlistTreeView.SelectedNode;
-            if (ParentOfParentChanged)
-            {
-                highestModifiedNode = highestModifiedNode.Parent.Parent;
-            }
-            else if (ParentChanged)
-            {
-                highestModifiedNode = highestModifiedNode.Parent;
-            }
-            ReloadPlaylist(highestModifiedNode, playlist);
+            ReloadPlaylist(playlistTreeView.SelectedNode, playlist);
             //TODO: optimize behaviour ( keep focus)
 
 
@@ -261,12 +232,7 @@ namespace PlaylistConverterGUI
 
         }
 
-        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, PlaylistItem.UnauthorizedAccessEventArgs e)
-        {
-            MessageBox.Show(e.ToString());
-        }
-
-        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist) //TODO: detect changes in parent/ parent.parent folder
+        private void ReloadPlaylist(TreeNode changedTreeNode, PlaylistItem playlist)
         {
             if (changedTreeNode.Parent != null)
             {
@@ -274,7 +240,6 @@ namespace PlaylistConverterGUI
                 int index = parent.Nodes.IndexOf(changedTreeNode);
                 var playlistItem = changedTreeNode.Tag as PlaylistItem;
                 playlistTreeView.Nodes.Remove(changedTreeNode);
-                playlistItem.RescanMediaInfo(true);
                 var reloadedNode = NodeFromPlaylistItem(playlistItem);
                 if (changedTreeNode.Text != reloadedNode.Text)
                 {

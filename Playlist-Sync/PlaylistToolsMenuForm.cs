@@ -36,5 +36,10 @@ namespace PlaylistConverterGUI
         {
             OpenForm(new EditPlaylistForm());
         }
+
+        private void editMusicLibraryButton_Click(object sender, EventArgs e)
+        {
+            OpenForm(new EditMusicLibraryForm());
+        }
     }
 }
