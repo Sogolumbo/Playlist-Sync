@@ -6,6 +6,11 @@ namespace Playlist
 {
     public class MusicLibraryItem
     {
+        public MusicLibraryItem()
+        {
+            PlaylistItems = new List<PlaylistLink>();
+        }
+
         public string Name { get; set; }
         public string DirectoryPath { get; set; }
         public string FullPath
@@ -17,7 +22,7 @@ namespace Playlist
             set
             {
                 Name = Path.GetFileName(value);
-                DirectoryPath = value.Replace("\\" + Name, "");
+                DirectoryPath = value.Remove(value.Length - 1 - Name.Length);
             }
         }
         public MusicLibraryDirectory Parent { get; set; }

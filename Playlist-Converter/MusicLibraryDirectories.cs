@@ -9,7 +9,7 @@ namespace Playlist
         public MusicLibraryDirectory(string directoryPath)
         {
             Name = System.IO.Path.GetFileName(directoryPath);
-            DirectoryPath = directoryPath.Replace("\\" + System.IO.Path.GetFileName(directoryPath), "");
+            DirectoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + System.IO.Path.GetFileName(directoryPath)).Length);
             Parent = null;
             Directories = new List<MusicLibraryDirectory>();
             Files = new List<MusicLibraryFile>();
@@ -22,7 +22,7 @@ namespace Playlist
                 string extensionWithoutDot = System.IO.Path.GetExtension(item).Substring(1);
                 AudioFileType Type;
                 if(Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type)){
-                    Files.Add(new MusicLibraryFile() {Name = System.IO.Path.GetFileName(item), DirectoryPath = item, Type = Type});
+                    Files.Add(new MusicLibraryFile() {FullPath = item, Type = Type});
                 }
             }
         }

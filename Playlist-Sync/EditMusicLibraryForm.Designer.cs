@@ -38,7 +38,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
             this.artistLinkLabel = new System.Windows.Forms.Label();
             this.albumLinkLabel = new System.Windows.Forms.Label();
@@ -57,15 +56,13 @@
             this.reloadAllButton = new System.Windows.Forms.Button();
             this.reloadSelectedButton = new System.Windows.Forms.Button();
             this.foldersListBox = new System.Windows.Forms.ListBox();
-            this.playlistsListBox = new System.Windows.Forms.ListBox();
             this.changeFoldersButton = new System.Windows.Forms.Button();
-            this.changePlaylistsButton = new System.Windows.Forms.Button();
             this.MusicFoldersGroupBox = new System.Windows.Forms.GroupBox();
-            this.PlaylistsGroupBox = new System.Windows.Forms.GroupBox();
             this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
+            this.playlistListBox = new System.Windows.Forms.ListBox();
+            this.debugButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
-            this.PlaylistsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // playlistTreeView
@@ -165,10 +162,6 @@
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.FileName = "playlist";
             // 
             // selectedItemGroupBox
             // 
@@ -368,21 +361,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.foldersListBox.FormattingEnabled = true;
-            this.foldersListBox.Location = new System.Drawing.Point(6, 19);
+            this.foldersListBox.Location = new System.Drawing.Point(7, 19);
+            this.foldersListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.foldersListBox.Name = "foldersListBox";
-            this.foldersListBox.Size = new System.Drawing.Size(184, 134);
+            this.foldersListBox.Size = new System.Drawing.Size(166, 134);
             this.foldersListBox.TabIndex = 21;
-            // 
-            // playlistsListBox
-            // 
-            this.playlistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistsListBox.FormattingEnabled = true;
-            this.playlistsListBox.Location = new System.Drawing.Point(6, 19);
-            this.playlistsListBox.Name = "playlistsListBox";
-            this.playlistsListBox.Size = new System.Drawing.Size(198, 134);
-            this.playlistsListBox.TabIndex = 22;
             // 
             // changeFoldersButton
             // 
@@ -390,45 +373,24 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeFoldersButton.Location = new System.Drawing.Point(6, 160);
             this.changeFoldersButton.Name = "changeFoldersButton";
-            this.changeFoldersButton.Size = new System.Drawing.Size(184, 23);
+            this.changeFoldersButton.Size = new System.Drawing.Size(400, 23);
             this.changeFoldersButton.TabIndex = 25;
             this.changeFoldersButton.Text = "Edit";
             this.changeFoldersButton.UseVisualStyleBackColor = true;
-            // 
-            // changePlaylistsButton
-            // 
-            this.changePlaylistsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.changePlaylistsButton.Location = new System.Drawing.Point(6, 161);
-            this.changePlaylistsButton.Name = "changePlaylistsButton";
-            this.changePlaylistsButton.Size = new System.Drawing.Size(198, 23);
-            this.changePlaylistsButton.TabIndex = 26;
-            this.changePlaylistsButton.Text = "Edit";
-            this.changePlaylistsButton.UseVisualStyleBackColor = true;
+            this.changeFoldersButton.Click += new System.EventHandler(this.changeFoldersButton_Click);
             // 
             // MusicFoldersGroupBox
             // 
             this.MusicFoldersGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MusicFoldersGroupBox.Controls.Add(this.playlistListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.foldersListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.changeFoldersButton);
             this.MusicFoldersGroupBox.Location = new System.Drawing.Point(655, 13);
             this.MusicFoldersGroupBox.Name = "MusicFoldersGroupBox";
-            this.MusicFoldersGroupBox.Size = new System.Drawing.Size(196, 189);
+            this.MusicFoldersGroupBox.Size = new System.Drawing.Size(412, 189);
             this.MusicFoldersGroupBox.TabIndex = 27;
             this.MusicFoldersGroupBox.TabStop = false;
-            this.MusicFoldersGroupBox.Text = "Folders";
-            // 
-            // PlaylistsGroupBox
-            // 
-            this.PlaylistsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PlaylistsGroupBox.Controls.Add(this.playlistsListBox);
-            this.PlaylistsGroupBox.Controls.Add(this.changePlaylistsButton);
-            this.PlaylistsGroupBox.Location = new System.Drawing.Point(857, 12);
-            this.PlaylistsGroupBox.Name = "PlaylistsGroupBox";
-            this.PlaylistsGroupBox.Size = new System.Drawing.Size(210, 190);
-            this.PlaylistsGroupBox.TabIndex = 28;
-            this.PlaylistsGroupBox.TabStop = false;
-            this.PlaylistsGroupBox.Text = "Playlists";
+            this.MusicFoldersGroupBox.Text = "Folders | Playlists";
             // 
             // selectedItemPlaylistsListBox
             // 
@@ -441,12 +403,34 @@
             this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(394, 134);
             this.selectedItemPlaylistsListBox.TabIndex = 27;
             // 
+            // playlistListBox
+            // 
+            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playlistListBox.FormattingEnabled = true;
+            this.playlistListBox.Location = new System.Drawing.Point(181, 19);
+            this.playlistListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playlistListBox.Name = "playlistListBox";
+            this.playlistListBox.Size = new System.Drawing.Size(224, 134);
+            this.playlistListBox.TabIndex = 22;
+            // 
+            // debugButton
+            // 
+            this.debugButton.Location = new System.Drawing.Point(661, 209);
+            this.debugButton.Name = "debugButton";
+            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.TabIndex = 28;
+            this.debugButton.Text = "Debug";
+            this.debugButton.UseVisualStyleBackColor = true;
+            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 680);
-            this.Controls.Add(this.PlaylistsGroupBox);
+            this.Controls.Add(this.debugButton);
             this.Controls.Add(this.MusicFoldersGroupBox);
             this.Controls.Add(this.reloadSelectedButton);
             this.Controls.Add(this.reloadAllButton);
@@ -457,10 +441,11 @@
             this.Controls.Add(this.playlistTreeView);
             this.Name = "EditMusicLibraryForm";
             this.Text = "Edit Music Library";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditMusicLibraryForm_FormClosing);
+            this.Load += new System.EventHandler(this.EditMusicLibraryForm_Load);
             this.selectedItemGroupBox.ResumeLayout(false);
             this.selectedItemGroupBox.PerformLayout();
             this.MusicFoldersGroupBox.ResumeLayout(false);
-            this.PlaylistsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -478,7 +463,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button applyButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.GroupBox selectedItemGroupBox;
         private System.Windows.Forms.ComboBox itemTypeComboBox;
         private System.Windows.Forms.TextBox itemArtistTextBox;
@@ -497,11 +481,10 @@
         private System.Windows.Forms.Label albumLinkLabel;
         private System.Windows.Forms.Button reloadSelectedButton;
         private System.Windows.Forms.ListBox foldersListBox;
-        private System.Windows.Forms.ListBox playlistsListBox;
         private System.Windows.Forms.Button changeFoldersButton;
-        private System.Windows.Forms.Button changePlaylistsButton;
         private System.Windows.Forms.GroupBox MusicFoldersGroupBox;
-        private System.Windows.Forms.GroupBox PlaylistsGroupBox;
         private System.Windows.Forms.ListBox selectedItemPlaylistsListBox;
+        private System.Windows.Forms.ListBox playlistListBox;
+        private System.Windows.Forms.Button debugButton;
     }
 }

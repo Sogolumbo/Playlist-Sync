@@ -70,5 +70,27 @@ namespace PlaylistConverterGUI.Properties {
                 this["ConversionsAsJson"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection MusicLibraryPlaylists {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["MusicLibraryPlaylists"]));
+            }
+            set {
+                this["MusicLibraryPlaylists"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection MusicLibraryFolders {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["MusicLibraryFolders"]));
+            }
+            set {
+                this["MusicLibraryFolders"] = value;
+            }
+        }
     }
 }

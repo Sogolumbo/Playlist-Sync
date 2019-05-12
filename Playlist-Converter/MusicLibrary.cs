@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Playlist
 {
-    class MusicLibrary
+    public class MusicLibrary
     {
         public MusicLibrary(List<string> playlistFiles, List<string> musicDirectories) : this(
             playlistFiles.Select(filepath => new PlaylistItem(filepath)).ToList(),
@@ -18,9 +18,10 @@ namespace Playlist
             MusicFolders = musicDirectories;
             ItemFolders = ItemFoldersFromMusicDirectories();
         }
-        List<PlaylistItem> Playlists { get; set; }
-        List<string> MusicFolders { get; set; }
-        List<MusicLibraryDirectory> ItemFolders { get; set; }
+
+        public List<PlaylistItem> Playlists { get; set; }
+        public List<string> MusicFolders { get; set; }
+        public List<MusicLibraryDirectory> ItemFolders { get; set; }
 
 
         public List<MusicLibraryDirectory> ItemFoldersFromMusicDirectories()
@@ -36,11 +37,12 @@ namespace Playlist
             }
             foreach (PlaylistItem playlist in playlists)
             {
-
+                foreach (MusicLibraryDirectory folder in itemFolders)
+                {
+                    AddAllPlaylistItemsToMusicFolder(playlist, folder);
+                }
             }
-
-            throw new NotImplementedException();//TODO
-            return ItemFolders;
+            return itemFolders;
         }
 
         public void AddAllPlaylistItemsToMusicFolder(PlaylistItem playlist, MusicLibraryDirectory folder)
@@ -65,7 +67,7 @@ namespace Playlist
                             case PlaylistItemType.Folder:
                                 foreach (var directory in folder.Directories)
                                 {
-                                    AddPlaylistItemToMusicFolder(item, playlist, directory);
+                                    AddAllPlaylistItemsToMusicFolder(child, playlist, directory);
                                 }
                                 break;
                             case PlaylistItemType.Song:
@@ -73,9 +75,9 @@ namespace Playlist
                                 {
                                     if (file.FullPath.Length == child.FullPath.Length)
                                     {
-                                        if (file.FullPath == item.FullPath)
+                                        if (file.FullPath == child.FullPath)
                                         {
-                                            folder.PlaylistItems.Add(new PlaylistLink(item, playlist));
+                                            file.PlaylistItems.Add(new PlaylistLink(child, playlist));
                                         }
                                     }
                                 }
@@ -88,7 +90,7 @@ namespace Playlist
                     //TODO: can these cases be ignored?
                 }
             }
-            else if (item.FullPath.Length < folder.FullPath.Length)
+            else if ((item.FullPath.Length < folder.FullPath.Length) && (item.Children != null))
             {
                 foreach (PlaylistItem child in item.Children)
                 {
