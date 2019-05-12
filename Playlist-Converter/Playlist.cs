@@ -85,6 +85,10 @@ namespace Playlist
                 return String.IsNullOrWhiteSpace(Path) ? Name : Path + "\\" + Name;
             }
         }
+        public override string ToString()
+        {
+            return Name;
+        }
         private static List<PlaylistItem> GetChildren(List<List<string>> playlistStructure, string path, PlaylistItem parent)
         {
             Dictionary<string, List<List<string>>> children = new Dictionary<string, List<List<string>>>();

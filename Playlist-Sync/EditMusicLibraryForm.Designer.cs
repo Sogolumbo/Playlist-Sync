@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.playlistTreeView = new System.Windows.Forms.TreeView();
+            this.libraryTreeView = new System.Windows.Forms.TreeView();
             this.itemNameTextBox = new System.Windows.Forms.TextBox();
             this.itemPathTextBox = new System.Windows.Forms.TextBox();
             this.itemTitleTextBox = new System.Windows.Forms.TextBox();
@@ -39,6 +39,7 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
             this.artistLinkLabel = new System.Windows.Forms.Label();
             this.albumLinkLabel = new System.Windows.Forms.Label();
             this.openPathInKid3Button = new System.Windows.Forms.Button();
@@ -58,7 +59,6 @@
             this.foldersListBox = new System.Windows.Forms.ListBox();
             this.changeFoldersButton = new System.Windows.Forms.Button();
             this.MusicFoldersGroupBox = new System.Windows.Forms.GroupBox();
-            this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
             this.playlistListBox = new System.Windows.Forms.ListBox();
             this.debugButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
@@ -67,14 +67,14 @@
             // 
             // playlistTreeView
             // 
-            this.playlistTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.libraryTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistTreeView.Location = new System.Drawing.Point(13, 13);
-            this.playlistTreeView.Name = "playlistTreeView";
-            this.playlistTreeView.Size = new System.Drawing.Size(636, 655);
-            this.playlistTreeView.TabIndex = 0;
-            this.playlistTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
+            this.libraryTreeView.Location = new System.Drawing.Point(13, 13);
+            this.libraryTreeView.Name = "playlistTreeView";
+            this.libraryTreeView.Size = new System.Drawing.Size(636, 655);
+            this.libraryTreeView.TabIndex = 0;
+            this.libraryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
             // 
             // itemNameTextBox
             // 
@@ -193,6 +193,17 @@
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
+            // 
+            // selectedItemPlaylistsListBox
+            // 
+            this.selectedItemPlaylistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectedItemPlaylistsListBox.FormattingEnabled = true;
+            this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 134);
+            this.selectedItemPlaylistsListBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.selectedItemPlaylistsListBox.Name = "selectedItemPlaylistsListBox";
+            this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(394, 134);
+            this.selectedItemPlaylistsListBox.TabIndex = 27;
             // 
             // artistLinkLabel
             // 
@@ -392,17 +403,6 @@
             this.MusicFoldersGroupBox.TabStop = false;
             this.MusicFoldersGroupBox.Text = "Folders | Playlists";
             // 
-            // selectedItemPlaylistsListBox
-            // 
-            this.selectedItemPlaylistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectedItemPlaylistsListBox.FormattingEnabled = true;
-            this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 134);
-            this.selectedItemPlaylistsListBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            this.selectedItemPlaylistsListBox.Name = "selectedItemPlaylistsListBox";
-            this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(394, 134);
-            this.selectedItemPlaylistsListBox.TabIndex = 27;
-            // 
             // playlistListBox
             // 
             this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -417,6 +417,7 @@
             // 
             // debugButton
             // 
+            this.debugButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.debugButton.Location = new System.Drawing.Point(661, 209);
             this.debugButton.Name = "debugButton";
             this.debugButton.Size = new System.Drawing.Size(75, 23);
@@ -438,7 +439,7 @@
             this.Controls.Add(this.selectedItemGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.applyButton);
-            this.Controls.Add(this.playlistTreeView);
+            this.Controls.Add(this.libraryTreeView);
             this.Name = "EditMusicLibraryForm";
             this.Text = "Edit Music Library";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditMusicLibraryForm_FormClosing);
@@ -453,7 +454,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView playlistTreeView;
+        private System.Windows.Forms.TreeView libraryTreeView;
         private System.Windows.Forms.TextBox itemNameTextBox;
         private System.Windows.Forms.TextBox itemPathTextBox;
         private System.Windows.Forms.TextBox itemTitleTextBox;
