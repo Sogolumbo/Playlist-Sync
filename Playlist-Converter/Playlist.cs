@@ -9,12 +9,14 @@ namespace Playlist
 {
     public class PlaylistItem
     {
-        public PlaylistItem(string filepath) : this(
-            File.ReadAllLines(filepath), 
+        public PlaylistItem(string filepath, bool collectItemInfo) : this(
+            File.ReadAllLines(filepath),
             System.IO.Path.GetFileName(filepath),
             filepath.Replace("\\" + System.IO.Path.GetFileName(filepath), ""),
-            null){}
-        public PlaylistItem(string[] playlistLines, string playlistName, string playlistPath, PlaylistItem parent)
+            null,
+            collectItemInfo)
+        { }
+        public PlaylistItem(string[] playlistLines, string playlistName, string playlistPath, PlaylistItem parent, bool collectItemInfo)
         {
             Type = PlaylistItemType.Playlist;
             ItemExists = true;
@@ -29,7 +31,7 @@ namespace Playlist
                 playlistStructure.Add(playlistLines[i].Split(System.IO.Path.DirectorySeparatorChar).ToList());
             }
 
-            Children = GetChildren(playlistStructure, String.Empty, this);
+            Children = GetChildren(playlistStructure, String.Empty, this, collectItemInfo);
         }
         public PlaylistItem(List<PlaylistItem> children, string name, string path, PlaylistItemType type, PlaylistItem parent)
         {
@@ -39,7 +41,7 @@ namespace Playlist
             Type = type;
             Parent = parent;
         }
-        public PlaylistItem(List<List<string>> playlistStructure, string name, string path, PlaylistItemType type, PlaylistItem parent)
+        public PlaylistItem(List<List<string>> playlistStructure, string name, string path, PlaylistItemType type, PlaylistItem parent, bool collectItemInfo)
         {
             Name = name;
             Type = type;
@@ -47,13 +49,16 @@ namespace Playlist
             Parent = parent;
             if (playlistStructure.Count > 0 && playlistStructure[0].Count > 0)
             {
-                Children = GetChildren(playlistStructure, FullPath, this);
+                Children = GetChildren(playlistStructure, FullPath, this, collectItemInfo);
             }
             else
             {
                 Type = PlaylistItemType.Song;
             }
-            GetItemInfo();
+            if (collectItemInfo)
+            {
+                GetItemInfo();
+            }
         }
 
 
@@ -63,14 +68,10 @@ namespace Playlist
         public string Name { get; private set; }
         public string Path { get; private set; }
         public PlaylistItemType Type { get; private set; }
-        public string Title { get; private set; }
-        public string Album { get; private set; }
-        public NodeLink AlbumLink { get; set; }
-        public string Artist { get; private set; }
-        public NodeLink ArtistLink { get; set; }
-        public uint? Nr { get; private set; }
-        public string Genre { get; private set; }
         public bool ItemExists { get; private set; }
+        public NodeLink AlbumLink { get; set; }
+        public NodeLink ArtistLink { get; set; }
+        public AudioFileTag Tag { get; private set; }
 
         public event EventHandler<NameChangedEventArgs> NameChanged;
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
@@ -89,7 +90,7 @@ namespace Playlist
         {
             return Name;
         }
-        private static List<PlaylistItem> GetChildren(List<List<string>> playlistStructure, string path, PlaylistItem parent)
+        private static List<PlaylistItem> GetChildren(List<List<string>> playlistStructure, string path, PlaylistItem parent, bool collectItemInfo)
         {
             Dictionary<string, List<List<string>>> children = new Dictionary<string, List<List<string>>>();
 
@@ -110,7 +111,7 @@ namespace Playlist
                     }
                 }
             }
-            return children.Select(node => new PlaylistItem(node.Value, node.Key, path, PlaylistItemType.Folder, parent)).ToList();
+            return children.Select(node => new PlaylistItem(node.Value, node.Key, path, PlaylistItemType.Folder, parent, collectItemInfo)).ToList();
         }
         public void RescanMediaInfo(bool recursive)
         {
@@ -131,12 +132,11 @@ namespace Playlist
                     ItemExists = File.Exists(FullPath);
                     if (ItemExists == true)
                     {
-                        TagLib.File tagFile = TagLib.File.Create(FullPath);
-                        Title = tagFile.Tag.Title;
-                        Album = tagFile.Tag.Album;
-                        Artist = String.Join("; ", tagFile.Tag.Performers);
-                        Nr = tagFile.Tag.Track;
-                        Genre = String.Join("; ", tagFile.Tag.Genres);
+                        Tag = new AudioFileTag(FullPath);
+                    }
+                    else
+                    {
+                        Tag = new AudioFileTag();
                     }
                     CheckParentNodesForAlbumAndArtist();
                     break;
@@ -147,27 +147,44 @@ namespace Playlist
         }
         private void CheckParentNodesForAlbumAndArtist()
         {
-            PlaylistItem ParentOfParent = Parent?.Parent;
-            if (ParentOfParent != null && ParentOfParent.Name == Artist)
+            if (Tag != null)
             {
-                ArtistLink = NodeLink.ParentOfParent;
-                ParentOfParent.NameChanged += ArtistNodeChanged;
+                PlaylistItem ParentOfParent = Parent?.Parent;
+                if (ParentOfParent != null && ParentOfParent.Name == Tag.Artist)
+                {
+                    ArtistLink = NodeLink.ParentOfParent;
+                    ParentOfParent.NameChanged += ArtistNodeChanged;
+                }
+                else if (Parent != null && Parent.Name == Tag.Artist)
+                {
+                    ArtistLink = NodeLink.Parent;
+                    Parent.NameChanged += ArtistNodeChanged;
+                }
+                if (Parent != null && Parent.Name == Tag.Album)
+                {
+                    AlbumLink = NodeLink.Parent;
+                    Parent.NameChanged += AlbumNodeChanged;
+                }
+                else if (ParentOfParent != null && ParentOfParent.Name == Tag.Album)
+                {
+                    AlbumLink = NodeLink.ParentOfParent;
+                    ParentOfParent.NameChanged += AlbumNodeChanged;
+                }
             }
-            else if (Parent != null && Parent.Name == Artist)
+            else
             {
-                ArtistLink = NodeLink.Parent;
-                Parent.NameChanged += ArtistNodeChanged;
-            }
-
-            if (Parent != null && Parent.Name == Album)
-            {
-                AlbumLink = NodeLink.Parent;
-                Parent.NameChanged += AlbumNodeChanged;
-            }
-            else if (ParentOfParent != null && ParentOfParent.Name == Album)
-            {
-                AlbumLink = NodeLink.ParentOfParent;
-                ParentOfParent.NameChanged += AlbumNodeChanged;
+                ArtistLink = NodeLink.None;
+                AlbumLink = NodeLink.None;
+                if (Parent != null)
+                {
+                    Parent.NameChanged -= AlbumNodeChanged;
+                    Parent.NameChanged -= ArtistNodeChanged;
+                }
+                if (Parent.Parent != null)
+                {
+                    Parent.Parent.NameChanged -= AlbumNodeChanged;
+                    Parent.Parent.NameChanged -= ArtistNodeChanged;
+                }
             }
         }
         #endregion
@@ -195,6 +212,7 @@ namespace Playlist
                     {
                         case PlaylistItemType.Folder:
                             bool success = false;
+                            bool cancel = false;
                             do
                             {
                                 try
@@ -204,10 +222,12 @@ namespace Playlist
                                 }
                                 catch (Exception ex)
                                 {
-                                    if (ex is UnauthorizedAccessException || ex is IOException)
+                                    if ((ex is UnauthorizedAccessException || ex is IOException) && UnauthorizedAccess != null)
                                     {
                                         success = false;
-                                        UnauthorizedAccess?.Invoke(this, new UnauthorizedAccessEventArgs(oldPath, Type));
+                                        UnauthorizedAccessEventArgs unauthorizedAccessEventArgs = new UnauthorizedAccessEventArgs(oldPath, Type, ex);
+                                        UnauthorizedAccess?.Invoke(this, unauthorizedAccessEventArgs);
+                                        cancel = unauthorizedAccessEventArgs.Cancel;
                                     }
                                     else
                                     {
@@ -215,7 +235,7 @@ namespace Playlist
                                     }
                                 }
                             }
-                            while (!success);
+                            while (!(success || cancel));
                             break;
                         case PlaylistItemType.Playlist:
                         case PlaylistItemType.Song:
@@ -226,7 +246,11 @@ namespace Playlist
                 Name = name;
                 switch (Type)
                 {
-                    case PlaylistItemType.Playlist:
+                    case PlaylistItemType.Song:
+                        if (File.Exists(FullPath))
+                        {
+                            Tag.FilePath = FullPath;
+                        }
                         break;
                     case PlaylistItemType.Folder:
                         foreach (PlaylistItem node in Children)
@@ -234,7 +258,7 @@ namespace Playlist
                             node.ChangePath(FullPath, false);
                         }
                         break;
-                    case PlaylistItemType.Song:
+                    case PlaylistItemType.Playlist:
                     default:
                         break;
                 }
@@ -252,104 +276,79 @@ namespace Playlist
                     var oldPath = Path;
                     var newPath = path;
 
-
                     throw new NotImplementedException();
                 }
                 Path = path;
                 switch (Type)
                 {
-                    case PlaylistItemType.Playlist:
+                    case PlaylistItemType.Song:
+                        if (Tag != null && !Tag.Empty)
+                        {
+                            Tag.FilePath = FullPath;
+                        }
                         break;
                     case PlaylistItemType.Folder:
                         foreach (PlaylistItem node in Children)
                         {
                             node.ChangePath(System.IO.Path.Combine(Path, Name), false);
-
                         }
                         break;
-                    case PlaylistItemType.Song:
+                    case PlaylistItemType.Playlist:
                     default:
                         break;
                 }
             }
             return pathChanged;
         }
+
         public bool ChangeArtist(string artist, bool editFileOrFolder)
         {
-            bool artistChanged = artist != Artist;
+            bool artistChanged = artist != Tag.Artist;
             if (artistChanged)
             {
-                Artist = artist;
                 if (editFileOrFolder)
                 {
-                    ItemExists = File.Exists(FullPath);
-                    if (ItemExists == true)
-                    {
-                        var tagFile = TagLib.File.Create(FullPath);
-                        if (tagFile.Writeable)
-                        {
-                            tagFile.Tag.Performers = Artist.Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
-                            tagFile.Save();
-                        }
-                        else
-                        {
-                            throw new Exception("The artist tag of the file " + FullPath + " could not be changed.");
-                        }
-                    }
-                    else
+                    if (File.Exists(FullPath) == false)
                     {
                         throw new FileNotFoundException("The File " + FullPath + " was not found. So the artist tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
+                    Tag.Artist = artist;
                 }
             }
             return artistChanged;
         }
         public bool ChangeAlbum(string album, bool editFileOrFolder)
         {
-            bool albumChanged = album != Album;
+            bool albumChanged = album != Tag.Album;
             if (albumChanged)
             {
-                Album = album;
                 if (editFileOrFolder)
                 {
-                    string FullPath = System.IO.Path.Combine(Path, Name);
-                    ItemExists = File.Exists(FullPath);
-                    if (ItemExists == true)
-                    {
-                        var tagFile = TagLib.File.Create(FullPath);
-                        tagFile.Tag.Album = Album;
-                        tagFile.Save();
-                    }
-                    else
+                    Tag.Album = album;
+                    if (File.Exists(FullPath) == false)
                     {
                         throw new FileNotFoundException("The File " + FullPath + " was not found. So the album tag could not be changed.", FullPath); //TODO maybe define own exception class
                     }
                 }
             }
-            return albumChanged;
+            return albumChanged && editFileOrFolder;
         }
         public bool ChangeTitle(string title, bool editFileOrFolder)
         {
-            bool titleChanged = title != Title;
+            bool titleChanged = title != Tag.Title;
             if (titleChanged)
             {
-                Title = title;
+                if (File.Exists(FullPath) == false)
+                {
+                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
+                }
                 if (editFileOrFolder)
                 {
-                    ItemExists = File.Exists(FullPath);
-                    if (ItemExists == true)
-                    {
-                        var tagFile = TagLib.File.Create(FullPath);
-                        tagFile.Tag.Title = Title;
-                        tagFile.Save();
-                    }
-                    else
-                    {
-                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the title tag could not be changed.", FullPath); //TODO maybe define own exception class
-                    }
+                    Tag.Title = title;
                 }
             }
-            return titleChanged;
+            return titleChanged && editFileOrFolder;
+
         }
         public bool ChangeNr(string number, bool editFileOrFolder)
         {
@@ -357,26 +356,16 @@ namespace Playlist
         }
         public bool ChangeNr(uint? number, bool editFileOrFolder)
         {
-            bool nrChanged = number != Nr;
-            if (nrChanged)
+            bool nrChanged = number != Tag.Nr;
+            if (nrChanged && editFileOrFolder)
             {
-                Nr = number;
-                if (editFileOrFolder)
+                if (File.Exists(FullPath) == false)
                 {
-                    ItemExists = File.Exists(FullPath);
-                    if (ItemExists == true)
-                    {
-                        var tagFile = TagLib.File.Create(FullPath);
-                        tagFile.Tag.Track = Nr.Value;
-                        tagFile.Save();
-                    }
-                    else
-                    {
-                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
-                    }
+                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
                 }
+                Tag.Nr = number;
             }
-            return nrChanged;
+            return nrChanged && editFileOrFolder;
         }
         #endregion
 
@@ -400,33 +389,36 @@ namespace Playlist
                 }
             }
         }
+    }
 
-        #region event args
-        public class UnauthorizedAccessEventArgs : EventArgs
+    public class NameChangedEventArgs : EventArgs
+    {
+        public NameChangedEventArgs(string newName, bool editFilesAndFolders) : base()
         {
-            public UnauthorizedAccessEventArgs(string itemPath, PlaylistItemType type) : base()
-            {
-                ItemPath = itemPath;
-                Type = type;
-            }
-            public string ItemPath { get; set; }
-            public PlaylistItemType Type { get; set; }
-            public override string ToString()
-            {
-                return "The " + Type.ToString() + " at " + ItemPath + " can not be moved/renamed. Please close the open files/directories!";
-            }
+            NewName = newName;
+            EditFilesAndFolder = editFilesAndFolders;
         }
-        public class NameChangedEventArgs : EventArgs
+        public string NewName { get; set; }
+        public bool EditFilesAndFolder { get; set; }
+    }
+    public class UnauthorizedAccessEventArgs : EventArgs
+    {
+        public UnauthorizedAccessEventArgs(string itemPath, PlaylistItemType type, Exception originalException) : base()
         {
-            public NameChangedEventArgs(string newName, bool editFilesAndFolders) : base()
-            {
-                NewName = newName;
-                EditFilesAndFolder = editFilesAndFolders;
-            }
-            public string NewName { get; set; }
-            public bool EditFilesAndFolder { get; set; }
+            ItemPath = itemPath;
+            Type = type;
+            OriginalMessage = originalException.Message;
+            OriginalException = originalException;
         }
-        #endregion
+        public string ItemPath { get; private set; }
+        public PlaylistItemType Type { get; private set; }
+        public Exception OriginalException { get; private set; }
+        public string OriginalMessage { get; private set; }
+        public override string ToString()
+        {
+            return "The " + Type.ToString() + " at " + ItemPath + " can not be moved/renamed. Please close the open files/directories! \nOriginal error message: " + OriginalMessage;
+        }
+        public bool Cancel { get; set; }
     }
 
     public enum PlaylistItemType
@@ -435,7 +427,6 @@ namespace Playlist
         Folder,
         Playlist
     }
-
     public enum NodeLink
     {
         None,

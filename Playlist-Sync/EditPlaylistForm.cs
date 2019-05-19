@@ -41,7 +41,7 @@ namespace PlaylistConverterGUI
         {
             string[] playlistLines = System.IO.File.ReadAllLines(filePath);
             var fileName = System.IO.Path.GetFileName(filePath);
-            PlaylistItem Playlist = new PlaylistItem(playlistLines, fileName, filePath.Replace("\\" + fileName, ""), null);
+            PlaylistItem Playlist = new PlaylistItem(playlistLines, fileName, filePath.Replace("\\" + fileName, ""), null, true);
             ShowPlaylist(Playlist);
         }
         private void ShowPlaylist(PlaylistItem Playlist)
@@ -98,11 +98,11 @@ namespace PlaylistConverterGUI
             itemTrackNumberTextBox.Enabled = showSongTagData;
             if (showSongTagData)
             {
-                itemTitleTextBox.Text = playlistItem.Title;
-                itemAlbumTextBox.Text = playlistItem.Album;
-                itemArtistTextBox.Text = playlistItem.Artist;
-                itemGenreTextBox.Text = playlistItem.Genre;
-                itemTrackNumberTextBox.Text = playlistItem.Nr.ToString();
+                itemTitleTextBox.Text = playlistItem.Tag.Title;
+                itemAlbumTextBox.Text = playlistItem.Tag.Album;
+                itemArtistTextBox.Text = playlistItem.Tag.Artist;
+                itemGenreTextBox.Text = playlistItem.Tag.Genre;
+                itemTrackNumberTextBox.Text = playlistItem.Tag.Nr.ToString();
             }
             else
             {
@@ -205,11 +205,13 @@ namespace PlaylistConverterGUI
                 selectedPlaylistItem.UnauthorizedAccess += SelectedPlaylistItem_UnauthorizedAccess;
                 selectedPlaylistItem.ChangeName(itemNameTextBox.Text, changeFAF);
                 selectedPlaylistItem.ChangePath(itemPathTextBox.Text, false); //TODO true (?)
-                if (selectedPlaylistItem.Type == PlaylistItemType.Song)
+                if (selectedPlaylistItem.Type == PlaylistItemType.Song && selectedPlaylistItem.ItemExists)
                 {
                     selectedPlaylistItem.ChangeTitle(itemTitleTextBox.Text, changeFAF);
                     selectedPlaylistItem.ChangeAlbum(itemAlbumTextBox.Text, changeFAF);
                     selectedPlaylistItem.ChangeArtist(itemArtistTextBox.Text, changeFAF);
+                    selectedPlaylistItem.ChangeNr(itemTrackNumberTextBox.Text, changeFAF);
+                    //TODO genre
                 }
             }
             else
@@ -222,10 +224,10 @@ namespace PlaylistConverterGUI
             switch (selectedPlaylistItem.AlbumLink)
             {
                 case NodeLink.Parent:
-                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Tag.Album, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Album, changeFAF);
+                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Tag.Album, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -234,10 +236,10 @@ namespace PlaylistConverterGUI
             switch (selectedPlaylistItem.ArtistLink)
             {
                 case NodeLink.Parent:
-                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    ParentChanged |= selectedPlaylistItem.Parent.ChangeName(selectedPlaylistItem.Tag.Artist, changeFAF);
                     break;
                 case NodeLink.ParentOfParent:
-                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Artist, changeFAF);
+                    ParentOfParentChanged |= selectedPlaylistItem.Parent.Parent.ChangeName(selectedPlaylistItem.Tag.Artist, changeFAF);
                     break;
                 case NodeLink.None:
                 default:
@@ -265,7 +267,7 @@ namespace PlaylistConverterGUI
         #endregion
 
         #region EventHandlers
-        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, PlaylistItem.UnauthorizedAccessEventArgs e)
+        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
         {
             MessageBox.Show(e.ToString());
         }

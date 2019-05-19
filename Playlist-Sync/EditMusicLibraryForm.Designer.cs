@@ -53,7 +53,6 @@
             this.itemAlbumTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.itemTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.changeFilesAndFoldersCheckBox = new System.Windows.Forms.CheckBox();
             this.reloadAllButton = new System.Windows.Forms.Button();
             this.reloadSelectedButton = new System.Windows.Forms.Button();
             this.foldersListBox = new System.Windows.Forms.ListBox();
@@ -65,13 +64,13 @@
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // playlistTreeView
+            // libraryTreeView
             // 
             this.libraryTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.libraryTreeView.Location = new System.Drawing.Point(13, 13);
-            this.libraryTreeView.Name = "playlistTreeView";
+            this.libraryTreeView.Name = "libraryTreeView";
             this.libraryTreeView.Size = new System.Drawing.Size(636, 655);
             this.libraryTreeView.TabIndex = 0;
             this.libraryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
@@ -91,6 +90,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemPathTextBox.Location = new System.Drawing.Point(56, 72);
             this.itemPathTextBox.Name = "itemPathTextBox";
+            this.itemPathTextBox.ReadOnly = true;
             this.itemPathTextBox.Size = new System.Drawing.Size(347, 20);
             this.itemPathTextBox.TabIndex = 3;
             // 
@@ -331,19 +331,6 @@
             this.itemTypeComboBox.Size = new System.Drawing.Size(347, 21);
             this.itemTypeComboBox.TabIndex = 11;
             // 
-            // changeFilesAndFoldersCheckBox
-            // 
-            this.changeFilesAndFoldersCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.changeFilesAndFoldersCheckBox.AutoSize = true;
-            this.changeFilesAndFoldersCheckBox.Checked = true;
-            this.changeFilesAndFoldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.changeFilesAndFoldersCheckBox.Location = new System.Drawing.Point(661, 649);
-            this.changeFilesAndFoldersCheckBox.Name = "changeFilesAndFoldersCheckBox";
-            this.changeFilesAndFoldersCheckBox.Size = new System.Drawing.Size(190, 17);
-            this.changeFilesAndFoldersCheckBox.TabIndex = 17;
-            this.changeFilesAndFoldersCheckBox.Text = "Edit corresponding files and folders";
-            this.changeFilesAndFoldersCheckBox.UseVisualStyleBackColor = true;
-            // 
             // reloadAllButton
             // 
             this.reloadAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -435,7 +422,6 @@
             this.Controls.Add(this.MusicFoldersGroupBox);
             this.Controls.Add(this.reloadSelectedButton);
             this.Controls.Add(this.reloadAllButton);
-            this.Controls.Add(this.changeFilesAndFoldersCheckBox);
             this.Controls.Add(this.selectedItemGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.applyButton);
@@ -448,7 +434,6 @@
             this.selectedItemGroupBox.PerformLayout();
             this.MusicFoldersGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -474,7 +459,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox itemTrackNumberTextBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckBox changeFilesAndFoldersCheckBox;
         private System.Windows.Forms.Button reloadAllButton;
         private System.Windows.Forms.Button openPathInExplorerButton;
         private System.Windows.Forms.Button openPathInKid3Button;

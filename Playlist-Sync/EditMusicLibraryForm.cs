@@ -50,10 +50,7 @@ namespace PlaylistConverterGUI
                 int index = parent.Nodes.IndexOf(changedTreeNode);
                 var libraryItem = changedTreeNode.Tag as MusicLibraryItem;
                 libraryTreeView.Nodes.Remove(changedTreeNode);
-                foreach (PlaylistLink playlistLink in libraryItem.PlaylistItems)
-                {
-                    playlistLink.Item.RescanMediaInfo(true);
-                }
+                libraryItem.Reload();
                 var reloadedNode = NodeFromLibraryItem(libraryItem);
                 if (changedTreeNode.Text != reloadedNode.Text)
                 {
@@ -83,32 +80,31 @@ namespace PlaylistConverterGUI
             selectedItemPlaylistsListBox.Items.Clear();
             selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
 
-            bool showSongTagData = false;
-            if (libraryItem.PlaylistItems.Count > 0)
+            bool showSongTagData = libraryItem is MusicLibraryFile;
+            if (showSongTagData)
             {
-                var playlistItem = libraryItem.PlaylistItems.First().Item;
-                itemTypeComboBox.Text = playlistItem.Type.ToString();
-                showSongTagData = (playlistItem.Type == PlaylistItemType.Song);
-                if (showSongTagData)
-                {
-                    itemTitleTextBox.Text = playlistItem.Title;
-                    itemAlbumTextBox.Text = playlistItem.Album;
-                    itemArtistTextBox.Text = playlistItem.Artist;
-                    itemGenreTextBox.Text = playlistItem.Genre;
-                    itemTrackNumberTextBox.Text = playlistItem.Nr.ToString();
-                }
-                else
-                {
-                    itemTitleTextBox.Text = null;
-                    itemAlbumTextBox.Text = null;
-                    itemArtistTextBox.Text = null;
-                    itemGenreTextBox.Text = null;
-                    itemTrackNumberTextBox.Text = null;
-                }
+                var tag = (libraryItem as MusicLibraryFile).Tag;
+                itemTitleTextBox.Text = tag.Title;
+                itemAlbumTextBox.Text = tag.Album;
+                itemArtistTextBox.Text = tag.Artist;
+                itemGenreTextBox.Text = tag.Genre;
+                itemTrackNumberTextBox.Text = tag.Nr.ToString();
 
-                albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
-                artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);
+
+                albumLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).AlbumLink);
+                artistLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).ArtistLink);
             }
+            else
+            {
+                itemTitleTextBox.Text = null;
+                itemAlbumTextBox.Text = null;
+                itemArtistTextBox.Text = null;
+                itemGenreTextBox.Text = null;
+                itemTrackNumberTextBox.Text = null;
+                artistLinkLabel.Text = linkStateToText(NodeLink.None);
+                albumLinkLabel.Text = linkStateToText(NodeLink.None);
+            }
+
             itemTitleTextBox.Enabled = showSongTagData;
             itemAlbumTextBox.Enabled = showSongTagData;
             itemArtistTextBox.Enabled = showSongTagData;
@@ -156,22 +152,21 @@ namespace PlaylistConverterGUI
                 children.OrderBy(node => node.Text);
                 result.Nodes.AddRange(children.ToArray());
             }
-            else if (item.PlaylistItems.Count > 0)
+            else
             {
-                var anyPlaylistItem = item.PlaylistItems[0].Item;
-                result.BackColor = BackcolorFromPlaylistItem(anyPlaylistItem);
+                result.BackColor = BackcolorFromPlaylistItem(item as MusicLibraryFile);
             }
             return result;
         }
-        private static Color BackcolorFromPlaylistItem(PlaylistItem anyPlaylistItem)
+        private Color BackcolorFromPlaylistItem(MusicLibraryFile libraryItem)
         {
-            if (anyPlaylistItem.ArtistLink == NodeLink.Parent)
+            if (libraryItem.ArtistLink == NodeLink.Parent)
             {
                 return (Color.LightBlue);
             }
-            else if (anyPlaylistItem.AlbumLink == NodeLink.Parent)
+            else if (libraryItem.AlbumLink == NodeLink.Parent)
             {
-                if (anyPlaylistItem.ArtistLink == NodeLink.ParentOfParent)
+                if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
                 {
                     return (Color.LightGreen);
                 }
@@ -180,11 +175,15 @@ namespace PlaylistConverterGUI
                     return (Color.LightCyan);
                 }
             }
-            else if (anyPlaylistItem.AlbumLink == NodeLink.ParentOfParent)
+            else if (libraryItem.AlbumLink == NodeLink.ParentOfParent)
             {
                 return (Color.LightCyan);
             }
-            return TreeView.DefaultBackColor;
+            else if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
+            {
+                return (Color.LightCyan);
+            }
+            return libraryTreeView.BackColor;
         }
 
         private string linkStateToText(NodeLink linkState)
@@ -203,63 +202,60 @@ namespace PlaylistConverterGUI
 
         private void ApplyChanges()
         {
-            bool changeFAF = changeFilesAndFoldersCheckBox.Checked;
-
             /// Write Data to all affected PlaylistItems and corresponding files
 
             MusicLibraryItem selectedLibraryItem = libraryTreeView.SelectedNode.Tag as MusicLibraryItem;
 
-            bool firstElementPassed = false;
             bool ParentChanged = false;
             bool ParentOfParentChanged = false;
 
-            foreach (var playlistPair in selectedLibraryItem.PlaylistItems)
+            selectedLibraryItem.Name = itemNameTextBox.Text;
+            if (selectedLibraryItem is MusicLibraryFile)
             {
-                var playlistItem = playlistPair.Item;
-                playlistItem.UnauthorizedAccess += SelectedPlaylistItem_UnauthorizedAccess;
-                playlistItem.ChangeName(itemNameTextBox.Text, changeFAF);
-                playlistItem.ChangePath(itemPathTextBox.Text, false); //TODO true (?)
-                if (playlistItem.Type == PlaylistItemType.Song)
+                var tag = (selectedLibraryItem as MusicLibraryFile).Tag;
+                tag.Title = itemTitleTextBox.Text;
+                tag.Album = itemAlbumTextBox.Text;
+                tag.Artist = itemArtistTextBox.Text;
+                if (uint.TryParse(itemTrackNumberTextBox.Text, out uint trackNumber))
                 {
-                    playlistItem.ChangeTitle(itemTitleTextBox.Text, changeFAF);
-                    playlistItem.ChangeAlbum(itemAlbumTextBox.Text, changeFAF);
-                    playlistItem.ChangeArtist(itemArtistTextBox.Text, changeFAF);
+                    tag.Nr = trackNumber;
                 }
+                tag.Genre = itemGenreTextBox.Text;
 
-                /// Write Data to PlaylistFile
-                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines());
-
-
-                if (!firstElementPassed)
+                ///Determine whether parent nodes changed
+                switch ((selectedLibraryItem as MusicLibraryFile).AlbumLink)
                 {
-                    switch (playlistItem.AlbumLink)
-                    {
-                        case NodeLink.Parent:
-                            ParentChanged |= playlistItem.Parent.ChangeName(playlistItem.Album, changeFAF);
-                            break;
-                        case NodeLink.ParentOfParent:
-                            ParentOfParentChanged |= playlistItem.Parent.Parent.ChangeName(playlistItem.Album, changeFAF);
-                            break;
-                        case NodeLink.None:
-                        default:
-                            break;
-                    }
-                    switch (playlistItem.ArtistLink)
-                    {
-                        case NodeLink.Parent:
-                            ParentChanged |= playlistItem.Parent.ChangeName(playlistItem.Artist, changeFAF);
-                            break;
-                        case NodeLink.ParentOfParent:
-                            ParentOfParentChanged |= playlistItem.Parent.Parent.ChangeName(playlistItem.Artist, changeFAF);
-                            break;
-                        case NodeLink.None:
-                        default:
-                            break;
-                    }
+                    case NodeLink.Parent:
+                        ParentChanged |= true;
+                        break;
+                    case NodeLink.ParentOfParent:
+                        ParentOfParentChanged |= true;
+                        break;
+                    case NodeLink.None:
+                    default:
+                        break;
+                }
+                switch ((selectedLibraryItem as MusicLibraryFile).ArtistLink)
+                {
+                    case NodeLink.Parent:
+                        ParentChanged |= true;
+                        break;
+                    case NodeLink.ParentOfParent:
+                        ParentOfParentChanged |= true;
+                        break;
+                    case NodeLink.None:
+                    default:
+                        break;
                 }
             }
 
-            /// Reload View from PlaylistItem
+            /// Write Data to PlaylistFile
+            foreach (var playlistPair in selectedLibraryItem.PlaylistItems)
+            {
+                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines());
+            }
+
+            /// Reload View of libraryItem
             var highestModifiedNode = libraryTreeView.SelectedNode;
             if (ParentOfParentChanged)
             {
@@ -274,7 +270,7 @@ namespace PlaylistConverterGUI
         #endregion
 
         #region EventHandlers
-        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, PlaylistItem.UnauthorizedAccessEventArgs e)
+        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
         {
             MessageBox.Show(e.ToString());
         }
@@ -290,8 +286,17 @@ namespace PlaylistConverterGUI
         }
         private void reloadButton_Click(object sender, EventArgs e)
         {
-            var PlaylistItem = (PlaylistItem)libraryTreeView.Tag;
-            //TODO ShowPlaylist(Path.Combine(PlaylistItem.Path, PlaylistItem.Name));
+            _library = new MusicLibrary(_playlists, _folders);
+            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
+            ShowLibrary();
+        }
+
+        private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
+        {
+            if (DialogResult.Cancel == MessageBox.Show(e.ToString(), "", MessageBoxButtons.RetryCancel))
+            {
+                e.Cancel = true;
+            }
         }
 
         private void openPlaylistInNotepad_Click(object sender, EventArgs e)
@@ -305,8 +310,8 @@ namespace PlaylistConverterGUI
         }
         private void openPathInKid3Button_Click(object sender, EventArgs e)
         {
-            PlaylistItem playlistItem = (PlaylistItem)selectedItemGroupBox.Tag;
-            OpenPathInKid(playlistItem.Path);
+            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
+            OpenPathInKid(libraryItem.DirectoryPath);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -333,6 +338,7 @@ namespace PlaylistConverterGUI
         {
             _libraryConfiguration = null;
             _library = new MusicLibrary(_playlists, _folders);
+            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
             ShowListboxEntries();
             ShowLibrary();
         }
@@ -362,6 +368,7 @@ namespace PlaylistConverterGUI
             }
             ShowListboxEntries();
             _library = new MusicLibrary(_playlists, _folders);
+            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
             ShowLibrary();
         }
 

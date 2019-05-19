@@ -36,12 +36,12 @@
             this.selectedFolderFilepathLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.playlistListBox = new System.Windows.Forms.ListBox();
             this.AddPlaylistButton = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.removeSelectedPlaylistButton = new System.Windows.Forms.Button();
             this.selectedPlaylistFilepathLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.playlistListBox = new System.Windows.Forms.ListBox();
             this.openPlaylistDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
@@ -140,13 +140,24 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Playlists";
             // 
+            // playlistListBox
+            // 
+            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.playlistListBox.FormattingEnabled = true;
+            this.playlistListBox.Location = new System.Drawing.Point(6, 19);
+            this.playlistListBox.Name = "playlistListBox";
+            this.playlistListBox.Size = new System.Drawing.Size(576, 355);
+            this.playlistListBox.TabIndex = 0;
+            this.playlistListBox.SelectedValueChanged += new System.EventHandler(this.playlistsListBox_SelectedValueChanged);
+            // 
             // AddPlaylistButton
             // 
             this.AddPlaylistButton.Location = new System.Drawing.Point(873, 121);
             this.AddPlaylistButton.Name = "AddPlaylistButton";
             this.AddPlaylistButton.Size = new System.Drawing.Size(381, 23);
             this.AddPlaylistButton.TabIndex = 3;
-            this.AddPlaylistButton.Text = "Add Playlist";
+            this.AddPlaylistButton.Text = "Add Playlists";
             this.AddPlaylistButton.UseVisualStyleBackColor = true;
             this.AddPlaylistButton.Click += new System.EventHandler(this.AddPlaylistButton_Click);
             // 
@@ -194,17 +205,6 @@
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Filepath";
-            // 
-            // playlistListBox
-            // 
-            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.playlistListBox.FormattingEnabled = true;
-            this.playlistListBox.Location = new System.Drawing.Point(6, 19);
-            this.playlistListBox.Name = "playlistListBox";
-            this.playlistListBox.Size = new System.Drawing.Size(576, 355);
-            this.playlistListBox.TabIndex = 0;
-            this.playlistListBox.SelectedValueChanged += new System.EventHandler(this.playlistsListBox_SelectedValueChanged);
             // 
             // openPlaylistDialog
             // 

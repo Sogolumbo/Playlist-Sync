@@ -370,7 +370,6 @@
             this.changeFilesAndFoldersCheckBox.AutoSize = true;
             this.changeFilesAndFoldersCheckBox.Checked = true;
             this.changeFilesAndFoldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.changeFilesAndFoldersCheckBox.Enabled = false;
             this.changeFilesAndFoldersCheckBox.Location = new System.Drawing.Point(661, 369);
             this.changeFilesAndFoldersCheckBox.Name = "changeFilesAndFoldersCheckBox";
             this.changeFilesAndFoldersCheckBox.Size = new System.Drawing.Size(190, 17);

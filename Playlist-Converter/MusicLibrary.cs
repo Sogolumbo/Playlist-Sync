@@ -9,9 +9,11 @@ namespace Playlist
     public class MusicLibrary
     {
         public MusicLibrary(List<string> playlistFiles, List<string> musicDirectories) : this(
-            playlistFiles.Select(filepath => new PlaylistItem(filepath)).ToList(),
+            playlistFiles.Select(filepath => new PlaylistItem(filepath, false)).ToList(),
             musicDirectories)
-        { }
+        {
+            PlaylistFiles = playlistFiles;
+        }
         public MusicLibrary(List<PlaylistItem> playlists, List<string> musicDirectories)
         {
             Playlists = playlists;
@@ -20,8 +22,11 @@ namespace Playlist
         }
 
         public List<PlaylistItem> Playlists { get; set; }
+        public List<string> PlaylistFiles { get; set; }
         public List<string> MusicFolders { get; set; }
         public List<MusicLibraryDirectory> ItemFolders { get; set; }
+
+        public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
 
 
         public List<MusicLibraryDirectory> ItemFoldersFromMusicDirectories()
@@ -33,7 +38,9 @@ namespace Playlist
             List<MusicLibraryDirectory> itemFolders = new List<MusicLibraryDirectory>();
             foreach (string musicFolder in musicFolders)
             {
-                itemFolders.Add(new MusicLibraryDirectory(musicFolder));
+                var dir = new MusicLibraryDirectory(musicFolder, null);
+                dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
+                itemFolders.Add(dir);
             }
             foreach (PlaylistItem playlist in playlists)
             {
@@ -43,6 +50,18 @@ namespace Playlist
                 }
             }
             return itemFolders;
+        }
+
+        private void Dir_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
+        {
+            if (UnauthorizedAccess != null)
+            {
+                UnauthorizedAccess.Invoke(sender, e);
+            }
+            else
+            {
+                throw e.OriginalException;
+            }
         }
 
         public void AddAllPlaylistItemsToMusicFolder(PlaylistItem playlist, MusicLibraryDirectory folder)
@@ -103,7 +122,9 @@ namespace Playlist
             }
         }
 
-        public void AddPlaylistItemToMusicFolder(PlaylistItem item, PlaylistItem playlist, MusicLibraryDirectory folder) //TODO delete
+        //TODO delete
+        /*
+        public void AddPlaylistItemToMusicFolder(PlaylistItem item, PlaylistItem playlist, MusicLibraryDirectory folder) 
         {
             var itemPathLength = item.FullPath.Length;
             if (itemPathLength > folder.FullPath.Length)
@@ -138,5 +159,6 @@ namespace Playlist
                 }
             }
         }
+        */
     }
 }

@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioFileTag.cs" />
     <Compile Include="Conversion.cs" />
     <Compile Include="MusicLibrary.cs" />
     <Compile Include="MusicLibraryDirectories.cs" />
