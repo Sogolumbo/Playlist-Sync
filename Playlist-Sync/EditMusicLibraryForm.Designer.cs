@@ -60,6 +60,7 @@
             this.MusicFoldersGroupBox = new System.Windows.Forms.GroupBox();
             this.playlistListBox = new System.Windows.Forms.ListBox();
             this.debugButton = new System.Windows.Forms.Button();
+            this.openInNotepadButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -208,7 +209,7 @@
             // artistLinkLabel
             // 
             this.artistLinkLabel.AutoSize = true;
-            this.artistLinkLabel.Location = new System.Drawing.Point(384, 321);
+            this.artistLinkLabel.Location = new System.Drawing.Point(384, 327);
             this.artistLinkLabel.Name = "artistLinkLabel";
             this.artistLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.artistLinkLabel.TabIndex = 22;
@@ -217,7 +218,7 @@
             // albumLinkLabel
             // 
             this.albumLinkLabel.AutoSize = true;
-            this.albumLinkLabel.Location = new System.Drawing.Point(384, 295);
+            this.albumLinkLabel.Location = new System.Drawing.Point(383, 301);
             this.albumLinkLabel.Name = "albumLinkLabel";
             this.albumLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.albumLinkLabel.TabIndex = 21;
@@ -371,7 +372,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeFoldersButton.Location = new System.Drawing.Point(6, 160);
             this.changeFoldersButton.Name = "changeFoldersButton";
-            this.changeFoldersButton.Size = new System.Drawing.Size(400, 23);
+            this.changeFoldersButton.Size = new System.Drawing.Size(325, 23);
             this.changeFoldersButton.TabIndex = 25;
             this.changeFoldersButton.Text = "Edit";
             this.changeFoldersButton.UseVisualStyleBackColor = true;
@@ -380,6 +381,7 @@
             // MusicFoldersGroupBox
             // 
             this.MusicFoldersGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MusicFoldersGroupBox.Controls.Add(this.openInNotepadButton);
             this.MusicFoldersGroupBox.Controls.Add(this.playlistListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.foldersListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.changeFoldersButton);
@@ -412,6 +414,16 @@
             this.debugButton.Text = "Debug";
             this.debugButton.UseVisualStyleBackColor = true;
             this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
+            // 
+            // openInNotepadButton
+            // 
+            this.openInNotepadButton.Location = new System.Drawing.Point(337, 159);
+            this.openInNotepadButton.Name = "openInNotepadButton";
+            this.openInNotepadButton.Size = new System.Drawing.Size(68, 23);
+            this.openInNotepadButton.TabIndex = 26;
+            this.openInNotepadButton.Text = "Notepad++";
+            this.openInNotepadButton.UseVisualStyleBackColor = true;
+            this.openInNotepadButton.Click += new System.EventHandler(this.openInNotepadButton_Click);
             // 
             // EditMusicLibraryForm
             // 
@@ -471,5 +483,6 @@
         private System.Windows.Forms.ListBox selectedItemPlaylistsListBox;
         private System.Windows.Forms.ListBox playlistListBox;
         private System.Windows.Forms.Button debugButton;
+        private System.Windows.Forms.Button openInNotepadButton;
     }
 }

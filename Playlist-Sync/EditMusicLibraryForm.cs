@@ -121,11 +121,10 @@ namespace PlaylistConverterGUI
         {
             Process.Start("explorer", path);
         }
-        private void OpenPlaylistInNotepad()
+        private void OpenPlaylistInNotepad(string path)
         {
             string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-            PlaylistItem playlist = (PlaylistItem)libraryTreeView.Tag;
-            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
+            Process.Start("\"" + notepadPath + "\"", "\"" + path + "\"");
         }
 
         private TreeNode[] NodesFromLibrary(MusicLibrary library)
@@ -298,11 +297,7 @@ namespace PlaylistConverterGUI
                 e.Cancel = true;
             }
         }
-
-        private void openPlaylistInNotepad_Click(object sender, EventArgs e)
-        {
-            OpenPlaylistInNotepad();
-        }
+        
         private void openInExplorerButton_Click(object sender, EventArgs e)
         {
             var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
@@ -374,6 +369,15 @@ namespace PlaylistConverterGUI
 
         private void debugButton_Click(object sender, EventArgs e)
         {
+        }
+
+        private void openInNotepadButton_Click(object sender, EventArgs e)
+        {
+            if(playlistListBox.SelectedItem != null)
+            {
+                var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
+                OpenPlaylistInNotepad(playlistPath);
+            }
         }
     }
 }
