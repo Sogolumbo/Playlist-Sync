@@ -160,6 +160,16 @@ namespace Playlist
                     ArtistLink = NodeLink.Parent;
                     Parent.NameChanged += ArtistNodeChanged;
                 }
+                else if(ParentOfParent != null && Array.IndexOf(Tag.Artists,ParentOfParent.Name) != -1)
+                {
+                    ArtistLink = NodeLink.ParentOfParentPartially;
+                    //TODO ParentOfParent.NameChanged += ArtistNodeChanged;
+                }
+                else if (Parent != null && Array.IndexOf(Tag.Artists, Parent.Name) != -1)
+                {
+                    ArtistLink = NodeLink.ParentPartially;
+                    //TODO Parent.NameChanged += ArtistNodeChanged;
+                }
                 if (Parent != null && Parent.Name == Tag.Album)
                 {
                     AlbumLink = NodeLink.Parent;
@@ -247,7 +257,7 @@ namespace Playlist
                 switch (Type)
                 {
                     case PlaylistItemType.Song:
-                        if (File.Exists(FullPath))
+                        if (File.Exists(FullPath) && Tag != null)
                         {
                             Tag.FilePath = FullPath;
                         }
@@ -431,6 +441,8 @@ namespace Playlist
     {
         None,
         Parent,
-        ParentOfParent
+        ParentPartially,
+        ParentOfParent,
+        ParentOfParentPartially
     }
 }

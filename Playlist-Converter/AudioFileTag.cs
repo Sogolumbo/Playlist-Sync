@@ -23,9 +23,9 @@ namespace Playlist
 
         private string _title;
         private string _album;
-        private string _artist;
+        private string[] _artists;
         private uint? _trackNumber;
-        private string _genre;
+        private string[] _genres;
 
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
@@ -84,16 +84,23 @@ namespace Playlist
         }
         public string Artist
         {
-            get { return _artist; }
+            get { return String.Join("; ", Artists); }
             set
             {
-                if (value != _artist)
+                Artists = value.Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+        public string[] Artists
+        {
+            get => _artists;
+            set
+            {
+                if (Array.Equals(value, _artists))
                 {
-                    _artist = value;
-                    var artists = _artist.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    _tagLib.Tag.Performers = artists;
+                    _artists = value;
+                    _tagLib.Tag.Performers = _artists;
                     SaveTag();
-                    ArtistChanged?.Invoke(this, new NameChangedEventArgs(value, true));
+                    ArtistChanged?.Invoke(this, new NameChangedEventArgs(Artist, true));
                 }
             }
         }
@@ -113,14 +120,21 @@ namespace Playlist
         }
         public string Genre
         {
-            get { return _genre; }
+            get { return String.Join("; ", Genres); }
             set
             {
-                if (value != _genre)
+                var Genres = value.Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+        public string[] Genres
+        {
+            get => _genres;
+            set
+            {
+                if (!Array.Equals(value, _genres))
                 {
-                    _genre = value;
-                    var genres = value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    _tagLib.Tag.Genres = genres;
+                    _genres = value;
+                    _tagLib.Tag.Genres = _genres;
                     SaveTag();
                 }
             }
@@ -152,9 +166,9 @@ namespace Playlist
             _tagLib = TagLib.File.Create(fullPath);
             _title = _tagLib.Tag.Title;
             _album = _tagLib.Tag.Album;
-            _artist = String.Join("; ", _tagLib.Tag.Performers);
+            _artists = _tagLib.Tag.Performers;
             _trackNumber = _tagLib.Tag.Track;
-            _genre = String.Join("; ", _tagLib.Tag.Genres);
+            _genres = _tagLib.Tag.Genres;
 
             Empty = false;
         }

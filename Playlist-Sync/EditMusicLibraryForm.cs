@@ -142,7 +142,7 @@ namespace PlaylistConverterGUI
         }
         TreeNode NodeFromLibraryItem(MusicLibraryItem item)
         {
-            TreeNode result = new TreeNode(item.Name) { Tag = item };
+            TreeNode result = new TreeNode(item.Name) { Tag = item, Name = item.Name };
             if (item is MusicLibraryDirectory)
             {
                 var folder = item as MusicLibraryDirectory;
@@ -159,28 +159,41 @@ namespace PlaylistConverterGUI
         }
         private Color BackcolorFromPlaylistItem(MusicLibraryFile libraryItem)
         {
+            var perfectColor = Color.LightGreen;
+            var directArtistLinkColor = Color.LightBlue;
+            var onlyOneLinkColor = Color.LightCyan;
+            var partialLinkColor = Color.Aquamarine;
+
             if (libraryItem.ArtistLink == NodeLink.Parent)
             {
-                return (Color.LightBlue);
+                return directArtistLinkColor;
             }
             else if (libraryItem.AlbumLink == NodeLink.Parent)
             {
                 if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
                 {
-                    return (Color.LightGreen);
+                    return perfectColor;
+                }
+                else if(libraryItem.ArtistLink == NodeLink.ParentOfParentPartially)
+                {
+                    return partialLinkColor;
                 }
                 else
                 {
-                    return (Color.LightCyan);
+                    return onlyOneLinkColor;
                 }
             }
             else if (libraryItem.AlbumLink == NodeLink.ParentOfParent)
             {
-                return (Color.LightCyan);
+                return onlyOneLinkColor;
             }
             else if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
             {
-                return (Color.LightCyan);
+                return onlyOneLinkColor;
+            }
+            else if (libraryItem.ArtistLink == NodeLink.ParentOfParentPartially || libraryItem.ArtistLink == NodeLink.ParentPartially)
+            {
+                return partialLinkColor;
             }
             return libraryTreeView.BackColor;
         }
@@ -193,6 +206,10 @@ namespace PlaylistConverterGUI
                     return "\u21911";
                 case NodeLink.ParentOfParent:
                     return "\u21912";
+                case NodeLink.ParentPartially:
+                    return "(\u21911)";
+                case NodeLink.ParentOfParentPartially:
+                    return "(\u21912)";
                 case NodeLink.None:
                 default:
                     return "-";
@@ -237,9 +254,11 @@ namespace PlaylistConverterGUI
                 switch ((selectedLibraryItem as MusicLibraryFile).ArtistLink)
                 {
                     case NodeLink.Parent:
+                    case NodeLink.ParentPartially:
                         ParentChanged |= true;
                         break;
                     case NodeLink.ParentOfParent:
+                    case NodeLink.ParentOfParentPartially:
                         ParentOfParentChanged |= true;
                         break;
                     case NodeLink.None:
@@ -285,9 +304,20 @@ namespace PlaylistConverterGUI
         }
         private void reloadButton_Click(object sender, EventArgs e)
         {
+            var previouslySelectedNode = libraryTreeView.SelectedNode;
             _library = new MusicLibrary(_playlists, _folders);
             _library.UnauthorizedAccess += _library_UnauthorizedAccess;
             ShowLibrary();
+            if (previouslySelectedNode != null)
+            {
+                var possiblyEquivalentNodes = libraryTreeView.Nodes.Find(previouslySelectedNode.Name, true);
+                var equivalentToSelectedNode = possiblyEquivalentNodes.First();
+                if (equivalentToSelectedNode != null)
+                {
+                    libraryTreeView.SelectedNode = equivalentToSelectedNode;
+                    libraryTreeView.Focus();
+                }
+            }
         }
 
         private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
@@ -297,7 +327,7 @@ namespace PlaylistConverterGUI
                 e.Cancel = true;
             }
         }
-        
+
         private void openInExplorerButton_Click(object sender, EventArgs e)
         {
             var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
@@ -373,7 +403,7 @@ namespace PlaylistConverterGUI
 
         private void openInNotepadButton_Click(object sender, EventArgs e)
         {
-            if(playlistListBox.SelectedItem != null)
+            if (playlistListBox.SelectedItem != null)
             {
                 var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
                 OpenPlaylistInNotepad(playlistPath);

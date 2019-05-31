@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+
 namespace Playlist
 {
     public class MusicLibraryFile : MusicLibraryItem
@@ -83,34 +85,52 @@ namespace Playlist
         {
             AlbumLink = NodeLink.None;
             ArtistLink = NodeLink.None;
-            if (Parent != null)
-            {
-                Parent.NameChanged -= AlbumNode_NameChanged;
-                Parent.NameChanged -= ArtistNode_NameChanged;
-                if (Parent.Name == Tag.Album)
-                {
-                    AlbumLink = NodeLink.Parent;
-                    Parent.NameChanged += AlbumNode_NameChanged;
-                }
-                else if (Parent.Name == Tag.Artist)
-                {
-                    ArtistLink = NodeLink.Parent;
-                    Parent.NameChanged += ArtistNode_NameChanged;
-                }
-            }
+
             if (Parent.Parent != null)
             {
                 Parent.Parent.NameChanged -= AlbumNode_NameChanged;
                 Parent.Parent.NameChanged -= ArtistNode_NameChanged;
-                if (Parent.Parent.Name == Tag.Artist)
+                if (Array.IndexOf(Tag.Artists, Parent.Parent.Name) != -1)
                 {
-                    ArtistLink = NodeLink.ParentOfParent;
-                    Parent.Parent.NameChanged += ArtistNode_NameChanged;
+                    if (Parent.Parent.Name == Tag.Artist)
+                    {
+                        ArtistLink = NodeLink.ParentOfParent;
+                        Parent.Parent.NameChanged += ArtistNode_NameChanged;
+                    }
+                    else
+                    {
+                        ArtistLink = NodeLink.ParentOfParentPartially;
+                        //TODO NameChanged Events
+                    }
                 }
                 else if (Parent.Parent.Name == Tag.Album)
                 {
                     AlbumLink = NodeLink.ParentOfParent;
                     Parent.Parent.NameChanged += AlbumNode_NameChanged;
+                }
+            }
+            if (Parent != null)
+            {
+                Parent.NameChanged -= AlbumNode_NameChanged;
+                Parent.NameChanged -= ArtistNode_NameChanged;
+
+                if (((ArtistLink == NodeLink.None && Array.IndexOf(Tag.Artists, Tag.Album) != -1) || Parent.Name != Tag.Album) && Array.IndexOf(Tag.Artists, Parent.Name) != -1) // special case album==artist and parent of parent is not named after artist
+                {
+                    if (Parent.Name == Tag.Artist)
+                    {
+                        ArtistLink = NodeLink.Parent;
+                        Parent.NameChanged += ArtistNode_NameChanged;
+                    }
+                    else
+                    {
+                        ArtistLink = NodeLink.ParentPartially;
+                        //TODO NameChanged Events
+                    }
+                }
+                else if (Parent.Name == Tag.Album)
+                {
+                    AlbumLink = NodeLink.Parent;
+                    Parent.NameChanged += AlbumNode_NameChanged;
                 }
             }
         }

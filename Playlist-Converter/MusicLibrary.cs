@@ -121,44 +121,5 @@ namespace Playlist
                 //TODO: can these cases be ignored?
             }
         }
-
-        //TODO delete
-        /*
-        public void AddPlaylistItemToMusicFolder(PlaylistItem item, PlaylistItem playlist, MusicLibraryDirectory folder) 
-        {
-            var itemPathLength = item.FullPath.Length;
-            if (itemPathLength > folder.FullPath.Length)
-            {
-                switch (item.Type)
-                {
-                    case PlaylistItemType.Folder:
-                        foreach (var directory in folder.Directories)
-                        {
-                            AddPlaylistItemToMusicFolder(item, playlist, directory);
-                        }
-                        break;
-                    case PlaylistItemType.Song:
-                        foreach (var file in folder.Files)
-                        {
-                            if (file.FullPath.Length == itemPathLength)
-                            {
-                                if (file.FullPath == item.FullPath)
-                                {
-                                    folder.PlaylistItems.Add(new PlaylistLink(item, playlist));
-                                }
-                            }
-                        }
-                        break;
-                }
-            }
-            else if ((itemPathLength == folder.FullPath.Length) && (item.Type == PlaylistItemType.Folder))
-            {
-                if (item.FullPath == folder.FullPath)
-                {
-                    folder.PlaylistItems.Add(new PlaylistLink(item, playlist));
-                }
-            }
-        }
-        */
     }
 }

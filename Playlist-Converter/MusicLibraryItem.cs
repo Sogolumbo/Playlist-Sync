@@ -119,6 +119,8 @@ namespace Playlist
                 }
                 catch (Exception ex)
                 {
+                    IOException ioEx = ex as IOException;
+                    var data = ioEx.Data;
                     if ((ex is UnauthorizedAccessException || ex is IOException) && UnauthorizedAccess != null)
                     {
                         success = false;

@@ -141,9 +141,9 @@ namespace PlaylistConverterGUI
             TreeNode result;
 
             if (playlistItem.Children != null)
-                result = new TreeNode(playlistItem.Name, playlistItem.Children?.Select(item => NodeFromPlaylistItem(item)).ToArray());
+                result = new TreeNode(playlistItem.Name, playlistItem.Children?.Select(item => NodeFromPlaylistItem(item)).ToArray()) { Name = playlistItem.Name};
             else
-                result = new TreeNode(playlistItem.Name);
+                result = new TreeNode(playlistItem.Name) { Name = playlistItem.Name };
 
             result.Tag = playlistItem;
             if (playlistItem.ItemExists == false)
