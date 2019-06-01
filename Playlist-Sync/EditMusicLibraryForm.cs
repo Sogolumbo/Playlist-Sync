@@ -138,7 +138,8 @@ namespace PlaylistConverterGUI
                     result.Add(NodeFromLibraryItem(folder));
                 }
             }
-            return result.OrderBy(node => node.Text).ToArray();
+            //TODO result = result.OrderBy(node => node.Text).ToList();
+            return result.ToArray();
         }
         TreeNode NodeFromLibraryItem(MusicLibraryItem item)
         {
@@ -148,7 +149,7 @@ namespace PlaylistConverterGUI
                 var folder = item as MusicLibraryDirectory;
                 var children = folder.Directories.Select(libraryDirectory => NodeFromLibraryItem(libraryDirectory)).ToList();
                 children.AddRange(folder.Files.Select(libraryFile => NodeFromLibraryItem(libraryFile)));
-                children.OrderBy(node => node.Text);
+                //TODO children.OrderBy(node => node.Text);
                 result.Nodes.AddRange(children.ToArray());
             }
             else

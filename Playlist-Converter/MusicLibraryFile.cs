@@ -36,6 +36,8 @@ namespace Playlist
                 case NodeLink.ParentOfParent:
                     Parent.Parent.Name = nodeText;
                     break;
+                case NodeLink.ParentPartially:
+                case NodeLink.ParentOfParentPartially:
                 case NodeLink.None:
                 default:
                     SetNodeLinks();
@@ -47,6 +49,7 @@ namespace Playlist
         public AudioFileTag Tag { get; set; }
         public NodeLink AlbumLink { get; private set; }
         public NodeLink ArtistLink { get; private set; }
+        public int? PartialArtistLinkIndex { get; set; }
 
         public override MusicLibraryDirectory Parent
         {
@@ -90,18 +93,19 @@ namespace Playlist
             {
                 Parent.Parent.NameChanged -= AlbumNode_NameChanged;
                 Parent.Parent.NameChanged -= ArtistNode_NameChanged;
-                if (Array.IndexOf(Tag.Artists, Parent.Parent.Name) != -1)
+                var indexOfParentNameInArtists = Array.IndexOf(Tag.Artists, Parent.Parent.Name);
+                if (indexOfParentNameInArtists != -1)
                 {
                     if (Parent.Parent.Name == Tag.Artist)
                     {
                         ArtistLink = NodeLink.ParentOfParent;
-                        Parent.Parent.NameChanged += ArtistNode_NameChanged;
                     }
                     else
                     {
                         ArtistLink = NodeLink.ParentOfParentPartially;
-                        //TODO NameChanged Events
+                        PartialArtistLinkIndex = indexOfParentNameInArtists;
                     }
+                    Parent.Parent.NameChanged += ArtistNode_NameChanged;
                 }
                 else if (Parent.Parent.Name == Tag.Album)
                 {
@@ -113,19 +117,20 @@ namespace Playlist
             {
                 Parent.NameChanged -= AlbumNode_NameChanged;
                 Parent.NameChanged -= ArtistNode_NameChanged;
+                var indexOfParentNameInArtists = Array.IndexOf(Tag.Artists, Parent.Name);
 
-                if (((ArtistLink == NodeLink.None && Array.IndexOf(Tag.Artists, Tag.Album) != -1) || Parent.Name != Tag.Album) && Array.IndexOf(Tag.Artists, Parent.Name) != -1) // special case album==artist and parent of parent is not named after artist
+                if (((ArtistLink == NodeLink.None && Array.IndexOf(Tag.Artists, Tag.Album) != -1) || Parent.Name != Tag.Album) && indexOfParentNameInArtists != -1) // special case album==artist and parent of parent is not named after artist
                 {
                     if (Parent.Name == Tag.Artist)
                     {
                         ArtistLink = NodeLink.Parent;
-                        Parent.NameChanged += ArtistNode_NameChanged;
                     }
                     else
                     {
                         ArtistLink = NodeLink.ParentPartially;
-                        //TODO NameChanged Events
+                        PartialArtistLinkIndex = indexOfParentNameInArtists;
                     }
+                    Parent.NameChanged += ArtistNode_NameChanged;
                 }
                 else if (Parent.Name == Tag.Album)
                 {
@@ -143,7 +148,14 @@ namespace Playlist
 
         private void ArtistNode_NameChanged(object sender, NameChangedEventArgs e)
         {
-            Tag.Artist = (sender as MusicLibraryDirectory).Name;
+            if (ArtistLink != NodeLink.ParentPartially && ArtistLink != NodeLink.ParentOfParentPartially)
+            {
+                Tag.Artist = e.NewName;
+            }
+            else
+            {
+                Tag.Artists[PartialArtistLinkIndex.Value] = e.NewName;
+            }
         }
 
         private void AlbumNode_NameChanged(object sender, NameChangedEventArgs e)

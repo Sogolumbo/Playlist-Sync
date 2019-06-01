@@ -24,6 +24,8 @@ namespace Playlist
             Path = playlistPath;
             Parent = parent;
 
+            Array.Sort(playlistLines);
+
             List<List<string>> playlistStructure = new List<List<string>>(playlistLines.Length);
 
             for (int i = 0; i < playlistLines.Length; i++)

@@ -11,8 +11,8 @@ namespace Playlist
             _name = Path.GetFileName(directoryPath);
             DirectoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + System.IO.Path.GetFileName(directoryPath)).Length);
             Parent = parent;
-            Directories = new List<MusicLibraryDirectory>();
-            Files = new List<MusicLibraryFile>();
+            Directories = new List<MusicLibraryItem>();
+            Files = new List<MusicLibraryItem>();
             foreach (string item in Directory.GetDirectories(directoryPath))
             {
                 var dir = new MusicLibraryDirectory(item, this);
@@ -32,8 +32,9 @@ namespace Playlist
 
         public event EventHandler<NameChangedEventArgs> NameChanged;
 
-        public List<MusicLibraryDirectory> Directories { get; set; }
-        public List<MusicLibraryFile> Files { get; set; }
+        public List<MusicLibraryItem> Directories { get; set; }
+        public List<MusicLibraryItem> Files { get; set; }
+        public List<MusicLibraryMissingElement> MissingElements { get; set; }
 
         public override string Name { get => base.Name;
             set

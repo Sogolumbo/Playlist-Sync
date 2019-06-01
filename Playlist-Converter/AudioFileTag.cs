@@ -95,7 +95,7 @@ namespace Playlist
             get => _artists;
             set
             {
-                if (Array.Equals(value, _artists))
+                if (!Array.Equals(value, _artists))
                 {
                     _artists = value;
                     _tagLib.Tag.Performers = _artists;
