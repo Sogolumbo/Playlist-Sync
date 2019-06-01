@@ -9,10 +9,12 @@ namespace Playlist
 {
     public class MusicLibraryMissingElement : MusicLibraryItem
     {
-        public MusicLibraryMissingElement(string fullPath, PlaylistLink playlistLink) : base ()
+        public MusicLibraryMissingElement(string fullPath, PlaylistLink playlistLink, MusicLibraryItem parent) : base ()
         {
             FullPath = fullPath;
             PlaylistItems.Add(playlistLink);
+            Children = new List<MusicLibraryMissingElement>();
+            Parent = parent;
         }
 
         public override string Name

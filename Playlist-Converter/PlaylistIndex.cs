@@ -11,5 +11,9 @@ namespace Playlist
         }
         public Stack<Index> Stack { get; set; }
         public PlaylistItem Playlist { get; }
+        public override string ToString()
+        {
+            return Stack.Peek().ToString();
+        }
     }
 }

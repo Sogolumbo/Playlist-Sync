@@ -51,9 +51,9 @@ namespace Playlist
         public NodeLink ArtistLink { get; private set; }
         public int? PartialArtistLinkIndex { get; set; }
 
-        public override MusicLibraryDirectory Parent
+        public MusicLibraryDirectory Parent
         {
-            get => base.Parent;
+            get => base.Parent as MusicLibraryDirectory;
             set
             {
                 bool parentChanged = (value != _parent);
@@ -61,7 +61,7 @@ namespace Playlist
                 if (parentChanged)
                 {
                     value.NameChanged += Parent_NameChanged;
-                    _parent.NameChanged -= Parent_NameChanged;
+                    (_parent as MusicLibraryDirectory).NameChanged -= Parent_NameChanged;
                     _parent.ParentChanged += _parent_ParentChanged;
                     SetNodeLinks();
                 }

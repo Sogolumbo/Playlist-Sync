@@ -8,7 +8,7 @@ namespace Playlist
     {
         public MusicLibraryItem()
         {
-            PlaylistItems = new List<PlaylistLink>();
+            PlaylistItems = new HashSet<PlaylistLink>();
         }
 
         public virtual string Name
@@ -68,7 +68,7 @@ namespace Playlist
                 DirectoryPath = value.Remove(value.Length - 1 - Name.Length);
             }
         }
-        public virtual MusicLibraryDirectory Parent
+        public virtual MusicLibraryItem Parent
         {
             get { return _parent; }
             set
@@ -77,7 +77,7 @@ namespace Playlist
                 ParentChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        public List<PlaylistLink> PlaylistItems { get; set; }
+        public HashSet<PlaylistLink> PlaylistItems { get; set; }
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
         public event EventHandler ParentChanged;
@@ -88,6 +88,11 @@ namespace Playlist
             {
                 item.Item.RescanMediaInfo(true);
             }
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         protected virtual void ChangeFileSystemName(string newName)
@@ -150,7 +155,7 @@ namespace Playlist
 
         protected string _name = String.Empty;
         protected string _directoryPath = String.Empty;
-        protected MusicLibraryDirectory _parent;
+        protected MusicLibraryItem _parent;
     }
 
     public struct PlaylistLink

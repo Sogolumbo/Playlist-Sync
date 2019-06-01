@@ -52,6 +52,15 @@ namespace Playlist
             }
         }
 
+        public MusicLibraryDirectory Parent
+        {
+            get => base.Parent as MusicLibraryDirectory;
+            set
+            {
+                base.Parent = value;
+            }
+        }
+
         public override void Reload()
         {
             foreach (var item in Directories)
