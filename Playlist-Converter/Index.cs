@@ -43,7 +43,7 @@ namespace Playlist
                 TopNodeName = (Node as MusicLibraryItem).Name;
             else
                 TopNodeName = (Node as PlaylistItem).Name;
-            return Number.ToString() + ": " + TopNodeName;
+            return Number.ToString() + "/" + List.Count + ": " + TopNodeName;
         }
     }
 }

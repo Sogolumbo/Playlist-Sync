@@ -158,45 +158,55 @@ namespace PlaylistConverterGUI
             }
             return result;
         }
-        private Color BackcolorFromPlaylistItem(MusicLibraryFile libraryItem)
+        private Color BackcolorFromPlaylistItem(MusicLibraryItem libraryItem)
         {
             var perfectColor = Color.LightGreen;
             var directArtistLinkColor = Color.LightBlue;
             var onlyOneLinkColor = Color.LightCyan;
             var partialLinkColor = Color.Aquamarine;
+            var missingColor = Color.Red;
 
-            if (libraryItem.ArtistLink == NodeLink.Parent)
+            if (libraryItem is MusicLibraryFile)
             {
-                return directArtistLinkColor;
-            }
-            else if (libraryItem.AlbumLink == NodeLink.Parent)
-            {
-                if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
+                MusicLibraryFile libraryFile = libraryItem as MusicLibraryFile;
+                if (libraryFile.ArtistLink == NodeLink.Parent)
                 {
-                    return perfectColor;
+                    return directArtistLinkColor;
                 }
-                else if(libraryItem.ArtistLink == NodeLink.ParentOfParentPartially)
+                else if (libraryFile.AlbumLink == NodeLink.Parent)
                 {
-                    return partialLinkColor;
+                    if (libraryFile.ArtistLink == NodeLink.ParentOfParent)
+                    {
+                        return perfectColor;
+                    }
+                    else if (libraryFile.ArtistLink == NodeLink.ParentOfParentPartially)
+                    {
+                        return partialLinkColor;
+                    }
+                    else
+                    {
+                        return onlyOneLinkColor;
+                    }
                 }
-                else
+                else if (libraryFile.AlbumLink == NodeLink.ParentOfParent)
                 {
                     return onlyOneLinkColor;
                 }
+                else if (libraryFile.ArtistLink == NodeLink.ParentOfParent)
+                {
+                    return onlyOneLinkColor;
+                }
+                else if (libraryFile.ArtistLink == NodeLink.ParentOfParentPartially || libraryFile.ArtistLink == NodeLink.ParentPartially)
+                {
+                    return partialLinkColor;
+                }
+                return libraryTreeView.BackColor;
             }
-            else if (libraryItem.AlbumLink == NodeLink.ParentOfParent)
+            else
             {
-                return onlyOneLinkColor;
+                return missingColor;
             }
-            else if (libraryItem.ArtistLink == NodeLink.ParentOfParent)
-            {
-                return onlyOneLinkColor;
-            }
-            else if (libraryItem.ArtistLink == NodeLink.ParentOfParentPartially || libraryItem.ArtistLink == NodeLink.ParentPartially)
-            {
-                return partialLinkColor;
-            }
-            return libraryTreeView.BackColor;
+
         }
 
         private string linkStateToText(NodeLink linkState)

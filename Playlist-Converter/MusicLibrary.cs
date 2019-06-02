@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Playlist
 {
@@ -42,23 +43,15 @@ namespace Playlist
                 dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
                 itemFolders.Add(dir);
             }
-            //TODO Add PlaylistItems that don't exist
-            AddAllPlaylistItemsToMusicFolder(playlists, itemFolders);
-            /*foreach (PlaylistItem playlist in playlists)
-            {
-                foreach (MusicLibraryDirectory folder in itemFolders)
-                {
-                    AddAllPlaylistItemsToMusicFolder(playlist, folder);
-                }
-            }*/
+            AddAllPlaylistItemsToLibraryFolders(playlists, itemFolders);
             return itemFolders;
         }
 
         #region new 
 
-        private void AddAllPlaylistItemsToMusicFolder(List<PlaylistItem> playlists, List<MusicLibraryDirectory> itemFolders) //TODO only accepts non-empty elements in both lists. Both Lists must be sorted
+        private void AddAllPlaylistItemsToLibraryFolders(List<PlaylistItem> playlists, List<MusicLibraryDirectory> itemFolders) //TODO only accepts non-empty elements in both lists. Both Lists must be sorted
         {
-            HashSet<string> ignoredPlaylistItems = new HashSet<string>();
+            HashSet<PlaylistItem> ignoredPlaylistItems = new HashSet<PlaylistItem>();
 
             ///Setup indices
             List<PlaylistIndex> playlistIndices = new List<PlaylistIndex>(playlists.Count);
@@ -76,7 +69,7 @@ namespace Playlist
                 }
                 else
                 {
-                    ignoredPlaylistItems.Add(playlists[i].FullPath);
+                    ignoredPlaylistItems.Add(playlists[i]);
                 }
             }
 
@@ -86,7 +79,7 @@ namespace Playlist
             {
                 while (TopPlaylistItem(plIndex).FullPath.Length < topLibraryItemLength)
                 {
-                    ignoredPlaylistItems.Add(TopPlaylistItem(plIndex).FullPath);
+                    ignoredPlaylistItems.Add(TopPlaylistItem(plIndex));
                     List<PlaylistItem> children = TopPlaylistItem(plIndex).Children;
                     if (children != null && children.Count > 0)
                     {
@@ -100,22 +93,25 @@ namespace Playlist
             }
 
             bool libraryFinished = false;
+            //TODO remove debugging tools
             int loopCounter = 0;
             int loopCounterDecrement = 0;
-            List<string> history = new List<string>();
+            StringBuilder history = new StringBuilder(); 
 
-            while (!(libraryFinished && playlistIndices.Count == 0))
+            while (!(libraryFinished && playlistIndices.Count == 0)) // TODO && playlistIndices.Count == 0
             {
                 var libraryIndexChange = 1;
                 foreach (var plIndex in playlistIndices.ToArray())
                 {
+                    var forLoopIndexDebug = playlistIndices.IndexOf(plIndex); //TODO remove
+                    var comparisonValueDebug = TopPlaylistItem(plIndex).FullPath.CompareTo(TopLibraryItem(libraryIndex).FullPath); //TODO remove
                     var comparisonValue = AddPlaylistItem(plIndex, libraryIndex, playlistIndices);
-                    if (comparisonValue == 0) // playlistItem has been added => increment index
+                    if (comparisonValue == 0) // playlistItem has been added => increment playlist index
                     {
-                        var children = TopPlaylistItem(plIndex).Children;
-                        if (children != null && children.Count > 0)
+                        var plChildren = TopPlaylistItem(plIndex).Children;
+                        if (plChildren != null && plChildren.Count > 0)
                         {
-                            plIndex.Stack.Push(new Index(0, children.ToList<object>()));
+                            plIndex.Stack.Push(new Index(0, plChildren.ToList<object>()));
                         }
                         else
                         {
@@ -124,32 +120,35 @@ namespace Playlist
                     }
                     else if (comparisonValue < 0)
                     {
+                        loopCounterDecrement++;
+                        history.AppendLine("     (" + (-comparisonValue).ToString() + ") Elements added from [" + playlistIndices.IndexOf(plIndex) + "] (" + plIndex.Playlist.Name + "):      " + TopPlaylistItem(plIndex).Name);
                         IncrementIndexAndRemoveIndexIfStackEmpty(plIndex, playlistIndices);
 
                         libraryIndex.Peek().List = GetChildrenSorted(libraryIndex.ToArray<Index>()[1].Node as MusicLibraryItem);
                         libraryIndexChange = 0;
-                        loopCounterDecrement++;
-                        break;
                     }
                 }
-                if (libraryIndexChange == 1)
-                {
-                    List<object> children = GetChildrenSorted(TopLibraryItem(libraryIndex));
 
-                    if (children != null && children.Count > 0)
-                    {
-                        libraryIndex.Push(new Index(0, children));
-                        libraryFinished = false;
-                    }
-                    else
-                    {
-                        libraryFinished = !IncrementIndex(libraryIndex);
-                    }
-                    loopCounter++;
+                history.AppendLine(loopCounter.ToString() + "  " + TopLibraryItem(libraryIndex).FullPath);
+
+                List<object> libChildren = GetChildrenSorted(TopLibraryItem(libraryIndex));
+                if (libChildren != null && libChildren.Count > 0)
+                {
+                    libraryIndex.Push(new Index(0, libChildren));
+                    libraryFinished = false;
                 }
-                history.Add(TopLibraryItem(libraryIndex).FullPath);
-                //TODO all indices at the end
+                else
+                {
+                    libraryFinished = !IncrementIndex(libraryIndex);
+                    if (libraryFinished && playlistIndices.Count > 0)
+                    {
+                        AddMissingElement(playlistIndices[0], libraryIndex);
+                        IncrementIndexAndRemoveIndexIfStackEmpty(playlistIndices[0], playlistIndices);
+                    }
+                }
+                loopCounter++;
             }
+            var waitDebug = 0; //TODO remove
         }
 
         private List<object> GetChildrenSorted(MusicLibraryDirectory directory)
@@ -164,7 +163,8 @@ namespace Playlist
             }
             else if (libraryItem is MusicLibraryMissingElement)
             {
-                return (libraryItem as MusicLibraryMissingElement).Children.ToList<object>();
+                var folder = (libraryItem as MusicLibraryMissingElement);
+                return folder.Children.OrderBy(item => item.Name).ToList<object>();
             }
             else if (libraryItem is MusicLibraryFile || libraryItem is MusicLibraryItem)
             {
@@ -264,51 +264,61 @@ namespace Playlist
                                             //this playlist item is missing in the library item
                                             //TODO check which cases end up here
             {
-                MusicLibraryItem parentOfMissingElement = FindParentOfMissingElement(plItem, libraryIndex);
-                MusicLibraryMissingElement missingElement = CreateMissingElement(new PlaylistLink(plItem, playlistIndex.Playlist), parentOfMissingElement);
-                if (parentOfMissingElement is MusicLibraryDirectory)
-                {
-                    var folder = parentOfMissingElement as MusicLibraryDirectory;
-                    switch (plItem.Type)
-                    {
-                        case PlaylistItemType.Song:
-                            folder.Files.Add(missingElement);
-                            break;
-                        case PlaylistItemType.Folder:
-                            folder.Directories.Add(missingElement);
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-                }
-                else
-                {
-                    var folder = parentOfMissingElement as MusicLibraryMissingElement;
-                    folder.Children.Add(missingElement);
-                }
+                MusicLibraryMissingElement missingElement = AddMissingElement(playlistIndex, libraryIndex);
                 comparisonValue = -RecursiveAmountOfElements(missingElement);
             }
             return comparisonValue;
         }
 
-        private MusicLibraryItem FindParentOfMissingElement(PlaylistItem playlistItem, Stack<Index> libraryIndex)
+        private MusicLibraryMissingElement AddMissingElement(PlaylistIndex playlistIndex, Stack<Index> libraryIndex)
         {
-            var tempStack = new Stack<Index>(libraryIndex.Reverse());
-            var temp = TopLibraryItem(tempStack).FullPath; //TODO remove
-            var temp2 = playlistItem.Path;//TODO remove
-            if (0 != playlistItem.Path.CompareTo(TopLibraryItem(tempStack).FullPath))
+            PlaylistItem plItem = TopPlaylistItem(playlistIndex);
+            MusicLibraryItem parentOfMissingElement = FindParentOfMissingElement(plItem, libraryIndex);
+            MusicLibraryMissingElement missingElement = CreateMissingElement(new PlaylistLink(plItem, playlistIndex.Playlist), parentOfMissingElement);
+            if (parentOfMissingElement is MusicLibraryDirectory)
             {
-                var prevDirection = 1;
-                while (0 != playlistItem.Path.CompareTo(TopLibraryItem(tempStack).FullPath) && prevDirection > 0)
+                var folder = parentOfMissingElement as MusicLibraryDirectory;
+                switch (plItem.Type)
                 {
-                    prevDirection = DecrementIndex(tempStack, true);
-                }
-                while (0 != playlistItem.Path.CompareTo(TopLibraryItem(tempStack).FullPath))
-                {
-                    prevDirection = DecrementIndex(tempStack, false);
+                    case PlaylistItemType.Song:
+                        folder.Files.Add(missingElement);
+                        folder.Files = folder.Files.OrderBy(item => item.Name).ToList();
+                        break;
+                    case PlaylistItemType.Folder:
+                        folder.Directories.Add(missingElement);
+                        folder.Directories = folder.Directories.OrderBy(item => item.Name).ToList();
+                        break;
+                    default:
+                        throw new NotImplementedException();
                 }
             }
-            return TopLibraryItem(tempStack);
+            else
+            {
+                var folder = parentOfMissingElement as MusicLibraryMissingElement;
+                folder.Children.Add(missingElement);
+                folder.Children = folder.Children.OrderBy(item => item.Name).ToList();
+            }
+            var childrenOfParent = GetChildrenSorted(TopLibraryItem(libraryIndex));
+            libraryIndex.Push(new Index(childrenOfParent.IndexOf(missingElement), childrenOfParent));
+            return missingElement;
+        }
+
+        private MusicLibraryItem FindParentOfMissingElement(PlaylistItem playlistItem, Stack<Index> libraryIndex)
+        {
+            if (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath))
+            {
+                var prevDirection = 1;
+                while (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath) && prevDirection > 0)
+                {
+                    prevDirection = DecrementIndex(libraryIndex, true);
+                }
+                while (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath))
+                {
+                    prevDirection = DecrementIndex(libraryIndex, false);
+                }
+            }
+            var folder = TopLibraryItem(libraryIndex);
+            return folder;
         }
 
         private int RecursiveAmountOfElements(MusicLibraryMissingElement missingElement)
