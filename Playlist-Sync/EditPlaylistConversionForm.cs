@@ -24,13 +24,54 @@ namespace PlaylistConverterGUI
             titleTextBox.Text = conversion.Title;
             sourcePlaylistFolderTextBox.Text = conversion.SourcePlaylistFolderPath;
             sourcePlaylistTypeComboBox.Text = conversion.SourcePlaylistType.ToString();
-            sourceMusicFolderTextBox.Text = conversion.SourceMusicFolderPath;
             sourceUseSlashAsSeperatorCheckBox.Checked = conversion.SourceUseSlashAsSeperator;
             targetPlaylistFolderTextBox.Text = conversion.TargetPlaylistFolderPath;
             targetPlaylistTypeComboBox.Text = conversion.TargetPlaylistType.ToString();
-            targetMusicFolderTextBox.Text = conversion.TargetMusicFolderPath;
             targetUseSlashAsSeperatorCheckBox.Checked = conversion.TargetUseSlashAsSeperator;
+            MusicFolderPaths = new Dictionary<string, string> (conversion.MusicFolderPaths);
         }
+
+        private Dictionary<string, string> _musicFolderPaths;
+
+        Dictionary<string, string> MusicFolderPaths
+        {
+            get { return _musicFolderPaths; }
+            set
+            {
+                _musicFolderPaths = value;
+                SetConversionElements();
+            }
+        }
+
+        private void SetConversionElements()
+        {
+            conversionsFlowLayoutPanel.Controls.Clear();
+            foreach (var pair in MusicFolderPaths)
+            {
+                FolderLinkElement convElement = new FolderLinkElement(pair);
+                convElement.Width = conversionElementWidth();
+                conversionsFlowLayoutPanel.Controls.Add(convElement);
+                convElement.Remove += ConvElement_Remove;
+                convElement.Changed += ConvElement_Changed;
+            }
+        }
+
+        private void ConvElement_Changed(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ConvElement_Remove(object sender, EventArgs e)
+        {
+            var folderLink = (sender as FolderLinkElement).FolderLink;
+            MusicFolderPaths.Remove(folderLink.Key);
+        }
+
+        private int conversionElementWidth()
+        {
+            return conversionsFlowLayoutPanel.Width - 25;
+        }
+
 
         public Conversion Conversion { get; private set; }
         public event EventHandler OK;
@@ -47,13 +88,10 @@ namespace PlaylistConverterGUI
             Conversion.Title = titleTextBox.Text;
             Conversion.SourcePlaylistFolderPath = sourcePlaylistFolderTextBox.Text;
             Conversion.SourcePlaylistType = (PlaylistType)sourcePlaylistTypeComboBox.SelectedItem;
-            Conversion.SourceMusicFolderPath = sourceMusicFolderTextBox.Text;
             Conversion.SourceUseSlashAsSeperator = sourceUseSlashAsSeperatorCheckBox.Checked;
             Conversion.TargetPlaylistFolderPath = targetPlaylistFolderTextBox.Text;
             Conversion.TargetPlaylistType = (PlaylistType)targetPlaylistTypeComboBox.SelectedItem;
-            Conversion.TargetMusicFolderPath = targetMusicFolderTextBox.Text;
             Conversion.TargetUseSlashAsSeperator = targetUseSlashAsSeperatorCheckBox.Checked;
-
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

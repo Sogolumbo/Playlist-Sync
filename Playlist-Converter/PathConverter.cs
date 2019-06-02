@@ -10,8 +10,7 @@ namespace Playlist
 {
     public class PathConverter
     {
-        public string SourceMusicFolderPath { get; set; }
-        public string TargetMusicFolderPath { get; set; }
+        public Dictionary<string, string> MusicFolderPaths { get; set; }
         public bool SourceUsesSlashesAsDirectorySeperator { get; set; }
         public bool TargetUsesSlashesAsDirectorySeperator { get; set; }
 
@@ -20,8 +19,7 @@ namespace Playlist
 
         public PathConverter()
         {
-            SourceMusicFolderPath = "";
-            TargetMusicFolderPath = "";
+            MusicFolderPaths = new Dictionary<string, string>();
         }
 
         public string[] GetNeutralLines(string[] playlistLines)
@@ -34,7 +32,7 @@ namespace Playlist
             return GetNeutralLines(playlistLines);
         }
 
-        public string[] GetConvertedLines (string[] playlistLines)
+        public string[] GetConvertedLines(string[] playlistLines)
         {
             return ConvertedLines(playlistLines, true);
         }
@@ -49,27 +47,30 @@ namespace Playlist
             _missingLines.Clear();
             List<string> result = new List<string>();
             string line = String.Empty;
-            Regex FolderPathRegex = new Regex(Regex.Escape(SourceMusicFolderPath));
+            string[] sourceFolders = MusicFolderPaths.Keys.ToArray();
+            Regex[] FolderPathRegex = sourceFolders.Select(key => new Regex(Regex.Escape(key))).ToArray();
             foreach (string sourceLine in playlistLines)
             {
-                if (FolderPathRegex.IsMatch(sourceLine))
+                int i = 0;
+                while (!FolderPathRegex[i].IsMatch(sourceLine))
                 {
-                    line = FolderPathRegex.Replace(sourceLine, returnTarget ? TargetMusicFolderPath : "");
-                    if (SourceUsesSlashesAsDirectorySeperator && !TargetUsesSlashesAsDirectorySeperator)
+                    if (i < FolderPathRegex.Length)
                     {
-                        line = line.Replace('/', '\\');
+                        _missingLines.Add(sourceLine);
+                        break;
                     }
-                    if (TargetUsesSlashesAsDirectorySeperator && !SourceUsesSlashesAsDirectorySeperator && returnTarget)
-                    {
-                        line = line.Replace('\\', '/');
-                    }
-                    
-                    result.Add(line);
                 }
-                else
+                line = FolderPathRegex[i].Replace(sourceLine, returnTarget ? MusicFolderPaths[sourceFolders[i]] : "");
+                if (SourceUsesSlashesAsDirectorySeperator && !TargetUsesSlashesAsDirectorySeperator)
                 {
-                    _missingLines.Add(sourceLine);
+                    line = line.Replace('/', '\\');
                 }
+                if (TargetUsesSlashesAsDirectorySeperator && !SourceUsesSlashesAsDirectorySeperator && returnTarget)
+                {
+                    line = line.Replace('\\', '/');
+                }
+
+                result.Add(line);
             }
             result = SortAndRemoveDuplicates(result);
             return result.ToArray();
@@ -86,14 +87,14 @@ namespace Playlist
             return _missingLines.ToArray();
         }
 
-        private List<string> SortAndRemoveDuplicates (List<string> input)
+        private List<string> SortAndRemoveDuplicates(List<string> input)
         {
             _duplicateLines.Clear();
             input.Sort();
             List<string> result = new List<string>();
-            for(int i = 0; i < input.Count; i++)
+            for (int i = 0; i < input.Count; i++)
             {
-                if(result.Count == 0 || result[result.Count - 1] != input[i])
+                if (result.Count == 0 || result[result.Count - 1] != input[i])
                 {
                     result.Add(input[i]);
                 }

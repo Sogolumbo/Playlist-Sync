@@ -51,9 +51,8 @@ namespace PlaylistConverterGUI
             sourceFiles = sourceFiles.Where(file => Regex.IsMatch(file, ".+(\\.playlistsync)?\\.(txt|m3u|playlistsync)")).ToArray();
             PathConverter converter = new PathConverter
             {
-                SourceMusicFolderPath = Conversion.SourceMusicFolderPath,
+                MusicFolderPaths = Conversion.MusicFolderPaths,
                 SourceUsesSlashesAsDirectorySeperator = Conversion.SourceUseSlashAsSeperator,
-                TargetMusicFolderPath = Conversion.TargetMusicFolderPath,
                 TargetUsesSlashesAsDirectorySeperator = Conversion.TargetUseSlashAsSeperator
             };
 

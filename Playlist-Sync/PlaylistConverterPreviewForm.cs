@@ -71,7 +71,13 @@ namespace PlaylistConverterGUI
 
         private void sourceFileMusicFolderTextBox_TextChanged(object sender, EventArgs e)
         {
-            _converter.SourceMusicFolderPath = sourceFileMusicFolderTextBox.Text;
+            SetMusicFolderPaths();
+        }
+
+        private void SetMusicFolderPaths()
+        {
+            _converter.MusicFolderPaths.Clear();
+            _converter.MusicFolderPaths.Add(sourceFileMusicFolderTextBox.Text, targetFileMusicFolderTextBox.Text);
         }
 
         private void sorceFileUsesSlashAsDirectorySeperatorCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -122,7 +128,7 @@ namespace PlaylistConverterGUI
 
         private void targetFileMusicFolderTextBox_TextChanged(object sender, EventArgs e)
         {
-            _converter.TargetMusicFolderPath = targetFileMusicFolderTextBox.Text;
+            SetMusicFolderPaths();
             PreviewTargetFile();
             Properties.Settings.Default.TargetMusicFolder = targetFileMusicFolderTextBox.Text;
             Properties.Settings.Default.Save();

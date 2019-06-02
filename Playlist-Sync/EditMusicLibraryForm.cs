@@ -43,6 +43,8 @@ namespace PlaylistConverterGUI
         }
         private void ReloadPlaylist(TreeNode changedTreeNode)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             if (changedTreeNode.Parent != null)
             {
                 var parent = changedTreeNode.Parent;
@@ -67,8 +69,9 @@ namespace PlaylistConverterGUI
             {
                 ShowLibrary();
             }
-        }
 
+            Cursor.Current = Cursors.Default;
+        }
 
         private void ShowDataOfSelectedNode()
         {
@@ -77,7 +80,21 @@ namespace PlaylistConverterGUI
             itemNameTextBox.Text = libraryItem.Name;
             itemPathTextBox.Text = libraryItem.DirectoryPath;
             selectedItemPlaylistsListBox.Items.Clear();
-            selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
+            if (libraryItem is MusicLibraryFile)
+            {
+                selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
+            }
+            else
+            {
+                int maxLength(int childrenCount) { return Math.Max(2, 70 / childrenCount); }
+                selectedItemPlaylistsListBox.Items.AddRange(
+                    libraryItem.PlaylistItems.Select(
+                        node => node.Playlist
+                        + " ("
+                        + String.Join(", ", node.Item.Children.Select(item => item.Name.Truncate(maxLength(node.Item.Children.Count), true)))
+                        + ")").ToArray()
+                        );
+            }
 
             bool showSongTagData = libraryItem is MusicLibraryFile;
             if (showSongTagData)
@@ -155,7 +172,7 @@ namespace PlaylistConverterGUI
             else
             {
                 result.BackColor = BackcolorFromPlaylistItem(item as MusicLibraryFile);
-                if(item is MusicLibraryMissingElement)
+                if (item is MusicLibraryMissingElement)
                 {
                     result.ForeColor = Color.White;
 
@@ -323,6 +340,7 @@ namespace PlaylistConverterGUI
         }
         private void reloadButton_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             var previouslySelectedNode = libraryTreeView.SelectedNode;
             _library = new MusicLibrary(_playlists, _folders);
             _library.UnauthorizedAccess += _library_UnauthorizedAccess;
@@ -337,6 +355,7 @@ namespace PlaylistConverterGUI
                     libraryTreeView.Focus();
                 }
             }
+            Cursor.Current = Cursors.Default;
         }
 
         private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
@@ -380,11 +399,14 @@ namespace PlaylistConverterGUI
 
         private void _libraryConfiguration_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             _libraryConfiguration = null;
             _library = new MusicLibrary(_playlists, _folders);
             _library.UnauthorizedAccess += _library_UnauthorizedAccess;
             ShowListboxEntries();
             ShowLibrary();
+            Cursor.Current = Cursors.Default;
         }
 
         private void EditMusicLibraryForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -400,6 +422,8 @@ namespace PlaylistConverterGUI
 
         private void EditMusicLibraryForm_Load(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             var folderCollection = Properties.Settings.Default.MusicLibraryFolders;
             var playlistCollection = Properties.Settings.Default.MusicLibraryPlaylists;
             if (folderCollection != null)
@@ -414,6 +438,8 @@ namespace PlaylistConverterGUI
             _library = new MusicLibrary(_playlists, _folders);
             _library.UnauthorizedAccess += _library_UnauthorizedAccess;
             ShowLibrary();
+
+            Cursor.Current = Cursors.Default;
         }
 
         private void debugButton_Click(object sender, EventArgs e)

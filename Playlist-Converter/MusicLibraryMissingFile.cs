@@ -35,7 +35,7 @@ namespace Playlist
                         playlistLink.Item.ChangeName(Name, false);
                     }
                     LocationChange();
-                    if (File.Exists(value))
+                    if (File.Exists(value) || Directory.Exists(value))
                     {
                         Found?.Invoke(this, EventArgs.Empty);
                     }

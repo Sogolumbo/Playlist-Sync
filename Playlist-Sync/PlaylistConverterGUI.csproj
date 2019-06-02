@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FolderLinkElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FolderLinkElement.Designer.cs">
+      <DependentUpon>FolderLinkElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConversionElement.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,8 +105,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExt.cs" />
     <EmbeddedResource Include="ConfigureMusicLibrary.resx">
       <DependentUpon>ConfigureMusicLibrary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FolderLinkElement.resx">
+      <DependentUpon>FolderLinkElement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConversionElement.resx">
       <DependentUpon>ConversionElement.cs</DependentUpon>
