@@ -39,8 +39,7 @@ namespace PlaylistConverterGUI
         {
             libraryTreeView.Nodes.Clear();
             libraryTreeView.Nodes.AddRange(NodesFromLibrary(_library));
-            libraryTreeView.ExpandAll();
-
+            //libraryTreeView.ExpandAll();
         }
         private void ReloadPlaylist(TreeNode changedTreeNode)
         {
@@ -55,7 +54,7 @@ namespace PlaylistConverterGUI
                 if (changedTreeNode.Text != reloadedNode.Text)
                 {
                     index = 0;
-                    while (index < parent.Nodes.Count && reloadedNode.Text.CompareTo(parent.Nodes[index].Text) > 0)
+                    while (index < parent.Nodes.Count && MusicLibrary.CompareFilePaths(reloadedNode.FullPath, parent.Nodes[index].FullPath) > 0)
                     {
                         index++;
                     }
@@ -138,7 +137,7 @@ namespace PlaylistConverterGUI
                     result.Add(NodeFromLibraryItem(folder));
                 }
             }
-            //TODO result = result.OrderBy(node => node.Text).ToList();
+            //TODO result = result.OrderBy(node => node.FullPath).ToList();
             return result.ToArray();
         }
         TreeNode NodeFromLibraryItem(MusicLibraryItem item)
@@ -149,12 +148,21 @@ namespace PlaylistConverterGUI
                 var folder = item as MusicLibraryDirectory;
                 var children = folder.Directories.Select(libraryDirectory => NodeFromLibraryItem(libraryDirectory)).ToList();
                 children.AddRange(folder.Files.Select(libraryFile => NodeFromLibraryItem(libraryFile)));
-                //TODO children.OrderBy(node => node.Text);
+                children.OrderBy(node => node.FullPath);
                 result.Nodes.AddRange(children.ToArray());
+                result.Expand();
             }
             else
             {
                 result.BackColor = BackcolorFromPlaylistItem(item as MusicLibraryFile);
+                if(item is MusicLibraryMissingElement)
+                {
+                    result.ForeColor = Color.White;
+
+                    var folder = item as MusicLibraryMissingElement;
+                    var children = folder.Children.Select(element => NodeFromLibraryItem(element)).ToList();
+                    result.Nodes.AddRange(children.ToArray());
+                }
             }
             return result;
         }

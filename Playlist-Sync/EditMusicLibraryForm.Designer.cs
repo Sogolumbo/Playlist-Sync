@@ -58,9 +58,9 @@
             this.foldersListBox = new System.Windows.Forms.ListBox();
             this.changeFoldersButton = new System.Windows.Forms.Button();
             this.MusicFoldersGroupBox = new System.Windows.Forms.GroupBox();
+            this.openInNotepadButton = new System.Windows.Forms.Button();
             this.playlistListBox = new System.Windows.Forms.ListBox();
             this.debugButton = new System.Windows.Forms.Button();
-            this.openInNotepadButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +72,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.libraryTreeView.Location = new System.Drawing.Point(13, 13);
             this.libraryTreeView.Name = "libraryTreeView";
-            this.libraryTreeView.Size = new System.Drawing.Size(636, 655);
+            this.libraryTreeView.Size = new System.Drawing.Size(695, 655);
             this.libraryTreeView.TabIndex = 0;
             this.libraryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
             // 
@@ -82,7 +82,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemNameTextBox.Location = new System.Drawing.Point(56, 19);
             this.itemNameTextBox.Name = "itemNameTextBox";
-            this.itemNameTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemNameTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemNameTextBox.TabIndex = 2;
             // 
             // itemPathTextBox
@@ -92,7 +92,7 @@
             this.itemPathTextBox.Location = new System.Drawing.Point(56, 72);
             this.itemPathTextBox.Name = "itemPathTextBox";
             this.itemPathTextBox.ReadOnly = true;
-            this.itemPathTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemPathTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemPathTextBox.TabIndex = 3;
             // 
             // itemTitleTextBox
@@ -103,7 +103,7 @@
             this.itemTitleTextBox.Location = new System.Drawing.Point(56, 272);
             this.itemTitleTextBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.itemTitleTextBox.Name = "itemTitleTextBox";
-            this.itemTitleTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemTitleTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemTitleTextBox.TabIndex = 5;
             // 
             // label2
@@ -145,7 +145,7 @@
             // applyButton
             // 
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyButton.Location = new System.Drawing.Point(992, 645);
+            this.applyButton.Location = new System.Drawing.Point(1104, 645);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 11;
@@ -156,7 +156,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(911, 645);
+            this.cancelButton.Location = new System.Drawing.Point(1023, 645);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
@@ -188,9 +188,9 @@
             this.selectedItemGroupBox.Controls.Add(this.label5);
             this.selectedItemGroupBox.Controls.Add(this.label3);
             this.selectedItemGroupBox.Controls.Add(this.label4);
-            this.selectedItemGroupBox.Location = new System.Drawing.Point(658, 237);
+            this.selectedItemGroupBox.Location = new System.Drawing.Point(714, 237);
             this.selectedItemGroupBox.Name = "selectedItemGroupBox";
-            this.selectedItemGroupBox.Size = new System.Drawing.Size(409, 402);
+            this.selectedItemGroupBox.Size = new System.Drawing.Size(465, 402);
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
@@ -203,13 +203,14 @@
             this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 134);
             this.selectedItemPlaylistsListBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.selectedItemPlaylistsListBox.Name = "selectedItemPlaylistsListBox";
-            this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(394, 134);
+            this.selectedItemPlaylistsListBox.Size = new System.Drawing.Size(450, 134);
             this.selectedItemPlaylistsListBox.TabIndex = 27;
             // 
             // artistLinkLabel
             // 
+            this.artistLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.artistLinkLabel.AutoSize = true;
-            this.artistLinkLabel.Location = new System.Drawing.Point(384, 327);
+            this.artistLinkLabel.Location = new System.Drawing.Point(441, 327);
             this.artistLinkLabel.Name = "artistLinkLabel";
             this.artistLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.artistLinkLabel.TabIndex = 22;
@@ -217,8 +218,9 @@
             // 
             // albumLinkLabel
             // 
+            this.albumLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.albumLinkLabel.AutoSize = true;
-            this.albumLinkLabel.Location = new System.Drawing.Point(383, 301);
+            this.albumLinkLabel.Location = new System.Drawing.Point(440, 301);
             this.albumLinkLabel.Name = "albumLinkLabel";
             this.albumLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.albumLinkLabel.TabIndex = 21;
@@ -227,7 +229,7 @@
             // openPathInKid3Button
             // 
             this.openPathInKid3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInKid3Button.Location = new System.Drawing.Point(280, 98);
+            this.openPathInKid3Button.Location = new System.Drawing.Point(336, 98);
             this.openPathInKid3Button.Name = "openPathInKid3Button";
             this.openPathInKid3Button.Size = new System.Drawing.Size(123, 23);
             this.openPathInKid3Button.TabIndex = 20;
@@ -242,13 +244,13 @@
             this.itemGenreTextBox.Enabled = false;
             this.itemGenreTextBox.Location = new System.Drawing.Point(56, 376);
             this.itemGenreTextBox.Name = "itemGenreTextBox";
-            this.itemGenreTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemGenreTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemGenreTextBox.TabIndex = 18;
             // 
             // openPathInExplorerButton
             // 
             this.openPathInExplorerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openPathInExplorerButton.Location = new System.Drawing.Point(151, 98);
+            this.openPathInExplorerButton.Location = new System.Drawing.Point(207, 98);
             this.openPathInExplorerButton.Name = "openPathInExplorerButton";
             this.openPathInExplorerButton.Size = new System.Drawing.Size(123, 23);
             this.openPathInExplorerButton.TabIndex = 19;
@@ -272,7 +274,7 @@
             this.itemTrackNumberTextBox.Enabled = false;
             this.itemTrackNumberTextBox.Location = new System.Drawing.Point(56, 350);
             this.itemTrackNumberTextBox.Name = "itemTrackNumberTextBox";
-            this.itemTrackNumberTextBox.Size = new System.Drawing.Size(347, 20);
+            this.itemTrackNumberTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemTrackNumberTextBox.TabIndex = 16;
             // 
             // label7
@@ -291,7 +293,7 @@
             this.itemArtistTextBox.Enabled = false;
             this.itemArtistTextBox.Location = new System.Drawing.Point(56, 324);
             this.itemArtistTextBox.Name = "itemArtistTextBox";
-            this.itemArtistTextBox.Size = new System.Drawing.Size(322, 20);
+            this.itemArtistTextBox.Size = new System.Drawing.Size(378, 20);
             this.itemArtistTextBox.TabIndex = 14;
             // 
             // label6
@@ -310,7 +312,7 @@
             this.itemAlbumTextBox.Enabled = false;
             this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 298);
             this.itemAlbumTextBox.Name = "itemAlbumTextBox";
-            this.itemAlbumTextBox.Size = new System.Drawing.Size(322, 20);
+            this.itemAlbumTextBox.Size = new System.Drawing.Size(378, 20);
             this.itemAlbumTextBox.TabIndex = 12;
             // 
             // label1
@@ -324,18 +326,20 @@
             // 
             // itemTypeComboBox
             // 
+            this.itemTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.itemTypeComboBox.Enabled = false;
             this.itemTypeComboBox.FormattingEnabled = true;
             this.itemTypeComboBox.Location = new System.Drawing.Point(56, 45);
             this.itemTypeComboBox.Name = "itemTypeComboBox";
-            this.itemTypeComboBox.Size = new System.Drawing.Size(347, 21);
+            this.itemTypeComboBox.Size = new System.Drawing.Size(402, 21);
             this.itemTypeComboBox.TabIndex = 11;
             // 
             // reloadAllButton
             // 
             this.reloadAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadAllButton.Location = new System.Drawing.Point(992, 208);
+            this.reloadAllButton.Location = new System.Drawing.Point(1104, 208);
             this.reloadAllButton.Name = "reloadAllButton";
             this.reloadAllButton.Size = new System.Drawing.Size(75, 23);
             this.reloadAllButton.TabIndex = 18;
@@ -346,7 +350,7 @@
             // reloadSelectedButton
             // 
             this.reloadSelectedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadSelectedButton.Location = new System.Drawing.Point(892, 208);
+            this.reloadSelectedButton.Location = new System.Drawing.Point(1004, 208);
             this.reloadSelectedButton.Name = "reloadSelectedButton";
             this.reloadSelectedButton.Size = new System.Drawing.Size(94, 23);
             this.reloadSelectedButton.TabIndex = 20;
@@ -356,14 +360,13 @@
             // 
             // foldersListBox
             // 
-            this.foldersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.foldersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.foldersListBox.FormattingEnabled = true;
             this.foldersListBox.Location = new System.Drawing.Point(7, 19);
             this.foldersListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.foldersListBox.Name = "foldersListBox";
-            this.foldersListBox.Size = new System.Drawing.Size(166, 134);
+            this.foldersListBox.Size = new System.Drawing.Size(190, 134);
             this.foldersListBox.TabIndex = 21;
             // 
             // changeFoldersButton
@@ -372,7 +375,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeFoldersButton.Location = new System.Drawing.Point(6, 160);
             this.changeFoldersButton.Name = "changeFoldersButton";
-            this.changeFoldersButton.Size = new System.Drawing.Size(325, 23);
+            this.changeFoldersButton.Size = new System.Drawing.Size(378, 23);
             this.changeFoldersButton.TabIndex = 25;
             this.changeFoldersButton.Text = "Edit";
             this.changeFoldersButton.UseVisualStyleBackColor = true;
@@ -385,39 +388,17 @@
             this.MusicFoldersGroupBox.Controls.Add(this.playlistListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.foldersListBox);
             this.MusicFoldersGroupBox.Controls.Add(this.changeFoldersButton);
-            this.MusicFoldersGroupBox.Location = new System.Drawing.Point(655, 13);
+            this.MusicFoldersGroupBox.Location = new System.Drawing.Point(714, 13);
             this.MusicFoldersGroupBox.Name = "MusicFoldersGroupBox";
-            this.MusicFoldersGroupBox.Size = new System.Drawing.Size(412, 189);
+            this.MusicFoldersGroupBox.Size = new System.Drawing.Size(465, 189);
             this.MusicFoldersGroupBox.TabIndex = 27;
             this.MusicFoldersGroupBox.TabStop = false;
             this.MusicFoldersGroupBox.Text = "Folders | Playlists";
             // 
-            // playlistListBox
-            // 
-            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.playlistListBox.FormattingEnabled = true;
-            this.playlistListBox.Location = new System.Drawing.Point(181, 19);
-            this.playlistListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.playlistListBox.Name = "playlistListBox";
-            this.playlistListBox.Size = new System.Drawing.Size(224, 134);
-            this.playlistListBox.TabIndex = 22;
-            // 
-            // debugButton
-            // 
-            this.debugButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.debugButton.Location = new System.Drawing.Point(661, 209);
-            this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(75, 23);
-            this.debugButton.TabIndex = 28;
-            this.debugButton.Text = "Debug";
-            this.debugButton.UseVisualStyleBackColor = true;
-            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
-            // 
             // openInNotepadButton
             // 
-            this.openInNotepadButton.Location = new System.Drawing.Point(337, 159);
+            this.openInNotepadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openInNotepadButton.Location = new System.Drawing.Point(390, 159);
             this.openInNotepadButton.Name = "openInNotepadButton";
             this.openInNotepadButton.Size = new System.Drawing.Size(68, 23);
             this.openInNotepadButton.TabIndex = 26;
@@ -425,11 +406,33 @@
             this.openInNotepadButton.UseVisualStyleBackColor = true;
             this.openInNotepadButton.Click += new System.EventHandler(this.openInNotepadButton_Click);
             // 
+            // playlistListBox
+            // 
+            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.playlistListBox.FormattingEnabled = true;
+            this.playlistListBox.Location = new System.Drawing.Point(207, 19);
+            this.playlistListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playlistListBox.Name = "playlistListBox";
+            this.playlistListBox.Size = new System.Drawing.Size(251, 134);
+            this.playlistListBox.TabIndex = 22;
+            // 
+            // debugButton
+            // 
+            this.debugButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.debugButton.Location = new System.Drawing.Point(714, 208);
+            this.debugButton.Name = "debugButton";
+            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.TabIndex = 28;
+            this.debugButton.Text = "Debug";
+            this.debugButton.UseVisualStyleBackColor = true;
+            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1079, 680);
+            this.ClientSize = new System.Drawing.Size(1191, 680);
             this.Controls.Add(this.debugButton);
             this.Controls.Add(this.MusicFoldersGroupBox);
             this.Controls.Add(this.reloadSelectedButton);

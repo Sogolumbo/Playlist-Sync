@@ -113,7 +113,7 @@ namespace Playlist
                     }
                 }
             }
-            return children.Select(node => new PlaylistItem(node.Value, node.Key, path, PlaylistItemType.Folder, parent, collectItemInfo)).OrderBy(item => item.Name).ToList();
+            return children.Select(node => new PlaylistItem(node.Value, node.Key, path, PlaylistItemType.Folder, parent, collectItemInfo)).OrderBy(item => item.FullPath).ToList();
         }
         public void RescanMediaInfo(bool recursive)
         {

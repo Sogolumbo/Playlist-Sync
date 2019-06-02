@@ -84,10 +84,7 @@ namespace Playlist
 
         public virtual void Reload()
         {
-            foreach (var item in PlaylistItems)
-            {
-                item.Item.RescanMediaInfo(true);
-            }
+
         }
 
         public override string ToString()

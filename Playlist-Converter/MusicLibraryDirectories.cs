@@ -36,7 +36,9 @@ namespace Playlist
         public List<MusicLibraryItem> Files { get; set; }
         public List<MusicLibraryMissingElement> MissingElements { get; set; }
 
-        public override string Name { get => base.Name;
+        public override string Name
+        {
+            get => base.Name;
             set
             {
                 base.Name = value;

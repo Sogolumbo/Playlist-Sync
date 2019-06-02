@@ -11,7 +11,8 @@ namespace Playlist
     {
         public MusicLibraryMissingElement(string fullPath, PlaylistLink playlistLink, MusicLibraryItem parent) : base ()
         {
-            FullPath = fullPath;
+            _name = Path.GetFileName(fullPath);
+            _directoryPath = fullPath.Remove(fullPath.Length - 1 - Name.Length);
             PlaylistItems.Add(playlistLink);
             Children = new List<MusicLibraryMissingElement>();
             Parent = parent;

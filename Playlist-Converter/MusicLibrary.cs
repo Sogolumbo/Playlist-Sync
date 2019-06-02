@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -96,7 +97,7 @@ namespace Playlist
             //TODO remove debugging tools
             int loopCounter = 0;
             int loopCounterDecrement = 0;
-            StringBuilder history = new StringBuilder(); 
+            StringBuilder history = new StringBuilder();
 
             while (!(libraryFinished && playlistIndices.Count == 0)) // TODO && playlistIndices.Count == 0
             {
@@ -104,7 +105,9 @@ namespace Playlist
                 foreach (var plIndex in playlistIndices.ToArray())
                 {
                     var forLoopIndexDebug = playlistIndices.IndexOf(plIndex); //TODO remove
-                    var comparisonValueDebug = TopPlaylistItem(plIndex).FullPath.CompareTo(TopLibraryItem(libraryIndex).FullPath); //TODO remove
+                    var comparisonValueDebug = CompareFilePaths(TopPlaylistItem(plIndex).FullPath,TopLibraryItem(libraryIndex).FullPath); //TODO remove
+                    var temp1 = TopPlaylistItem(plIndex).FullPath;
+                    var temp2 = TopLibraryItem(libraryIndex).FullPath; //TODO remove
                     var comparisonValue = AddPlaylistItem(plIndex, libraryIndex, playlistIndices);
                     if (comparisonValue == 0) // playlistItem has been added => increment playlist index
                     {
@@ -148,7 +151,6 @@ namespace Playlist
                 }
                 loopCounter++;
             }
-            var waitDebug = 0; //TODO remove
         }
 
         private List<object> GetChildrenSorted(MusicLibraryDirectory directory)
@@ -164,7 +166,7 @@ namespace Playlist
             else if (libraryItem is MusicLibraryMissingElement)
             {
                 var folder = (libraryItem as MusicLibraryMissingElement);
-                return folder.Children.OrderBy(item => item.Name).ToList<object>();
+                return folder.Children.OrderBy(item => item.FullPath).ToList<object>();
             }
             else if (libraryItem is MusicLibraryFile || libraryItem is MusicLibraryItem)
             {
@@ -255,7 +257,8 @@ namespace Playlist
         int AddPlaylistItem(PlaylistIndex playlistIndex, Stack<Index> libraryIndex, List<PlaylistIndex> playlistIndices)
         {
             var plItem = TopPlaylistItem(playlistIndex);
-            int comparisonValue = plItem.FullPath.CompareTo(TopLibraryItem(libraryIndex).FullPath);
+
+            int comparisonValue = CompareFilePaths(plItem.FullPath, TopLibraryItem(libraryIndex).FullPath);
             if (comparisonValue == 0) //strings are equal
             {
                 TopLibraryItem(libraryIndex).PlaylistItems.Add(new PlaylistLink(plItem, playlistIndex.Playlist));
@@ -270,6 +273,27 @@ namespace Playlist
             return comparisonValue;
         }
 
+        public static int CompareFilePaths(string filePathA, string filePathB)
+        {
+            string[] pathPartsA = filePathA.Split('\\');
+            string[] pathPartsB = filePathB.Split('\\');
+            return CompareAtoB(pathPartsA, pathPartsB);
+        }
+
+        private static int CompareAtoB(string[] pathPartsA, string[] pathPartsB)
+        {
+            int index = 0;
+            while (pathPartsA[index].CompareTo(pathPartsB[index]) == 0)
+            {
+                index++;
+                if (index >= pathPartsA.Length || index >= pathPartsB.Length)
+                {
+                    return pathPartsA.Length.CompareTo(pathPartsB.Length);
+                }
+            }
+            return pathPartsA[index].CompareTo(pathPartsB[index]);
+        }
+
         private MusicLibraryMissingElement AddMissingElement(PlaylistIndex playlistIndex, Stack<Index> libraryIndex)
         {
             PlaylistItem plItem = TopPlaylistItem(playlistIndex);
@@ -282,11 +306,11 @@ namespace Playlist
                 {
                     case PlaylistItemType.Song:
                         folder.Files.Add(missingElement);
-                        folder.Files = folder.Files.OrderBy(item => item.Name).ToList();
+                        folder.Files = folder.Files.OrderBy(item => item.FullPath).ToList();
                         break;
                     case PlaylistItemType.Folder:
                         folder.Directories.Add(missingElement);
-                        folder.Directories = folder.Directories.OrderBy(item => item.Name).ToList();
+                        folder.Directories = folder.Directories.OrderBy(item => item.FullPath).ToList();
                         break;
                     default:
                         throw new NotImplementedException();
@@ -296,7 +320,7 @@ namespace Playlist
             {
                 var folder = parentOfMissingElement as MusicLibraryMissingElement;
                 folder.Children.Add(missingElement);
-                folder.Children = folder.Children.OrderBy(item => item.Name).ToList();
+                folder.Children = folder.Children.OrderBy(item => item.FullPath).ToList();
             }
             var childrenOfParent = GetChildrenSorted(TopLibraryItem(libraryIndex));
             libraryIndex.Push(new Index(childrenOfParent.IndexOf(missingElement), childrenOfParent));
