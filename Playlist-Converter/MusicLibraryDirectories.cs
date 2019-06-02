@@ -6,26 +6,43 @@ namespace Playlist
 {
     public class MusicLibraryDirectory : MusicLibraryItem
     {
-        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent)
+        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, List<MusicLibraryItem> directories) : this(directoryPath, parent, false)
+        {
+            Directories = directories;
+        }
+        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, bool build = true)
         {
             _name = Path.GetFileName(directoryPath);
-            DirectoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + System.IO.Path.GetFileName(directoryPath)).Length);
-            Parent = parent;
-            Directories = new List<MusicLibraryItem>();
-            Files = new List<MusicLibraryItem>();
-            foreach (string item in Directory.GetDirectories(directoryPath))
+            if (String.IsNullOrEmpty(_name))
             {
-                var dir = new MusicLibraryDirectory(item, this);
-                dir.UnauthorizedAccess += ThrowUnauthorizedAccessException;
-                Directories.Add(dir);
+                _name = directoryPath;
+                DirectoryPath = "";
             }
-            foreach (string item in Directory.GetFiles(directoryPath))
+            else
             {
-                string extensionWithoutDot = Path.GetExtension(item).Substring(1);
-                AudioFileType Type;
-                if (Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type))
+                DirectoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + System.IO.Path.GetFileName(directoryPath)).Length);
+                Parent = parent;
+            }
+            if (Directories == null)
+                Directories = new List<MusicLibraryItem>();
+            if (Files == null)
+                Files = new List<MusicLibraryItem>();
+            if (build)
+            {
+                foreach (string item in Directory.GetDirectories(directoryPath))
                 {
-                    Files.Add(new MusicLibraryFile(item, Type, this));
+                    var dir = new MusicLibraryDirectory(item, this);
+                    dir.UnauthorizedAccess += ThrowUnauthorizedAccessException;
+                    Directories.Add(dir);
+                }
+                foreach (string item in Directory.GetFiles(directoryPath))
+                {
+                    string extensionWithoutDot = Path.GetExtension(item).Substring(1);
+                    AudioFileType Type;
+                    if (Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type))
+                    {
+                        Files.Add(new MusicLibraryFile(item, Type, this));
+                    }
                 }
             }
         }

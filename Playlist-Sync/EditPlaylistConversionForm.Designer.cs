@@ -42,7 +42,7 @@
             this.targetPlaylistTypeComboBox = new System.Windows.Forms.ComboBox();
             this.sourceUseSlashAsSeperatorCheckBox = new System.Windows.Forms.CheckBox();
             this.targetUseSlashAsSeperatorCheckBox = new System.Windows.Forms.CheckBox();
-            this.conversionsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.folderLinksFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -193,16 +193,16 @@
             // 
             // conversionsFlowLayoutPanel
             // 
-            this.conversionsFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.folderLinksFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.conversionsFlowLayoutPanel.AutoScroll = true;
-            this.conversionsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.conversionsFlowLayoutPanel.Location = new System.Drawing.Point(15, 235);
-            this.conversionsFlowLayoutPanel.Name = "conversionsFlowLayoutPanel";
-            this.conversionsFlowLayoutPanel.Size = new System.Drawing.Size(593, 206);
-            this.conversionsFlowLayoutPanel.TabIndex = 22;
-            this.conversionsFlowLayoutPanel.WrapContents = false;
+            this.folderLinksFlowLayoutPanel.AutoScroll = true;
+            this.folderLinksFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.folderLinksFlowLayoutPanel.Location = new System.Drawing.Point(15, 235);
+            this.folderLinksFlowLayoutPanel.Name = "conversionsFlowLayoutPanel";
+            this.folderLinksFlowLayoutPanel.Size = new System.Drawing.Size(593, 142);
+            this.folderLinksFlowLayoutPanel.TabIndex = 22;
+            this.folderLinksFlowLayoutPanel.WrapContents = false;
             // 
             // label1
             // 
@@ -223,6 +223,7 @@
             this.button1.TabIndex = 24;
             this.button1.Text = "Add Folder Link";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // EditPlaylistConversionForm
             // 
@@ -231,7 +232,7 @@
             this.ClientSize = new System.Drawing.Size(620, 487);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.conversionsFlowLayoutPanel);
+            this.Controls.Add(this.folderLinksFlowLayoutPanel);
             this.Controls.Add(this.targetUseSlashAsSeperatorCheckBox);
             this.Controls.Add(this.sourceUseSlashAsSeperatorCheckBox);
             this.Controls.Add(this.targetPlaylistTypeComboBox);
@@ -269,7 +270,7 @@
         private System.Windows.Forms.ComboBox targetPlaylistTypeComboBox;
         private System.Windows.Forms.CheckBox sourceUseSlashAsSeperatorCheckBox;
         private System.Windows.Forms.CheckBox targetUseSlashAsSeperatorCheckBox;
-        private System.Windows.Forms.FlowLayoutPanel conversionsFlowLayoutPanel;
+        private System.Windows.Forms.FlowLayoutPanel folderLinksFlowLayoutPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
     }

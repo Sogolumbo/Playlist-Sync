@@ -147,12 +147,9 @@ namespace PlaylistConverterGUI
         {
             List<TreeNode> result = new List<TreeNode>();
 
-            if (library.MusicFolders != null)
+            if (library.MusicFolders != null && library.MusicFolders.Count > 0)
             {
-                foreach (var folder in library.ItemFolders)
-                {
-                    result.Add(NodeFromLibraryItem(folder));
-                }
+                result.Add(NodeFromLibraryItem(library.ItemFolder));
             }
             //TODO result = result.OrderBy(node => node.FullPath).ToList();
             return result.ToArray();

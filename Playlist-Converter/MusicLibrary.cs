@@ -20,37 +20,130 @@ namespace Playlist
 
             Playlists = playlists;
             MusicFolders = musicDirectories;
-            ItemFolders = ItemFoldersFromMusicDirectories();
+            ItemFolder = ItemFoldersFromMusicDirectories();
         }
 
         public List<PlaylistItem> Playlists { get; set; }
         public List<string> PlaylistFiles { get; set; }
         public List<string> MusicFolders { get; set; }
-        public List<MusicLibraryDirectory> ItemFolders { get; set; }
+        public MusicLibraryDirectory ItemFolder { get; set; }
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
 
 
-        public List<MusicLibraryDirectory> ItemFoldersFromMusicDirectories()
+        public MusicLibraryDirectory ItemFoldersFromMusicDirectories()
         {
             return ItemFoldersFromMusicFolders(MusicFolders, Playlists);
         }
-        public List<MusicLibraryDirectory> ItemFoldersFromMusicFolders(List<string> musicFolders, List<PlaylistItem> playlists)
+        public MusicLibraryDirectory ItemFoldersFromMusicFolders(List<string> musicFolders, List<PlaylistItem> playlists)
         {
-            List<MusicLibraryDirectory> itemFolders = new List<MusicLibraryDirectory>();
-            foreach (string musicFolder in musicFolders)
+            MusicLibraryDirectory itemFolders = null;
+            if (musicFolders.Count > 0)
             {
-                var dir = new MusicLibraryDirectory(musicFolder, null);
+                //first Element
+                var dir = new MusicLibraryDirectory(musicFolders[0], null);
                 dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
-                itemFolders.Add(dir);
+
+                string directory = dir.DirectoryPath;
+                string[] parentDirectories = ParentDirectories(directory, true);
+                MusicLibraryDirectory[] directories = new MusicLibraryDirectory[parentDirectories.Length];
+                for (int i = parentDirectories.Length - 1; i >= 0; i--)
+                {
+                    if (i == parentDirectories.Length - 1)
+                    {
+                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { dir });
+                        dir.Parent = directories[i];
+                    }
+                    else
+                    {
+                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { directories[i + 1] });
+                        directories[i + 1].Parent = directories[i];
+                    }
+                }
+                if (parentDirectories.Length > 0)
+                {
+                    itemFolders = directories[0];
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                //the other elements
+                for (int i = 1; i < musicFolders.Count; i++)
+                {
+                    AddMusicFolderToLibrary(musicFolders[i], itemFolders);
+                }
+
+                AddAllPlaylistItemsToLibraryFolder(playlists, itemFolders);
             }
-            AddAllPlaylistItemsToLibraryFolders(playlists, itemFolders);
             return itemFolders;
+        }
+
+        private void AddMusicFolderToLibrary(string musicFolderPath, MusicLibraryDirectory itemFolders)
+        {
+            var dir = new MusicLibraryDirectory(musicFolderPath, null);
+            dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
+
+            Stack<Index> libraryIndex = new Stack<Index>();
+            libraryIndex.Push(new Index(0, new List<object>() { itemFolders }));
+            bool ElementsFinished = false;
+            while (0 != musicFolderPath.CompareTo(TopLibraryItem(libraryIndex).FullPath) && !ElementsFinished)
+            {
+                ElementsFinished = !IncrementIndex(libraryIndex, true);
+            }
+            if (ElementsFinished)
+            {
+                string[] directories = ParentDirectories(musicFolderPath, false);
+                for (int i = directories.Length - 1; i >= 0; i--)
+                {
+                    libraryIndex.Clear();
+                    libraryIndex.Push(new Index(0, new List<object>() { itemFolders }));
+                    ElementsFinished = false;
+                    while (0 != directories[i].CompareTo(TopLibraryItem(libraryIndex).FullPath) && !ElementsFinished)
+                    {
+                        ElementsFinished = !IncrementIndex(libraryIndex, true);
+                    }
+                    if (!ElementsFinished)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        var prevDir = dir;
+                        dir = new MusicLibraryDirectory(directories[i], null, new List<MusicLibraryItem>() { dir });
+                        prevDir.Parent = dir;
+                    }
+                }
+            }
+            (TopLibraryItem(libraryIndex) as MusicLibraryDirectory).Directories.Add(dir);
+        }
+
+        private static string[] ParentDirectories(string directory, bool includeDirectory = false)
+        {
+            string[] parentDirectories = directory.Split('\\');
+            for (int i = 1; i < parentDirectories.Length; i++)
+            {
+                if (i == 1)
+                {
+                    parentDirectories[i] = parentDirectories[i - 1] + "\\" + parentDirectories[i];
+                }
+                else
+                {
+                    parentDirectories[i] = Path.Combine(parentDirectories[i - 1], parentDirectories[i]);
+                }
+            }
+            if (!includeDirectory)
+            {
+                Array.Resize(ref parentDirectories, parentDirectories.Length - 1);
+            }
+
+            return parentDirectories;
         }
 
         #region new 
 
-        private void AddAllPlaylistItemsToLibraryFolders(List<PlaylistItem> playlists, List<MusicLibraryDirectory> itemFolders) //TODO only accepts non-empty elements in both lists. Both Lists must be sorted
+        private void AddAllPlaylistItemsToLibraryFolder(List<PlaylistItem> playlists, MusicLibraryDirectory itemFolder) //TODO only accepts non-empty elements in both lists. Both Lists must be sorted
         {
             HashSet<PlaylistItem> ignoredPlaylistItems = new HashSet<PlaylistItem>();
 
@@ -58,7 +151,7 @@ namespace Playlist
             List<PlaylistIndex> playlistIndices = new List<PlaylistIndex>(playlists.Count);
             Stack<Index> libraryIndex = new Stack<Index>();
 
-            libraryIndex.Push(new Index(0, itemFolders.ToList<object>()));
+            libraryIndex.Push(new Index(0, new List<object>() { itemFolder }));
             for (int i = 0; i < playlists.Count; i++)
             {
                 var children = playlists[i].Children;
@@ -105,7 +198,7 @@ namespace Playlist
                 foreach (var plIndex in playlistIndices.ToArray())
                 {
                     var forLoopIndexDebug = playlistIndices.IndexOf(plIndex); //TODO remove
-                    var comparisonValueDebug = CompareFilePaths(TopPlaylistItem(plIndex).FullPath,TopLibraryItem(libraryIndex).FullPath); //TODO remove
+                    var comparisonValueDebug = CompareFilePaths(TopPlaylistItem(plIndex).FullPath, TopLibraryItem(libraryIndex).FullPath); //TODO remove
                     var temp1 = TopPlaylistItem(plIndex).FullPath;
                     var temp2 = TopLibraryItem(libraryIndex).FullPath; //TODO remove
                     var comparisonValue = AddPlaylistItem(plIndex, libraryIndex, playlistIndices);
@@ -229,22 +322,50 @@ namespace Playlist
         {
             return IncrementIndex(playlistIndex.Stack);
         }
-        private bool IncrementIndex(Stack<Index> stack)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stack"></param>
+        /// <param name="includeChildren"></param>
+        /// <returns>Ar true if there are elements left, false otherwise</returns>
+        private bool IncrementIndex(Stack<Index> stack, bool includeChildren = false)
         {
-            var TopIndex = stack.Peek();
-            if (TopIndex.Number + 1 < TopIndex.List.Count)
+            List<object> children;
+            if (stack.Peek().Node is MusicLibraryItem)
             {
-                TopIndex.Number++;
-                return true;
-            }
-            else if (stack.Count >= 2)
-            {
-                stack.Pop();
-                return IncrementIndex(stack);
+                children = GetChildrenSorted(stack.Peek().Node as MusicLibraryItem);
             }
             else
             {
-                return false;
+                children = (stack.Peek().Node as PlaylistItem).Children?.ToList<object>();
+            }
+            if (includeChildren && children != null && children.Count > 0)
+            {
+                stack.Push(new Index(0, children));
+                return true;
+            }
+            else
+            {
+                var TopIndex = stack.Peek();
+                if (TopIndex.Number + 1 < TopIndex.List.Count)
+                {
+                    TopIndex.Number++;
+                    return true;
+                }
+                else if (stack.Count >= 2)
+                {
+                    var backup = stack.Pop();
+                    var nextElementExists = IncrementIndex(stack);
+                    if (!nextElementExists)
+                    {
+                        stack.Push(backup);
+                    }
+                    return nextElementExists;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

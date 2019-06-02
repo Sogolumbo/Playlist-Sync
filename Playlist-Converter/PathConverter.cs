@@ -48,18 +48,24 @@ namespace Playlist
             List<string> result = new List<string>();
             string line = String.Empty;
             string[] sourceFolders = MusicFolderPaths.Keys.ToArray();
-            Regex[] FolderPathRegex = sourceFolders.Select(key => new Regex(Regex.Escape(key))).ToArray();
+            Regex[] FolderPathRegex = sourceFolders.Select(key => new Regex("^" + Regex.Escape(key))).ToArray();
             foreach (string sourceLine in playlistLines)
             {
                 int i = 0;
                 while (!FolderPathRegex[i].IsMatch(sourceLine))
                 {
-                    if (i < FolderPathRegex.Length)
+                    if (i + 1 >= FolderPathRegex.Length)
                     {
-                        _missingLines.Add(sourceLine);
                         break;
                     }
+                    i++;
                 }
+                if (!FolderPathRegex[i].IsMatch(sourceLine))
+                {
+                    _missingLines.Add(sourceLine);
+                    continue;
+                }
+
                 line = FolderPathRegex[i].Replace(sourceLine, returnTarget ? MusicFolderPaths[sourceFolders[i]] : "");
                 if (SourceUsesSlashesAsDirectorySeperator && !TargetUsesSlashesAsDirectorySeperator)
                 {
@@ -69,7 +75,6 @@ namespace Playlist
                 {
                     line = line.Replace('\\', '/');
                 }
-
                 result.Add(line);
             }
             result = SortAndRemoveDuplicates(result);

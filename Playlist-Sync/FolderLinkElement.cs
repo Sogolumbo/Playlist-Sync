@@ -20,6 +20,7 @@ namespace PlaylistConverterGUI
         }
         public FolderLinkElement(string source, string target)
         {
+            InitializeComponent();
             sourceTextBox.Text = source;
             targetTextBox.Text = target;
 
@@ -29,6 +30,7 @@ namespace PlaylistConverterGUI
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
+            sourceTextBox.ResetBackColor();
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -51,6 +53,11 @@ namespace PlaylistConverterGUI
         private void removeButton_Click(object sender, EventArgs e)
         {
             Remove?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal void ShowError()
+        {
+            sourceTextBox.BackColor = Color.IndianRed;
         }
     }
 }
