@@ -61,6 +61,8 @@
             this.openInNotepadButton = new System.Windows.Forms.Button();
             this.playlistListBox = new System.Windows.Forms.ListBox();
             this.debugButton = new System.Windows.Forms.Button();
+            this.expandAllButton = new System.Windows.Forms.Button();
+            this.reduceAllButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +86,7 @@
             this.itemNameTextBox.Name = "itemNameTextBox";
             this.itemNameTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemNameTextBox.TabIndex = 2;
+            this.itemNameTextBox.TextChanged += new System.EventHandler(this.itemNameTextBox_TextChanged);
             // 
             // itemPathTextBox
             // 
@@ -428,11 +431,35 @@
             this.debugButton.UseVisualStyleBackColor = true;
             this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
             // 
+            // expandAllButton
+            // 
+            this.expandAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.expandAllButton.Location = new System.Drawing.Point(795, 208);
+            this.expandAllButton.Name = "expandAllButton";
+            this.expandAllButton.Size = new System.Drawing.Size(75, 23);
+            this.expandAllButton.TabIndex = 29;
+            this.expandAllButton.Text = "Expand all";
+            this.expandAllButton.UseVisualStyleBackColor = true;
+            this.expandAllButton.Click += new System.EventHandler(this.expandAllButton_Click);
+            // 
+            // reduceAllButton
+            // 
+            this.reduceAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reduceAllButton.Location = new System.Drawing.Point(876, 208);
+            this.reduceAllButton.Name = "reduceAllButton";
+            this.reduceAllButton.Size = new System.Drawing.Size(75, 23);
+            this.reduceAllButton.TabIndex = 30;
+            this.reduceAllButton.Text = "Reduce all";
+            this.reduceAllButton.UseVisualStyleBackColor = true;
+            this.reduceAllButton.Click += new System.EventHandler(this.reduceAllButton_Click);
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1191, 680);
+            this.Controls.Add(this.reduceAllButton);
+            this.Controls.Add(this.expandAllButton);
             this.Controls.Add(this.debugButton);
             this.Controls.Add(this.MusicFoldersGroupBox);
             this.Controls.Add(this.reloadSelectedButton);
@@ -487,5 +514,7 @@
         private System.Windows.Forms.ListBox playlistListBox;
         private System.Windows.Forms.Button debugButton;
         private System.Windows.Forms.Button openInNotepadButton;
+        private System.Windows.Forms.Button expandAllButton;
+        private System.Windows.Forms.Button reduceAllButton;
     }
 }

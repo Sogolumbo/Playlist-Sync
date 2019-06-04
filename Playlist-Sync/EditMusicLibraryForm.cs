@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Playlist;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace PlaylistConverterGUI
 {
@@ -50,20 +51,35 @@ namespace PlaylistConverterGUI
                 var parent = changedTreeNode.Parent;
                 int index = parent.Nodes.IndexOf(changedTreeNode);
                 var libraryItem = changedTreeNode.Tag as MusicLibraryItem;
-                libraryTreeView.Nodes.Remove(changedTreeNode);
-                libraryItem.Reload();
-                var reloadedNode = NodeFromLibraryItem(libraryItem);
-                if (changedTreeNode.Text != reloadedNode.Text)
+
+                List<MusicLibraryItem> parentsChildren = null;
+                if (libraryItem.Parent is MusicLibraryDirectory)
+                    parentsChildren = (libraryItem.Parent as MusicLibraryDirectory).Children.ToList();
+                if (libraryItem.Parent is MusicLibraryMissingElement)
+                    parentsChildren = (libraryItem.Parent as MusicLibraryMissingElement).Children.ToList<MusicLibraryItem>();
+
+                if (!parentsChildren.Contains(libraryItem))
                 {
-                    index = 0;
-                    while (index < parent.Nodes.Count && MusicLibrary.CompareFilePaths(reloadedNode.FullPath, parent.Nodes[index].FullPath) > 0)
-                    {
-                        index++;
-                    }
+                    ReloadPlaylist(changedTreeNode.Parent);
                 }
-                parent.Nodes.Insert(index, reloadedNode);
-                reloadedNode.ExpandAll();
-                libraryTreeView.SelectedNode = reloadedNode;
+                else
+                {
+                    libraryTreeView.Nodes.Remove(changedTreeNode);
+                    libraryItem.Reload();
+                    var reloadedNode = NodeFromLibraryItem(libraryItem);
+                    if (changedTreeNode.Text != reloadedNode.Text)
+                    {
+                        index = 0;
+                        while (index < parent.Nodes.Count && MusicLibrary.CompareFilePaths(libraryItem.FullPath, parent.Nodes[index].FullPath) > 0)
+                        {
+                            index++;
+                        }
+                    }
+                    parent.Nodes.Insert(index, reloadedNode);
+                    //TODO remove  reloadedNode.ExpandAll();
+                    libraryTreeView.SelectedNode = reloadedNode;
+                }
+
             }
             else
             {
@@ -80,7 +96,7 @@ namespace PlaylistConverterGUI
             itemNameTextBox.Text = libraryItem.Name;
             itemPathTextBox.Text = libraryItem.DirectoryPath;
             selectedItemPlaylistsListBox.Items.Clear();
-            if (libraryItem is MusicLibraryFile)
+            if (libraryItem.IsFile())
             {
                 selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
             }
@@ -450,6 +466,40 @@ namespace PlaylistConverterGUI
                 var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
                 OpenPlaylistInNotepad(playlistPath);
             }
+        }
+
+        private void expandAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.ExpandAll();
+        }
+
+        private void reduceAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.CollapseAll();
+        }
+
+        private void itemNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!IsValidFilename(itemNameTextBox.Text))
+            {
+                itemNameTextBox.BackColor = Color.FromArgb(250, 210, 220);
+                applyButton.Enabled = false;
+            }
+            else
+            {
+                itemNameTextBox.ResetBackColor();
+                applyButton.Enabled = true;
+            }
+        }
+
+        private bool IsValidFilename(string testName)
+        {
+            string strTheseAreInvalidFileNameChars = new string(Path.GetInvalidFileNameChars());
+            Regex regInvalidFileName = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
+
+            if (regInvalidFileName.IsMatch(testName)) { return false; };
+
+            return true;
         }
     }
 }

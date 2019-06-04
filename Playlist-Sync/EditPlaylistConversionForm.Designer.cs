@@ -191,7 +191,7 @@
             this.targetUseSlashAsSeperatorCheckBox.Text = "Target uses slashes as seperator";
             this.targetUseSlashAsSeperatorCheckBox.UseVisualStyleBackColor = true;
             // 
-            // conversionsFlowLayoutPanel
+            // folderLinksFlowLayoutPanel
             // 
             this.folderLinksFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -199,8 +199,8 @@
             this.folderLinksFlowLayoutPanel.AutoScroll = true;
             this.folderLinksFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.folderLinksFlowLayoutPanel.Location = new System.Drawing.Point(15, 235);
-            this.folderLinksFlowLayoutPanel.Name = "conversionsFlowLayoutPanel";
-            this.folderLinksFlowLayoutPanel.Size = new System.Drawing.Size(593, 142);
+            this.folderLinksFlowLayoutPanel.Name = "folderLinksFlowLayoutPanel";
+            this.folderLinksFlowLayoutPanel.Size = new System.Drawing.Size(593, 206);
             this.folderLinksFlowLayoutPanel.TabIndex = 22;
             this.folderLinksFlowLayoutPanel.WrapContents = false;
             // 

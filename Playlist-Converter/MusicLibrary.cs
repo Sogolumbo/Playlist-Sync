@@ -479,25 +479,25 @@ namespace Playlist
         private MusicLibraryMissingElement CreateMissingElement(PlaylistLink playlistLink, MusicLibraryItem parent)
         {
             var missingElement = new MusicLibraryMissingElement(playlistLink.Item.FullPath, playlistLink, parent);
-            AddAllChildrenToMissingElement(missingElement, playlistLink, parent);
+            AddAllChildrenToMissingElement(missingElement, playlistLink);
             missingElement.Found += MissingElement_Found;
             return missingElement;
         }
 
-        private void AddAllChildrenToMissingElement(MusicLibraryMissingElement missingElement, PlaylistLink playlistLink, MusicLibraryItem parent)
+        private void AddAllChildrenToMissingElement(MusicLibraryMissingElement missingElement, PlaylistLink playlistLink)
         {
             if (playlistLink.Item.Children != null)
             {
                 foreach (var item in playlistLink.Item.Children)
                 {
-                    missingElement.Children.Add(CreateMissingElement(new PlaylistLink(item, playlistLink.Playlist), parent));
+                    missingElement.Children.Add(CreateMissingElement(new PlaylistLink(item, playlistLink.Playlist), missingElement));
                 }
             }
         }
 
         private void MissingElement_Found(object sender, EventArgs e)
         {
-            throw new NotImplementedException("MissingElement_Found not implemented. " + (sender as MusicLibraryMissingElement).FullPath);
+            throw new NotImplementedException("MissingElement_Found not implemented. " + (sender as MusicLibraryMissingElement).FullPath); //TODO
         }
         #endregion
 

@@ -52,13 +52,14 @@
             // 
             // foldersListBox
             // 
-            this.foldersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.foldersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.foldersListBox.FormattingEnabled = true;
             this.foldersListBox.Location = new System.Drawing.Point(6, 19);
             this.foldersListBox.Name = "foldersListBox";
-            this.foldersListBox.Size = new System.Drawing.Size(249, 355);
-            this.foldersListBox.TabIndex = 0;
+            this.foldersListBox.Size = new System.Drawing.Size(369, 355);
+            this.foldersListBox.TabIndex = 1;
             this.foldersListBox.SelectedValueChanged += new System.EventHandler(this.foldersListBox_SelectedValueChanged);
             // 
             // groupBox1
@@ -68,17 +69,17 @@
             this.groupBox1.Controls.Add(this.foldersListBox);
             this.groupBox1.Location = new System.Drawing.Point(12, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(261, 387);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.Size = new System.Drawing.Size(381, 387);
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Folders";
             // 
             // AddFolderButton
             // 
-            this.AddFolderButton.Location = new System.Drawing.Point(873, 244);
+            this.AddFolderButton.Location = new System.Drawing.Point(1085, 245);
             this.AddFolderButton.Name = "AddFolderButton";
             this.AddFolderButton.Size = new System.Drawing.Size(378, 23);
-            this.AddFolderButton.TabIndex = 2;
+            this.AddFolderButton.TabIndex = 50;
             this.AddFolderButton.Text = "Add Folder";
             this.AddFolderButton.UseVisualStyleBackColor = true;
             this.AddFolderButton.Click += new System.EventHandler(this.AddFolderButton_Click);
@@ -88,10 +89,10 @@
             this.groupBox2.Controls.Add(this.removeSelectedFolderButton);
             this.groupBox2.Controls.Add(this.selectedFolderFilepathLabel);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(873, 150);
+            this.groupBox2.Location = new System.Drawing.Point(1085, 151);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(378, 88);
-            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabIndex = 40;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Selected Folder";
             // 
@@ -103,7 +104,7 @@
             this.removeSelectedFolderButton.Location = new System.Drawing.Point(6, 59);
             this.removeSelectedFolderButton.Name = "removeSelectedFolderButton";
             this.removeSelectedFolderButton.Size = new System.Drawing.Size(366, 23);
-            this.removeSelectedFolderButton.TabIndex = 3;
+            this.removeSelectedFolderButton.TabIndex = 41;
             this.removeSelectedFolderButton.Text = "Remove selected Folder";
             this.removeSelectedFolderButton.UseVisualStyleBackColor = true;
             this.removeSelectedFolderButton.Click += new System.EventHandler(this.removeSelectedFolderButton_Click);
@@ -133,30 +134,31 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox3.Controls.Add(this.playlistListBox);
-            this.groupBox3.Location = new System.Drawing.Point(279, 13);
+            this.groupBox3.Location = new System.Drawing.Point(399, 13);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(588, 387);
-            this.groupBox3.TabIndex = 3;
+            this.groupBox3.Size = new System.Drawing.Size(680, 387);
+            this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Playlists";
             // 
             // playlistListBox
             // 
-            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.playlistListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.playlistListBox.FormattingEnabled = true;
             this.playlistListBox.Location = new System.Drawing.Point(6, 19);
             this.playlistListBox.Name = "playlistListBox";
-            this.playlistListBox.Size = new System.Drawing.Size(576, 355);
-            this.playlistListBox.TabIndex = 0;
+            this.playlistListBox.Size = new System.Drawing.Size(668, 355);
+            this.playlistListBox.TabIndex = 11;
             this.playlistListBox.SelectedValueChanged += new System.EventHandler(this.playlistsListBox_SelectedValueChanged);
             // 
             // AddPlaylistButton
             // 
-            this.AddPlaylistButton.Location = new System.Drawing.Point(873, 121);
+            this.AddPlaylistButton.Location = new System.Drawing.Point(1085, 122);
             this.AddPlaylistButton.Name = "AddPlaylistButton";
             this.AddPlaylistButton.Size = new System.Drawing.Size(381, 23);
-            this.AddPlaylistButton.TabIndex = 3;
+            this.AddPlaylistButton.TabIndex = 30;
             this.AddPlaylistButton.Text = "Add Playlists";
             this.AddPlaylistButton.UseVisualStyleBackColor = true;
             this.AddPlaylistButton.Click += new System.EventHandler(this.AddPlaylistButton_Click);
@@ -166,10 +168,10 @@
             this.groupBox4.Controls.Add(this.removeSelectedPlaylistButton);
             this.groupBox4.Controls.Add(this.selectedPlaylistFilepathLabel);
             this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Location = new System.Drawing.Point(873, 12);
+            this.groupBox4.Location = new System.Drawing.Point(1085, 13);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(381, 103);
-            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Selected Playlist";
             // 
@@ -181,7 +183,7 @@
             this.removeSelectedPlaylistButton.Location = new System.Drawing.Point(6, 74);
             this.removeSelectedPlaylistButton.Name = "removeSelectedPlaylistButton";
             this.removeSelectedPlaylistButton.Size = new System.Drawing.Size(369, 23);
-            this.removeSelectedPlaylistButton.TabIndex = 4;
+            this.removeSelectedPlaylistButton.TabIndex = 21;
             this.removeSelectedPlaylistButton.Text = "Remove selected Playlist";
             this.removeSelectedPlaylistButton.UseVisualStyleBackColor = true;
             this.removeSelectedPlaylistButton.Click += new System.EventHandler(this.removeSelectedPlaylistButton_Click);
@@ -215,7 +217,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1263, 412);
+            this.ClientSize = new System.Drawing.Size(1478, 412);
             this.Controls.Add(this.AddFolderButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);

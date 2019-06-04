@@ -49,7 +49,7 @@ namespace PlaylistConverterGUI
 
         public event EventHandler Remove;
         public event EventHandler Changed;
-        
+
         private void removeButton_Click(object sender, EventArgs e)
         {
             Remove?.Invoke(this, EventArgs.Empty);
@@ -57,7 +57,7 @@ namespace PlaylistConverterGUI
 
         internal void ShowError()
         {
-            sourceTextBox.BackColor = Color.IndianRed;
+            sourceTextBox.BackColor = Color.FromArgb(250, 210, 220);
         }
     }
 }

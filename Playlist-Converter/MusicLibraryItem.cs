@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Playlist
 {
@@ -22,14 +23,34 @@ namespace Playlist
                 var nameChanged = value != _name;
                 if (nameChanged)
                 {
-                    if(value.ToLower() == _name.ToLower())
+                    if (Parent != null && (Parent as MusicLibraryDirectory).Directories.Select(dir => dir.Name).Contains(value))
                     {
-                        var temporaryName = "temp_" + value;
-                        ChangeFileSystemName(temporaryName);
-                        _name = temporaryName;
+                        if (IsFile())
+                        {
+                            throw new NotImplementedException(); //fire custom "file already exists" event
+                        }
+                        else if(this is MusicLibraryMissingElement) // missing folder
+                        {
+                            var dir = this as MusicLibraryMissingElement;
+                            throw new NotImplementedException(); //join the two directories
+                        }
+                        else // existing folder
+                        {
+                            var dir = this as MusicLibraryDirectory;
+                            throw new NotImplementedException(); //join the two directories
+                        }
                     }
-                    ChangeFileSystemName(value);
-                    _name = value;
+                    else
+                    {
+                        if (value.ToLower() == _name.ToLower())
+                        {
+                            var temporaryName = "temp_" + value;
+                            ChangeFileSystemName(temporaryName);
+                            _name = temporaryName;
+                        }
+                        ChangeFileSystemName(value);
+                        _name = value;
+                    }
                     foreach (var playlistLink in PlaylistItems)
                     {
                         playlistLink.Item.ChangeName(Name, false);
@@ -39,9 +60,34 @@ namespace Playlist
             }
         }
 
+        public bool IsFile()
+        {
+            return this is MusicLibraryFile || (this is MusicLibraryMissingElement && (this as MusicLibraryMissingElement).Type == PlaylistItemType.Song);
+        }
+
         protected virtual void LocationChange()
         {
-            
+
+        }
+
+        protected void AttachItemsTo(MusicLibraryItem musicLibraryItem, IEnumerable<MusicLibraryItem> items)
+        {
+            if (musicLibraryItem is MusicLibraryMissingElement)
+                (musicLibraryItem as MusicLibraryMissingElement).Children.AddRange(items.Cast<MusicLibraryMissingElement>());
+            else
+            {
+                foreach (MusicLibraryItem item in items)
+                {
+                    if (item.IsFile())
+                    {
+                        (musicLibraryItem as MusicLibraryDirectory).Files.Add(item);
+                    }
+                    else
+                    {
+                        (musicLibraryItem as MusicLibraryDirectory).Directories.Add(item);
+                    }
+                }
+            }
         }
 
         public string DirectoryPath
@@ -105,11 +151,11 @@ namespace Playlist
             {
                 try
                 {
-                    if (GetType() == typeof(MusicLibraryFile))
+                    if (this is MusicLibraryFile)
                     {
                         File.Move(FullPath, DirectoryPath + "\\" + newName);
                     }
-                    else if (GetType() == typeof(MusicLibraryDirectory))
+                    else if (this is MusicLibraryDirectory)
                     {
                         Directory.Move(FullPath, DirectoryPath + "\\" + newName);
                     }

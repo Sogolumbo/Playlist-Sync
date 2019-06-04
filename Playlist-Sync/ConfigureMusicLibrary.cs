@@ -20,14 +20,19 @@ namespace PlaylistConverterGUI
             playlistListBox.Tag = Playlists;
             foldersListBox.Tag = Folders;
             ShowEntries();
+            foldersListBox.Focus();
         }
 
         private void ShowEntries()
         {
             playlistListBox.Items.Clear();
             playlistListBox.Items.AddRange(Playlists.ToArray());
+            if(playlistListBox.Items.Count > 0)
+                playlistListBox.SelectedIndex = 0;
             foldersListBox.Items.Clear();
             foldersListBox.Items.AddRange(Folders.ToArray());
+            if (foldersListBox.Items.Count > 0)
+                foldersListBox.SelectedIndex = 0;
         }
 
         public List<string> Playlists { get; set; }
@@ -54,6 +59,7 @@ namespace PlaylistConverterGUI
             Folders.Remove((string)removeSelectedFolderButton.Tag);
             removeSelectedFolderButton.Enabled = false;
             ShowEntries();
+            foldersListBox.Focus();
         }
 
         private void removeSelectedPlaylistButton_Click(object sender, EventArgs e)
@@ -61,6 +67,7 @@ namespace PlaylistConverterGUI
             Playlists.Remove((string)removeSelectedPlaylistButton.Tag);
             removeSelectedPlaylistButton.Enabled = false;
             ShowEntries();
+            playlistListBox.Focus();
         }
 
         private void AddPlaylistButton_Click(object sender, EventArgs e)

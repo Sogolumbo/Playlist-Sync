@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Playlist
 {
@@ -91,6 +92,11 @@ namespace Playlist
                 item.Reload();
             }
             base.Reload();
+        }
+
+        public IEnumerable<MusicLibraryItem> Children
+        {
+            get => Files.Concat(Directories);
         }
     }
 }

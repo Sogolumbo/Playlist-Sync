@@ -74,17 +74,20 @@ namespace PlaylistConverterGUI
         private void FolderLink_Changed(object sender, EventArgs e)
         {
             MusicFolderPaths.Clear();
+            bool noErrors = true;
             foreach (FolderLinkElement folderLink in folderLinksFlowLayoutPanel.Controls)
             {
                 try
                 {
                     MusicFolderPaths.Add(folderLink.SourceFolder, folderLink.TargetFolder);
                 }
-                catch(Exception ex) //TODO name explicit exception
+                catch(ArgumentException ex) //TODO name explicit exception
                 {
                     folderLink.ShowError();
+                    noErrors = false;
                 }
             }
+            OKButton.Enabled = noErrors;
         }
 
         private void FolderLink_Remove(object sender, EventArgs e)
