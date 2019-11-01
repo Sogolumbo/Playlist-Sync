@@ -154,7 +154,7 @@ namespace Playlist
             }
             catch (Exception ex)
             {
-                if (ex is System.IO.IOException && UnauthorizedAccess != null)
+                if ((ex is System.IO.IOException || ex is System.UnauthorizedAccessException) && UnauthorizedAccess != null)
                 {
                     UnauthorizedAccess?.Invoke(this, new UnauthorizedAccessEventArgs(FilePath, PlaylistItemType.Song, ex));
                 }
