@@ -210,7 +210,7 @@ namespace Playlist
             while (!(success || cancel));
         }
 
-        protected void ThrowUnauthorizedAccessException(object sender, UnauthorizedAccessEventArgs args)
+        internal void ThrowUnauthorizedAccessException(object sender, UnauthorizedAccessEventArgs args)
         {
             if (UnauthorizedAccess != null)
             {
