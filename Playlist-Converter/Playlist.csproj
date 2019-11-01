@@ -54,6 +54,7 @@
     <Compile Include="AudioFileTag.cs" />
     <Compile Include="Conversion.cs" />
     <Compile Include="Index.cs" />
+    <Compile Include="Indexing.cs" />
     <Compile Include="MusicLibrary.cs" />
     <Compile Include="MusicLibraryDirectories.cs" />
     <Compile Include="MusicLibraryFile.cs" />

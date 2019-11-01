@@ -17,11 +17,11 @@ namespace Playlist
             if (String.IsNullOrEmpty(_name))
             {
                 _name = directoryPath;
-                DirectoryPath = "";
+                _directoryPath = "";
             }
             else
             {
-                DirectoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + System.IO.Path.GetFileName(directoryPath)).Length);
+                _directoryPath = directoryPath.Remove(directoryPath.Length - ("\\" + Path.GetFileName(directoryPath)).Length);
                 Parent = parent;
             }
             if (Directories == null)
@@ -39,10 +39,17 @@ namespace Playlist
                 foreach (string item in Directory.GetFiles(directoryPath))
                 {
                     string extensionWithoutDot = Path.GetExtension(item).Substring(1);
+                    string[] ignoredDataTypes = new string[] { "jpg", "png", "m3u", "wpl", "pls", "ini", "ffs_db", "db", "pdf"};
                     AudioFileType Type;
                     if (Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type))
                     {
-                        Files.Add(new MusicLibraryFile(item, Type, this));
+                        var file = new MusicLibraryFile(item, Type, this);
+                        Files.Add(file);
+                        file.UnauthorizedAccess += ThrowUnauthorizedAccessException;
+                    }
+                    else if(!(ignoredDataTypes.Contains(extensionWithoutDot)) && item[0] != '.')
+                    {
+                        throw new NotImplementedException("There is a file (" + item + ")of type " + extensionWithoutDot + ". This program doesn't know what type it is (Audio or Playlist File or Cover Art?).");
                     }
                 }
             }
@@ -97,6 +104,15 @@ namespace Playlist
         public IEnumerable<MusicLibraryItem> Children
         {
             get => Files.Concat(Directories);
+        }
+
+        protected override void LocationChange()
+        {
+            foreach (MusicLibraryItem item in Children)
+            {
+                item.DirectoryPath = FullPath;
+            }
+            base.LocationChange();
         }
     }
 }

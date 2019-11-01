@@ -180,8 +180,10 @@ namespace Playlist
     public enum AudioFileType
     {
         mp3,
+        mp4,
         wma,
         wav,
-        m4a
+        m4a,
+        flac
     }
 }

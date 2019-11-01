@@ -23,33 +23,34 @@ namespace Playlist
                 var nameChanged = value != _name;
                 if (nameChanged)
                 {
-                    if (Parent != null && (Parent as MusicLibraryDirectory).Directories.Select(dir => dir.Name).Contains(value))
+                    if (Parent != null && (Parent as MusicLibraryDirectory).Directories.Where(dir => dir.Name == value).Count() > 0)
                     {
                         if (IsFile())
                         {
-                            throw new NotImplementedException(); //fire custom "file already exists" event
+                            throw new NotImplementedException(); //TODO fire custom "file already exists" event
                         }
-                        else if(this is MusicLibraryMissingElement) // missing folder
+                        else if (this is MusicLibraryMissingElement) // this is a missing folder
                         {
                             var dir = this as MusicLibraryMissingElement;
-                            throw new NotImplementedException(); //join the two directories
+                            throw new NotImplementedException(); //TODO join the two directories
                         }
                         else // existing folder
                         {
-                            var dir = this as MusicLibraryDirectory;
-                            throw new NotImplementedException(); //join the two directories
+                            var item = (Parent as MusicLibraryDirectory).Directories.First(dir => dir.Name == value);
+                            if (item is MusicLibraryMissingElement)
+                            {
+                                ChangeName(value);
+                                (item as MusicLibraryMissingElement).CheckExistence();
+                            }
+                            else
+                            {
+                                throw new NotImplementedException(); //TODO join the two directories
+                            }
                         }
                     }
                     else
                     {
-                        if (value.ToLower() == _name.ToLower())
-                        {
-                            var temporaryName = "temp_" + value;
-                            ChangeFileSystemName(temporaryName);
-                            _name = temporaryName;
-                        }
-                        ChangeFileSystemName(value);
-                        _name = value;
+                        ChangeName(value);
                     }
                     foreach (var playlistLink in PlaylistItems)
                     {
@@ -58,6 +59,18 @@ namespace Playlist
                     LocationChange();
                 }
             }
+        }
+
+        private void ChangeName(string value)
+        {
+            if (value.ToLower() == _name.ToLower())
+            {
+                var temporaryName = "temp_" + value;
+                ChangeFileSystemName(temporaryName);
+                _name = temporaryName;
+            }
+            ChangeFileSystemName(value);
+            _name = value;
         }
 
         public bool IsFile()
@@ -86,6 +99,7 @@ namespace Playlist
                     {
                         (musicLibraryItem as MusicLibraryDirectory).Directories.Add(item);
                     }
+                    item.UnauthorizedAccess += musicLibraryItem.UnauthorizedAccess;
                 }
             }
         }
@@ -98,6 +112,10 @@ namespace Playlist
                 if (value != _directoryPath)
                 {
                     _directoryPath = value;
+                    foreach (var playlistLink in PlaylistItems)
+                    {
+                        playlistLink.Item.ChangePath(_directoryPath, false);
+                    }
                     LocationChange();
                 }
             }
@@ -140,6 +158,13 @@ namespace Playlist
 
         protected virtual void ChangeFileSystemName(string newName)
         {
+            string oldPath = FullPath;
+            string newPath = DirectoryPath + "\\" + newName;
+            MoveFilesystemItem(oldPath, newPath);
+        }
+
+        internal virtual void MoveFilesystemItem(string oldPath, string newPath)
+        {
             bool success = false;
             bool cancel = false;
             PlaylistItemType type = PlaylistItemType.Song;
@@ -153,11 +178,11 @@ namespace Playlist
                 {
                     if (this is MusicLibraryFile)
                     {
-                        File.Move(FullPath, DirectoryPath + "\\" + newName);
+                        File.Move(oldPath, newPath);
                     }
                     else if (this is MusicLibraryDirectory)
                     {
-                        Directory.Move(FullPath, DirectoryPath + "\\" + newName);
+                        Directory.Move(oldPath, newPath);
                     }
                     else
                     {
@@ -172,7 +197,7 @@ namespace Playlist
                     if ((ex is UnauthorizedAccessException || ex is IOException) && UnauthorizedAccess != null)
                     {
                         success = false;
-                        var unauthorisedEventArgs = new UnauthorizedAccessEventArgs(FullPath, type, ex);
+                        var unauthorisedEventArgs = new UnauthorizedAccessEventArgs(oldPath, type, ex);
                         ThrowUnauthorizedAccessException(this, unauthorisedEventArgs);
                         cancel = unauthorisedEventArgs.Cancel;
                     }
@@ -184,6 +209,7 @@ namespace Playlist
             }
             while (!(success || cancel));
         }
+
         protected void ThrowUnauthorizedAccessException(object sender, UnauthorizedAccessEventArgs args)
         {
             if (UnauthorizedAccess != null)
@@ -194,6 +220,16 @@ namespace Playlist
             {
                 throw args.OriginalException;
             }
+        }
+
+        public static void InsertItemOrdered<T>(MusicLibraryItem item, List<T> list) where T : MusicLibraryItem
+        {
+            int index = 0;
+            while (index < list.Count && MusicLibrary.CompareFilePaths(item.FullPath, list[index].FullPath) > 0)
+            {
+                index++;
+            }
+            list.Insert(index, (T)item);
         }
 
         protected string _name = String.Empty;

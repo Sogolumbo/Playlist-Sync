@@ -41,6 +41,11 @@ namespace Playlist
             string[] playlistLines = File.ReadAllLines(playlistFilePath);
             return GetConvertedLines(playlistLines);
         }
+        public string[] GetConvertedLines(string playlistFilePath, Encoding encoding)
+        {
+            string[] playlistLines = File.ReadAllLines(playlistFilePath, encoding);
+            return GetConvertedLines(playlistLines);
+        }
 
         private string[] ConvertedLines(string[] playlistLines, bool returnTarget)
         {

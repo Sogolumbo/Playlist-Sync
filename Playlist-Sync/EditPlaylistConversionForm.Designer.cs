@@ -45,22 +45,26 @@
             this.folderLinksFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.targetFileNamePrefixTextBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TargetFileTypeSuffixTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // titleTextBox
             // 
             this.titleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.titleTextBox.Location = new System.Drawing.Point(125, 12);
+            this.titleTextBox.Location = new System.Drawing.Point(132, 12);
             this.titleTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(483, 20);
+            this.titleTextBox.Size = new System.Drawing.Size(476, 20);
             this.titleTextBox.TabIndex = 0;
             // 
             // OKButton
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.Location = new System.Drawing.Point(533, 453);
+            this.OKButton.Location = new System.Drawing.Point(533, 517);
             this.OKButton.Margin = new System.Windows.Forms.Padding(3, 9, 3, 3);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(75, 23);
@@ -72,7 +76,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(452, 453);
+            this.cancelButton.Location = new System.Drawing.Point(452, 517);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 9, 3, 3);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
@@ -103,9 +107,9 @@
             // 
             this.sourcePlaylistFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sourcePlaylistFolderTextBox.Location = new System.Drawing.Point(125, 50);
+            this.sourcePlaylistFolderTextBox.Location = new System.Drawing.Point(132, 50);
             this.sourcePlaylistFolderTextBox.Name = "sourcePlaylistFolderTextBox";
-            this.sourcePlaylistFolderTextBox.Size = new System.Drawing.Size(483, 20);
+            this.sourcePlaylistFolderTextBox.Size = new System.Drawing.Size(476, 20);
             this.sourcePlaylistFolderTextBox.TabIndex = 4;
             // 
             // sourcePlaylistTypeLabel
@@ -131,9 +135,9 @@
             // 
             this.targetPlaylistFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPlaylistFolderTextBox.Location = new System.Drawing.Point(125, 133);
+            this.targetPlaylistFolderTextBox.Location = new System.Drawing.Point(132, 133);
             this.targetPlaylistFolderTextBox.Name = "targetPlaylistFolderTextBox";
-            this.targetPlaylistFolderTextBox.Size = new System.Drawing.Size(483, 20);
+            this.targetPlaylistFolderTextBox.Size = new System.Drawing.Size(476, 20);
             this.targetPlaylistFolderTextBox.TabIndex = 8;
             // 
             // targetPlaylistTypeLabel
@@ -151,9 +155,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.sourcePlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sourcePlaylistTypeComboBox.FormattingEnabled = true;
-            this.sourcePlaylistTypeComboBox.Location = new System.Drawing.Point(125, 76);
+            this.sourcePlaylistTypeComboBox.Location = new System.Drawing.Point(132, 76);
             this.sourcePlaylistTypeComboBox.Name = "sourcePlaylistTypeComboBox";
-            this.sourcePlaylistTypeComboBox.Size = new System.Drawing.Size(483, 21);
+            this.sourcePlaylistTypeComboBox.Size = new System.Drawing.Size(476, 21);
             this.sourcePlaylistTypeComboBox.TabIndex = 12;
             // 
             // targetPlaylistTypeComboBox
@@ -162,9 +166,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.targetPlaylistTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.targetPlaylistTypeComboBox.FormattingEnabled = true;
-            this.targetPlaylistTypeComboBox.Location = new System.Drawing.Point(125, 159);
+            this.targetPlaylistTypeComboBox.Location = new System.Drawing.Point(132, 159);
             this.targetPlaylistTypeComboBox.Name = "targetPlaylistTypeComboBox";
-            this.targetPlaylistTypeComboBox.Size = new System.Drawing.Size(483, 21);
+            this.targetPlaylistTypeComboBox.Size = new System.Drawing.Size(476, 21);
             this.targetPlaylistTypeComboBox.TabIndex = 13;
             // 
             // sourceUseSlashAsSeperatorCheckBox
@@ -183,7 +187,6 @@
             // 
             this.targetUseSlashAsSeperatorCheckBox.AutoSize = true;
             this.targetUseSlashAsSeperatorCheckBox.Location = new System.Drawing.Point(12, 186);
-            this.targetUseSlashAsSeperatorCheckBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.targetUseSlashAsSeperatorCheckBox.Name = "targetUseSlashAsSeperatorCheckBox";
             this.targetUseSlashAsSeperatorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.targetUseSlashAsSeperatorCheckBox.Size = new System.Drawing.Size(181, 17);
@@ -198,16 +201,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.folderLinksFlowLayoutPanel.AutoScroll = true;
             this.folderLinksFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.folderLinksFlowLayoutPanel.Location = new System.Drawing.Point(15, 235);
+            this.folderLinksFlowLayoutPanel.Location = new System.Drawing.Point(15, 257);
             this.folderLinksFlowLayoutPanel.Name = "folderLinksFlowLayoutPanel";
-            this.folderLinksFlowLayoutPanel.Size = new System.Drawing.Size(593, 206);
+            this.folderLinksFlowLayoutPanel.Size = new System.Drawing.Size(593, 248);
             this.folderLinksFlowLayoutPanel.TabIndex = 22;
             this.folderLinksFlowLayoutPanel.WrapContents = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 219);
+            this.label1.Location = new System.Drawing.Point(12, 241);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 13);
@@ -217,7 +220,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(15, 447);
+            this.button1.Location = new System.Drawing.Point(15, 511);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(142, 23);
             this.button1.TabIndex = 24;
@@ -225,11 +228,55 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 212);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(114, 13);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Target file name prefix:";
+            // 
+            // targetFileNamePrefixTextBox
+            // 
+            this.targetFileNamePrefixTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.targetFileNamePrefixTextBox.Location = new System.Drawing.Point(132, 209);
+            this.targetFileNamePrefixTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
+            this.targetFileNamePrefixTextBox.Name = "targetFileNamePrefixTextBox";
+            this.targetFileNamePrefixTextBox.Size = new System.Drawing.Size(176, 20);
+            this.targetFileNamePrefixTextBox.TabIndex = 25;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(321, 212);
+            this.label3.Margin = new System.Windows.Forms.Padding(10, 0, 3, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(107, 13);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "Target file type suffix:";
+            // 
+            // TargetFileTypeSuffixTextBox
+            // 
+            this.TargetFileTypeSuffixTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TargetFileTypeSuffixTextBox.Location = new System.Drawing.Point(434, 209);
+            this.TargetFileTypeSuffixTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
+            this.TargetFileTypeSuffixTextBox.Name = "TargetFileTypeSuffixTextBox";
+            this.TargetFileTypeSuffixTextBox.Size = new System.Drawing.Size(174, 20);
+            this.TargetFileTypeSuffixTextBox.TabIndex = 27;
+            // 
             // EditPlaylistConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 487);
+            this.ClientSize = new System.Drawing.Size(620, 551);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.TargetFileTypeSuffixTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.targetFileNamePrefixTextBox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.folderLinksFlowLayoutPanel);
@@ -273,5 +320,9 @@
         private System.Windows.Forms.FlowLayoutPanel folderLinksFlowLayoutPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox targetFileNamePrefixTextBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TargetFileTypeSuffixTextBox;
     }
 }

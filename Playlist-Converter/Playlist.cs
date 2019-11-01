@@ -4,13 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using static Playlist.Indexing;
 
 namespace Playlist
 {
     public class PlaylistItem
     {
         public PlaylistItem(string filepath, bool collectItemInfo) : this(
-            File.ReadAllLines(filepath),
+
+            File.ReadAllLines(
+                filepath,
+                PlaylistEncoding.GetEncoding(
+                    (PlaylistType)Enum.Parse(typeof(PlaylistType), System.IO.Path.GetExtension(filepath).Replace(".", ""), true)
+                )
+            ),
             System.IO.Path.GetFileName(filepath),
             filepath.Replace("\\" + System.IO.Path.GetFileName(filepath), ""),
             null,
@@ -115,6 +122,73 @@ namespace Playlist
             }
             return children.Select(node => new PlaylistItem(node.Value, node.Key, path, PlaylistItemType.Folder, parent, collectItemInfo)).OrderBy(item => item.FullPath).ToList();
         }
+        public void RemoveChild(PlaylistItem item)
+        {
+            Children.Remove(item);
+            if (Children.Count < 1 && Parent != null)
+            {
+                Parent.RemoveChild(this);
+            }
+        }
+        public void AddItemToPlaylist(PlaylistItem item)
+        {
+            Stack<Index> playlistIndex = new Stack<Index>();
+            playlistIndex.Push(new Index(0, Children.ToList<object>()));
+            bool elementsLeft = true;
+
+            while (item.Path.CompareTo(TopPlaylistItem(playlistIndex).FullPath) > 0 && elementsLeft)
+            {
+                elementsLeft = IncrementIndex(playlistIndex, true);
+            }
+            if (item.Path.CompareTo(TopPlaylistItem(playlistIndex).FullPath) == 0)
+            {
+                InsertItemOrdered(item, TopPlaylistItem(playlistIndex).Children);
+                item.Parent = TopPlaylistItem(playlistIndex);
+            }
+            else
+            {
+                if (item.Path.Length > 2)
+                {
+                    var parent = new PlaylistItem(new List<PlaylistItem>() { item }, System.IO.Path.GetFileName(item.Path), System.IO.Path.GetDirectoryName(item.Path), PlaylistItemType.Folder, null);
+                    AddItemToPlaylist(parent);
+                }
+                else
+                { //TODO
+                    throw new NotImplementedException();
+                    //attach item to the right place according to the fullpath
+                    //set the parent item of the playlistitem
+
+                }
+            }
+
+
+        }
+        private PlaylistItem FindParentOfMissingElement(PlaylistItem playlistItem, Stack<Index> playlistIndex)
+        {
+            if (0 != playlistItem.Path.CompareTo(TopPlaylistItem(playlistIndex).FullPath))
+            {
+                var prevDirection = 1;
+                while (0 != playlistItem.Path.CompareTo(TopPlaylistItem(playlistIndex).FullPath) && prevDirection > 0)
+                {
+                    prevDirection = DecrementPlIndex(playlistIndex, true);
+                }
+                while (0 != playlistItem.Path.CompareTo(TopPlaylistItem(playlistIndex).FullPath))
+                {
+                    prevDirection = DecrementPlIndex(playlistIndex, false);
+                }
+            }
+            var folder = TopPlaylistItem(playlistIndex);
+            return folder;
+        }
+        public static void InsertItemOrdered(PlaylistItem item, List<PlaylistItem> list)
+        {
+            int index = 0;
+            while (index < list.Count && MusicLibrary.CompareFilePaths(item.FullPath, list[index].FullPath) > 0)
+            {
+                index++;
+            }
+            list.Insert(index, item);
+        }
         public void RescanMediaInfo(bool recursive)
         {
             if (recursive && Children != null)
@@ -162,7 +236,7 @@ namespace Playlist
                     ArtistLink = NodeLink.Parent;
                     Parent.NameChanged += ArtistNodeChanged;
                 }
-                else if(ParentOfParent != null && Array.IndexOf(Tag.Artists,ParentOfParent.Name) != -1)
+                else if (ParentOfParent != null && Array.IndexOf(Tag.Artists, ParentOfParent.Name) != -1)
                 {
                     ArtistLink = NodeLink.ParentOfParentPartially;
                     //TODO ParentOfParent.NameChanged += ArtistNodeChanged;

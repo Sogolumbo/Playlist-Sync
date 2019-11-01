@@ -10,22 +10,27 @@ namespace Playlist
     {
         public AudioFileTag(string fullPath)
         {
-            ReadFromFile(fullPath);
+            try
+            {
+                ReadFromFile(fullPath);
+            }
+            catch (ArgumentOutOfRangeException) { } //TODO
         }
         public AudioFileTag()
         {
             Empty = true;
+            _artists = new string[0];
         }
 
 
         private TagLib.File _tagLib;
         private string _filePath;
 
-        private string _title;
-        private string _album;
-        private string[] _artists;
-        private uint? _trackNumber;
-        private string[] _genres;
+        private string _title = String.Empty;
+        private string _album = String.Empty;
+        private string[] _artists = new string[0];
+        private uint? _trackNumber = null;
+        private string[] _genres = new string[0];
 
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
@@ -95,7 +100,7 @@ namespace Playlist
             get => _artists;
             set
             {
-                if (!Array.Equals(value, _artists))
+                if (!Enumerable.SequenceEqual(value, _artists))
                 {
                     _artists = value;
                     _tagLib.Tag.Performers = _artists;

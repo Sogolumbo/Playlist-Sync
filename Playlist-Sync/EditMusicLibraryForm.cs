@@ -26,6 +26,7 @@ namespace PlaylistConverterGUI
         MusicLibrary _library;
         List<string> _playlists = new List<string>();
         List<string> _folders = new List<string>();
+        bool _missingElementFound = false;
 
         #region fuctions
         private void ShowListboxEntries()
@@ -40,13 +41,15 @@ namespace PlaylistConverterGUI
         {
             libraryTreeView.Nodes.Clear();
             libraryTreeView.Nodes.AddRange(NodesFromLibrary(_library));
-            //libraryTreeView.ExpandAll();
         }
-        private void ReloadPlaylist(TreeNode changedTreeNode)
+        private void ReloadNode(TreeNode changedTreeNode)
         {
             Cursor.Current = Cursors.WaitCursor;
-
-            if (changedTreeNode.Parent != null)
+            if (_missingElementFound)
+            {
+                FullReload();
+            }
+            else if (changedTreeNode.Parent != null)
             {
                 var parent = changedTreeNode.Parent;
                 int index = parent.Nodes.IndexOf(changedTreeNode);
@@ -58,9 +61,9 @@ namespace PlaylistConverterGUI
                 if (libraryItem.Parent is MusicLibraryMissingElement)
                     parentsChildren = (libraryItem.Parent as MusicLibraryMissingElement).Children.ToList<MusicLibraryItem>();
 
-                if (!parentsChildren.Contains(libraryItem))
+                if (parentsChildren == null || !parentsChildren.Contains(libraryItem))
                 {
-                    ReloadPlaylist(changedTreeNode.Parent);
+                    ReloadNode(changedTreeNode.Parent);
                 }
                 else
                 {
@@ -76,7 +79,6 @@ namespace PlaylistConverterGUI
                         }
                     }
                     parent.Nodes.Insert(index, reloadedNode);
-                    //TODO remove  reloadedNode.ExpandAll();
                     libraryTreeView.SelectedNode = reloadedNode;
                 }
 
@@ -86,6 +88,28 @@ namespace PlaylistConverterGUI
                 ShowLibrary();
             }
 
+            Cursor.Current = Cursors.Default;
+        }
+        private void FullReload()
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            var previouslySelectedNode = libraryTreeView.SelectedNode;
+            CreateMusicLibrary();
+            ShowLibrary();
+            if (previouslySelectedNode != null)
+            {
+                var possiblyEquivalentNodes = libraryTreeView.Nodes.Find(previouslySelectedNode.Name, true);
+                var equivalentToSelectedNodes = possiblyEquivalentNodes.Where(node => node.FullPath == (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
+                if (equivalentToSelectedNodes.Count() == 1)
+                {
+                    libraryTreeView.SelectedNode = equivalentToSelectedNodes.First();
+                }
+                else
+                {
+                    //TODO
+                }
+                libraryTreeView.Focus();
+            }
             Cursor.Current = Cursors.Default;
         }
 
@@ -102,14 +126,24 @@ namespace PlaylistConverterGUI
             }
             else
             {
-                int maxLength(int childrenCount) { return Math.Max(2, 70 / childrenCount); }
-                selectedItemPlaylistsListBox.Items.AddRange(
-                    libraryItem.PlaylistItems.Select(
-                        node => node.Playlist
-                        + " ("
-                        + String.Join(", ", node.Item.Children.Select(item => item.Name.Truncate(maxLength(node.Item.Children.Count), true)))
-                        + ")").ToArray()
-                        );
+                if (libraryItem.PlaylistItems.Count > 0)
+                {
+                    int maxLength(int childrenCount)
+                    {
+                        return Math.Max(2, 70 / childrenCount);
+                    }
+                    int currentMaxElementCountLength = libraryItem.PlaylistItems.Select(node => node.Item.Children.Count).Max().ToString().Length;
+                    string playlistText(PlaylistLink node, int maxElementCountLength)
+                    {
+                        string elementCount = node.Item.Children.Count.ToString();
+                        return "≥" + elementCount.PadLeft(maxElementCountLength, '\u2000') + " in "
+                                + node.Playlist
+                                + " ("
+                                + String.Join(", ", node.Item.Children.Select(item => item.Name.Truncate(maxLength(node.Item.Children.Count), true)))
+                                + ")";
+                    }
+                    selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => playlistText(node, currentMaxElementCountLength)).ToArray());
+                }
             }
 
             bool showSongTagData = libraryItem is MusicLibraryFile;
@@ -267,7 +301,7 @@ namespace PlaylistConverterGUI
 
         private void ApplyChanges()
         {
-            /// Write Data to all affected PlaylistItems and corresponding files
+            /// Write Data to all affected library and playlist items and all corresponding files
 
             MusicLibraryItem selectedLibraryItem = libraryTreeView.SelectedNode.Tag as MusicLibraryItem;
 
@@ -275,6 +309,12 @@ namespace PlaylistConverterGUI
             bool ParentOfParentChanged = false;
 
             selectedLibraryItem.Name = itemNameTextBox.Text;
+            if (selectedLibraryItem.DirectoryPath != itemPathTextBox.Text)
+            {
+                ParentChanged = true;
+            }
+            var modifiedLibraryItem = _library.MoveItem(selectedLibraryItem, itemPathTextBox.Text);
+
             if (selectedLibraryItem is MusicLibraryFile)
             {
                 var tag = (selectedLibraryItem as MusicLibraryFile).Tag;
@@ -317,9 +357,10 @@ namespace PlaylistConverterGUI
             }
 
             /// Write Data to PlaylistFile
+            var windowsEncoding = Encoding.GetEncoding(1252);
             foreach (var playlistPair in selectedLibraryItem.PlaylistItems)
             {
-                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines());
+                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines(), windowsEncoding);
             }
 
             /// Reload View of libraryItem
@@ -332,7 +373,22 @@ namespace PlaylistConverterGUI
             {
                 highestModifiedNode = highestModifiedNode.Parent;
             }
-            ReloadPlaylist(highestModifiedNode);
+            ReloadNode(highestModifiedNode);
+            var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true);
+            var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem);
+            if (nodesToReload.Count() == 1)
+            {
+                ReloadNode(nodesToReload.First());
+            }
+            else
+            {
+                FullReload();
+            }
+        }
+
+        private void _library_MissingElementFound(object sender, EventArgs e)
+        {
+            _missingElementFound = true;
         }
         #endregion
 
@@ -349,26 +405,20 @@ namespace PlaylistConverterGUI
 
         private void reloadSelectedButton_Click(object sender, EventArgs e)
         {
-            ReloadPlaylist(libraryTreeView.SelectedNode);
+            ReloadNode(libraryTreeView.SelectedNode);
         }
         private void reloadButton_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            var previouslySelectedNode = libraryTreeView.SelectedNode;
+            FullReload();
+        }
+
+
+        private void CreateMusicLibrary()
+        {
             _library = new MusicLibrary(_playlists, _folders);
             _library.UnauthorizedAccess += _library_UnauthorizedAccess;
-            ShowLibrary();
-            if (previouslySelectedNode != null)
-            {
-                var possiblyEquivalentNodes = libraryTreeView.Nodes.Find(previouslySelectedNode.Name, true);
-                var equivalentToSelectedNode = possiblyEquivalentNodes.First();
-                if (equivalentToSelectedNode != null)
-                {
-                    libraryTreeView.SelectedNode = equivalentToSelectedNode;
-                    libraryTreeView.Focus();
-                }
-            }
-            Cursor.Current = Cursors.Default;
+            _library.MissingElementFound += _library_MissingElementFound;
+            _missingElementFound = false;
         }
 
         private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
@@ -415,8 +465,7 @@ namespace PlaylistConverterGUI
             Cursor.Current = Cursors.WaitCursor;
 
             _libraryConfiguration = null;
-            _library = new MusicLibrary(_playlists, _folders);
-            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
+            CreateMusicLibrary();
             ShowListboxEntries();
             ShowLibrary();
             Cursor.Current = Cursors.Default;
@@ -448,8 +497,7 @@ namespace PlaylistConverterGUI
                 _playlists = Properties.Settings.Default.MusicLibraryPlaylists.Cast<string>().ToList();
             }
             ShowListboxEntries();
-            _library = new MusicLibrary(_playlists, _folders);
-            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
+            CreateMusicLibrary();
             ShowLibrary();
 
             Cursor.Current = Cursors.Default;
@@ -476,6 +524,17 @@ namespace PlaylistConverterGUI
         private void reduceAllButton_Click(object sender, EventArgs e)
         {
             libraryTreeView.CollapseAll();
+
+            foreach (TreeNode rootNode in libraryTreeView.Nodes)
+            {
+                rootNode.Expand();
+                TreeNode subject = rootNode;
+                while (subject.Nodes.Count == 1)
+                {
+                    subject = subject.Nodes[0];
+                    subject.Expand();
+                }
+            }
         }
 
         private void itemNameTextBox_TextChanged(object sender, EventArgs e)
@@ -500,6 +559,95 @@ namespace PlaylistConverterGUI
             if (regInvalidFileName.IsMatch(testName)) { return false; };
 
             return true;
+        }
+
+        private void openSelectedItemButton_Click(object sender, EventArgs e)
+        {
+            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
+            OpenItem(libraryItem.FullPath);
+        }
+
+        private void OpenItem(string fullPath)
+        {
+            Cursor = Cursors.WaitCursor;
+            string command = "start \"\" \"" + fullPath + "\"";
+            try
+            {
+                Process cmd = new Process();
+                cmd.StartInfo.FileName = "cmd.exe";
+                cmd.StartInfo.RedirectStandardInput = true;
+                cmd.StartInfo.RedirectStandardOutput = true;
+                cmd.StartInfo.CreateNoWindow = true;
+                cmd.StartInfo.UseShellExecute = false;
+                cmd.Start();
+
+                cmd.StandardInput.WriteLine("chcp " + Encoding.Default.CodePage); //z.B. Deutsche codepage für Umlaute usw.
+                cmd.StandardInput.WriteLine(command);
+                cmd.StandardInput.Flush();
+                cmd.StandardInput.Close();
+                cmd.WaitForExit();
+                Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n(File: '" + fullPath + "',\nCommand: '" + command + "')", "Error while opening " + Path.GetFileName(fullPath));
+            }
+            Cursor = Cursors.Default;
+        }
+
+        private void reduceAllExceptMissingItemsButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(item => item is MusicLibraryMissingElement);
+        }
+
+        void ReduceAllTreeViewItemsExceptConditionMet(Func<MusicLibraryItem, bool> ConditionMet)
+        {
+            libraryTreeView.CollapseAll();
+
+            foreach (TreeNode rootNode in libraryTreeView.Nodes)
+            {
+                ExpandIfConditionMetRecursive(rootNode, ConditionMet);
+            }
+        }
+
+        bool ExpandIfConditionMetRecursive(TreeNode treeNode, Func<MusicLibraryItem, bool> ConditionMet)
+        {
+            bool conditionMet = false;
+            if (treeNode.Nodes.Count > 0)
+            {
+                foreach (TreeNode node in treeNode.Nodes)
+                {
+                    conditionMet |= ExpandIfConditionMetRecursive(node, ConditionMet);
+                }
+                if (conditionMet)
+                {
+                    treeNode.Expand();
+                }
+            }
+            else
+            {
+                conditionMet = ConditionMet(treeNode.Tag as MusicLibraryItem);
+            }
+            return conditionMet;
+        }
+
+        private void reduceAllExceptBadArtistItemsButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(isArtistBad);
+        }
+
+        private bool isArtistBad(MusicLibraryItem item)
+        {
+            if (item is MusicLibraryFile)
+            {
+                return ((item as MusicLibraryFile).ArtistLink == NodeLink.None);
+            }
+            return false;
+        }
+
+        private void copyFullPathButton_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText((selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
         }
     }
 }

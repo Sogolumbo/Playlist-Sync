@@ -42,7 +42,7 @@
             this.conversionsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.conversionsFlowLayoutPanel.Location = new System.Drawing.Point(12, 12);
             this.conversionsFlowLayoutPanel.Name = "conversionsFlowLayoutPanel";
-            this.conversionsFlowLayoutPanel.Size = new System.Drawing.Size(626, 339);
+            this.conversionsFlowLayoutPanel.Size = new System.Drawing.Size(796, 694);
             this.conversionsFlowLayoutPanel.TabIndex = 0;
             this.conversionsFlowLayoutPanel.WrapContents = false;
             this.conversionsFlowLayoutPanel.SizeChanged += new System.EventHandler(this.conversionsFlowLayoutPanel_SizeChanged);
@@ -51,9 +51,9 @@
             // 
             this.addConversionButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addConversionButton.Location = new System.Drawing.Point(12, 357);
+            this.addConversionButton.Location = new System.Drawing.Point(12, 712);
             this.addConversionButton.Name = "addConversionButton";
-            this.addConversionButton.Size = new System.Drawing.Size(435, 58);
+            this.addConversionButton.Size = new System.Drawing.Size(605, 58);
             this.addConversionButton.TabIndex = 1;
             this.addConversionButton.Text = "Add a conversion";
             this.addConversionButton.UseVisualStyleBackColor = true;
@@ -62,7 +62,7 @@
             // optionsButton
             // 
             this.optionsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.optionsButton.Location = new System.Drawing.Point(453, 357);
+            this.optionsButton.Location = new System.Drawing.Point(623, 712);
             this.optionsButton.Name = "optionsButton";
             this.optionsButton.Size = new System.Drawing.Size(185, 58);
             this.optionsButton.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 427);
+            this.ClientSize = new System.Drawing.Size(820, 782);
             this.Controls.Add(this.optionsButton);
             this.Controls.Add(this.addConversionButton);
             this.Controls.Add(this.conversionsFlowLayoutPanel);

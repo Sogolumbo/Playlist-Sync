@@ -18,6 +18,10 @@ namespace Playlist
             Parent = parent;
         }
 
+
+        public event EventHandler Found;
+
+
         public override string Name
         {
             get
@@ -85,10 +89,6 @@ namespace Playlist
                         item.DirectoryPath = FullPath;
                     }
                     LocationChange();
-                    if (File.Exists(value) || Directory.Exists(value))
-                    {
-                        Found?.Invoke(this, EventArgs.Empty);
-                    }
                 }
             }
         }
@@ -100,6 +100,33 @@ namespace Playlist
             get => PlaylistItems.First().Item.Type;
         }
 
-        public event EventHandler Found;
+        protected override void LocationChange()
+        {
+            foreach (MusicLibraryItem item in Children)
+            {
+                item.DirectoryPath = FullPath;
+            }
+            CheckExistence();
+            base.LocationChange();
+        }
+
+        internal void CheckExistence()
+        {
+            if (File.Exists(FullPath) || Directory.Exists(FullPath))
+            {
+                Found?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        internal override void MoveFilesystemItem(string oldPath, string newPath)
+        {
+            
+        }
+
+        public override void Reload()
+        {
+            CheckExistence();
+            base.Reload();
+        }
     }
 }

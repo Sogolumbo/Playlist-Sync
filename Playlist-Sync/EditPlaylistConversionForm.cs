@@ -28,6 +28,8 @@ namespace PlaylistConverterGUI
             targetPlaylistFolderTextBox.Text = conversion.TargetPlaylistFolderPath;
             targetPlaylistTypeComboBox.Text = conversion.TargetPlaylistType.ToString();
             targetUseSlashAsSeperatorCheckBox.Checked = conversion.TargetUseSlashAsSeperator;
+            targetFileNamePrefixTextBox.Text = conversion.TargetFileNamePrefix;
+            TargetFileTypeSuffixTextBox.Text = conversion.TargetFileTypeSuffix;
             MusicFolderPaths = new Dictionary<string, string>(conversion.MusicFolderPaths);
 
             folderLinksFlowLayoutPanel.SizeChanged += EditPlaylistConversionForm_SizeChanged;
@@ -122,6 +124,8 @@ namespace PlaylistConverterGUI
             Conversion.TargetPlaylistFolderPath = targetPlaylistFolderTextBox.Text;
             Conversion.TargetPlaylistType = (PlaylistType)targetPlaylistTypeComboBox.SelectedItem;
             Conversion.TargetUseSlashAsSeperator = targetUseSlashAsSeperatorCheckBox.Checked;
+            Conversion.TargetFileNamePrefix = targetFileNamePrefixTextBox.Text;
+            Conversion.TargetFileTypeSuffix = TargetFileTypeSuffixTextBox.Text;
             Conversion.MusicFolderPaths = MusicFolderPaths;
         }
 

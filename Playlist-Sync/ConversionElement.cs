@@ -24,6 +24,8 @@ namespace PlaylistConverterGUI
             sourceTypeLabel.Text = conversion.SourcePlaylistType.ToString();
             targetPathLabel.Text = conversion.TargetPlaylistFolderPath;
             targetTypeLabel.Text = conversion.TargetPlaylistType.ToString();
+            var sourcefiles = Conversion.GetSourcePlaylistFiles().Select(filePath => Path.GetFileName(filePath)).ToArray();
+            PlaylistNamesLabel.Text = sourcefiles.Length + " files: " + String.Join(", ", sourcefiles);
         }
 
         public Conversion Conversion { get; set; }
@@ -47,8 +49,7 @@ namespace PlaylistConverterGUI
 
         private void convertPlaylistsButton_Click(object sender, EventArgs e)
         {
-            string[] sourceFiles = Directory.GetFiles(Conversion.SourcePlaylistFolderPath);
-            sourceFiles = sourceFiles.Where(file => Regex.IsMatch(file, ".+(\\.playlistsync)?\\.(txt|m3u|playlistsync)")).ToArray();
+            string[] sourceFiles = Conversion.GetSourcePlaylistFiles();
             PathConverter converter = new PathConverter
             {
                 MusicFolderPaths = Conversion.MusicFolderPaths,
@@ -60,9 +61,9 @@ namespace PlaylistConverterGUI
             foreach (string sourceFile in sourceFiles)
             {
                 targetFile = Path.GetFileNameWithoutExtension(sourceFile);
-                targetFile = "Synced - " + Regex.Replace(targetFile, ".playlistsync", String.Empty);
-                targetFile = Path.Combine(Conversion.TargetPlaylistFolderPath, targetFile + '.' + Conversion.TargetPlaylistType.ToString().ToLower());
-                File.WriteAllLines(targetFile, converter.GetConvertedLines(sourceFile));
+                targetFile = Regex.Replace(targetFile, @"^(Synced - )*([^.]+)(.playlistsync)?$", @"$2"); //Clean name
+                targetFile = Path.Combine(Conversion.TargetPlaylistFolderPath, Conversion.TargetFileNamePrefix + targetFile + '.' + Conversion.TargetPlaylistType.ToString().ToLower() + Conversion.TargetFileTypeSuffix);
+                File.WriteAllLines(targetFile, converter.GetConvertedLines(sourceFile, Conversion.GetSourceEncoding()), Conversion.GetTargetEncoding());
                 String[] LostLines = converter.GetMissingLines();
                 if (LostLines.Length > 0)
                 {

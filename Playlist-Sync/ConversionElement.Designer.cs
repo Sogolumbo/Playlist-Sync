@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionElement));
             this.convertPlaylistsButton = new System.Windows.Forms.Button();
             this.sourcePathLabel = new System.Windows.Forms.Label();
             this.sourceTypeLabel = new System.Windows.Forms.Label();
@@ -41,10 +42,12 @@
             // 
             // convertPlaylistsButton
             // 
-            this.convertPlaylistsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.convertPlaylistsButton.Location = new System.Drawing.Point(335, 3);
+            this.convertPlaylistsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.convertPlaylistsButton.Location = new System.Drawing.Point(335, 5);
+            this.convertPlaylistsButton.Margin = new System.Windows.Forms.Padding(3, 5, 5, 2);
             this.convertPlaylistsButton.Name = "convertPlaylistsButton";
-            this.convertPlaylistsButton.Size = new System.Drawing.Size(113, 47);
+            this.convertPlaylistsButton.Size = new System.Drawing.Size(110, 67);
             this.convertPlaylistsButton.TabIndex = 0;
             this.convertPlaylistsButton.Text = "Convert Playlists";
             this.convertPlaylistsButton.UseVisualStyleBackColor = true;
@@ -86,12 +89,14 @@
             this.PlaylistNamesLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.PlaylistNamesLabel.AutoEllipsis = true;
+            this.PlaylistNamesLabel.ForeColor = System.Drawing.SystemColors.GrayText;
             this.PlaylistNamesLabel.Location = new System.Drawing.Point(3, 59);
-            this.PlaylistNamesLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 1);
+            this.PlaylistNamesLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PlaylistNamesLabel.Name = "PlaylistNamesLabel";
-            this.PlaylistNamesLabel.Size = new System.Drawing.Size(326, 24);
+            this.PlaylistNamesLabel.Size = new System.Drawing.Size(326, 41);
             this.PlaylistNamesLabel.TabIndex = 4;
-            this.PlaylistNamesLabel.Text = "PlaylistNamesLabel";
+            this.PlaylistNamesLabel.Text = resources.GetString("PlaylistNamesLabel.Text");
             // 
             // targetTypeLabel
             // 
@@ -104,14 +109,15 @@
             // 
             // removeButton
             // 
-            this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.removeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(210)))), ((int)(((byte)(220)))));
             this.removeButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.removeButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(150)))), ((int)(((byte)(160)))));
             this.removeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.removeButton.Location = new System.Drawing.Point(385, 56);
+            this.removeButton.Location = new System.Drawing.Point(385, 77);
+            this.removeButton.Margin = new System.Windows.Forms.Padding(3, 3, 5, 5);
             this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(63, 23);
+            this.removeButton.Size = new System.Drawing.Size(60, 23);
             this.removeButton.TabIndex = 6;
             this.removeButton.Text = "Remove";
             this.removeButton.UseVisualStyleBackColor = false;
@@ -119,12 +125,13 @@
             // 
             // editButton
             // 
-            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.editButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(200)))));
             this.editButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.editButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(210)))), ((int)(((byte)(110)))));
             this.editButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.editButton.Location = new System.Drawing.Point(335, 56);
+            this.editButton.Location = new System.Drawing.Point(335, 77);
+            this.editButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.editButton.Name = "editButton";
             this.editButton.Size = new System.Drawing.Size(44, 23);
             this.editButton.TabIndex = 7;
@@ -148,6 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.editButton);
@@ -159,7 +167,8 @@
             this.Controls.Add(this.sourcePathLabel);
             this.Controls.Add(this.convertPlaylistsButton);
             this.Name = "ConversionElement";
-            this.Size = new System.Drawing.Size(451, 84);
+            this.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
+            this.Size = new System.Drawing.Size(451, 106);
             this.Load += new System.EventHandler(this.ConversionElement_Load);
             this.ResumeLayout(false);
 
