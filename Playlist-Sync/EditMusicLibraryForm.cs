@@ -519,6 +519,7 @@ namespace PlaylistConverterGUI
         private void expandAllButton_Click(object sender, EventArgs e)
         {
             libraryTreeView.ExpandAll();
+            libraryTreeView.SelectedNode.EnsureVisible();
         }
 
         private void reduceAllButton_Click(object sender, EventArgs e)
@@ -648,6 +649,21 @@ namespace PlaylistConverterGUI
         private void copyFullPathButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText((selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
+        }
+
+        private void reduceChildrenButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            var current = libraryTreeView.SelectedNode;
+            current.Collapse();
+            foreach (TreeNode child in current.Nodes)
+            {
+                child.Collapse(true);
+            }
+            current.Expand();
+            current.EnsureVisible();
+            Cursor = DefaultCursor;
+            libraryTreeView.Focus();
         }
     }
 }

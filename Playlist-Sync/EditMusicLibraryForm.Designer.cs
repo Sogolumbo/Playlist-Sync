@@ -39,6 +39,7 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.copyFullPathButton = new System.Windows.Forms.Button();
             this.openSelectedItemButton = new System.Windows.Forms.Button();
             this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
             this.artistLinkLabel = new System.Windows.Forms.Label();
@@ -66,7 +67,7 @@
             this.reduceAllButton = new System.Windows.Forms.Button();
             this.reduceAllExceptMissingItemsButton = new System.Windows.Forms.Button();
             this.reduceAllExceptBadArtistItemsButton = new System.Windows.Forms.Button();
-            this.copyFullPathButton = new System.Windows.Forms.Button();
+            this.reduceChildrenButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -202,6 +203,16 @@
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
+            // 
+            // copyFullPathButton
+            // 
+            this.copyFullPathButton.Location = new System.Drawing.Point(90, 98);
+            this.copyFullPathButton.Name = "copyFullPathButton";
+            this.copyFullPathButton.Size = new System.Drawing.Size(84, 23);
+            this.copyFullPathButton.TabIndex = 29;
+            this.copyFullPathButton.Text = "Copy full path";
+            this.copyFullPathButton.UseVisualStyleBackColor = true;
+            this.copyFullPathButton.Click += new System.EventHandler(this.copyFullPathButton_Click);
             // 
             // openSelectedItemButton
             // 
@@ -491,21 +502,23 @@
             this.reduceAllExceptBadArtistItemsButton.UseVisualStyleBackColor = true;
             this.reduceAllExceptBadArtistItemsButton.Click += new System.EventHandler(this.reduceAllExceptBadArtistItemsButton_Click);
             // 
-            // copyFullPathButton
+            // reduceChildrenButton
             // 
-            this.copyFullPathButton.Location = new System.Drawing.Point(90, 98);
-            this.copyFullPathButton.Name = "copyFullPathButton";
-            this.copyFullPathButton.Size = new System.Drawing.Size(84, 23);
-            this.copyFullPathButton.TabIndex = 29;
-            this.copyFullPathButton.Text = "Copy full path";
-            this.copyFullPathButton.UseVisualStyleBackColor = true;
-            this.copyFullPathButton.Click += new System.EventHandler(this.copyFullPathButton_Click);
+            this.reduceChildrenButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reduceChildrenButton.Location = new System.Drawing.Point(876, 208);
+            this.reduceChildrenButton.Name = "reduceChildrenButton";
+            this.reduceChildrenButton.Size = new System.Drawing.Size(98, 23);
+            this.reduceChildrenButton.TabIndex = 33;
+            this.reduceChildrenButton.Text = "Reduce children";
+            this.reduceChildrenButton.UseVisualStyleBackColor = true;
+            this.reduceChildrenButton.Click += new System.EventHandler(this.reduceChildrenButton_Click);
             // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1191, 709);
+            this.Controls.Add(this.reduceChildrenButton);
             this.Controls.Add(this.reduceAllExceptBadArtistItemsButton);
             this.Controls.Add(this.reduceAllExceptMissingItemsButton);
             this.Controls.Add(this.reduceAllButton);
@@ -570,5 +583,6 @@
         private System.Windows.Forms.Button reduceAllExceptMissingItemsButton;
         private System.Windows.Forms.Button reduceAllExceptBadArtistItemsButton;
         private System.Windows.Forms.Button copyFullPathButton;
+        private System.Windows.Forms.Button reduceChildrenButton;
     }
 }
