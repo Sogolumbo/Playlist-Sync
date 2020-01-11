@@ -92,5 +92,29 @@ namespace PlaylistConverterGUI.Properties {
                 this["MusicLibraryFolders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>jpg</string>
+  <string>png</string>
+  <string>m3u</string>
+  <string>wpl</string>
+  <string>pls</string>
+  <string>ini</string>
+  <string>ffs_db</string>
+  <string>db</string>
+  <string>pdf</string>
+  <string>reapeaks</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection nonAudioDataTypes {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["nonAudioDataTypes"]));
+            }
+            set {
+                this["nonAudioDataTypes"] = value;
+            }
+        }
     }
 }

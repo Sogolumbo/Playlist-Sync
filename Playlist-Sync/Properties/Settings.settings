@@ -20,5 +20,20 @@
     <Setting Name="MusicLibraryFolders" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="nonAudioDataTypes" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;jpg&lt;/string&gt;
+  &lt;string&gt;png&lt;/string&gt;
+  &lt;string&gt;m3u&lt;/string&gt;
+  &lt;string&gt;wpl&lt;/string&gt;
+  &lt;string&gt;pls&lt;/string&gt;
+  &lt;string&gt;ini&lt;/string&gt;
+  &lt;string&gt;ffs_db&lt;/string&gt;
+  &lt;string&gt;db&lt;/string&gt;
+  &lt;string&gt;pdf&lt;/string&gt;
+  &lt;string&gt;reapeaks&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

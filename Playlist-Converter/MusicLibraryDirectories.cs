@@ -7,11 +7,11 @@ namespace Playlist
 {
     public class MusicLibraryDirectory : MusicLibraryItem
     {
-        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, List<MusicLibraryItem> directories) : this(directoryPath, parent, false)
+        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, List<MusicLibraryItem> directories, ICollection<string> nonAudioDataTypes) : this(directoryPath, parent, nonAudioDataTypes, false)
         {
             Directories = directories;
         }
-        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, bool build = true)
+        public MusicLibraryDirectory(string directoryPath, MusicLibraryDirectory parent, ICollection<string> nonAudioDataTypes, bool build = true)
         {
             _name = Path.GetFileName(directoryPath);
             if (String.IsNullOrEmpty(_name))
@@ -32,14 +32,13 @@ namespace Playlist
             {
                 foreach (string item in Directory.GetDirectories(directoryPath))
                 {
-                    var dir = new MusicLibraryDirectory(item, this);
+                    var dir = new MusicLibraryDirectory(item, this, nonAudioDataTypes);
                     dir.UnauthorizedAccess += ThrowUnauthorizedAccessException;
                     Directories.Add(dir);
                 }
                 foreach (string item in Directory.GetFiles(directoryPath))
                 {
                     string extensionWithoutDot = Path.GetExtension(item).Substring(1);
-                    string[] ignoredDataTypes = new string[] { "jpg", "png", "m3u", "wpl", "pls", "ini", "ffs_db", "db", "pdf"};
                     AudioFileType Type;
                     if (Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type))
                     {
@@ -47,9 +46,9 @@ namespace Playlist
                         Files.Add(file);
                         file.UnauthorizedAccess += ThrowUnauthorizedAccessException;
                     }
-                    else if(!(ignoredDataTypes.Contains(extensionWithoutDot)) && item[0] != '.')
+                    else if (!(nonAudioDataTypes.Contains(extensionWithoutDot)) && item[0] != '.')
                     {
-                        throw new NotImplementedException("There is a file (" + item + ")of type " + extensionWithoutDot + ". This program doesn't know what type it is (Audio or Playlist File or Cover Art?).");
+                        throw new NonAudioDataTypeMissingException(item, extensionWithoutDot);
                     }
                 }
             }
@@ -114,5 +113,27 @@ namespace Playlist
             }
             base.LocationChange();
         }
+    }
+
+    public class NonAudioDataTypeMissingException : Exception
+    {
+        public NonAudioDataTypeMissingException(string dataType, string fileName) : base(message(dataType, fileName)) { }
+
+        public string File { get; set; }
+        public string DataType { get; set; }
+
+        private static string message(string dataType, string fileName)
+        {
+            return "There is a file (" + fileName + ")of type " + dataType + " in the music library folders. If it's an audio file this program doesn't know how to handle it. If it is different kind of file, pleas add it to the list of ignored file formats (located in " + NonAudioDataTypeMissingException.PropertyFilePath + ").";
+        }
+
+        public static string PropertyFilePath
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"..\Local\PlaylistConverterGUI\");
+            }
+        }
+
     }
 }

@@ -9,14 +9,16 @@ namespace Playlist
 {
     public class MusicLibrary
     {
-        public MusicLibrary(List<string> playlistFiles, List<string> musicDirectories) : this(
+        public MusicLibrary(List<string> playlistFiles, List<string> musicDirectories, ICollection<string> nonAudioDataTypes) : this(
             playlistFiles.Select(filepath => new PlaylistItem(filepath, false)).ToList(),
-            musicDirectories)
+            musicDirectories, nonAudioDataTypes)
         {
             PlaylistFiles = playlistFiles;
         }
-        public MusicLibrary(List<PlaylistItem> playlists, List<string> musicDirectories)
+        public MusicLibrary(List<PlaylistItem> playlists, List<string> musicDirectories, ICollection<string> nonAudioDataTypes)
         {
+            _nonAudioDataTypes = nonAudioDataTypes;
+
             musicDirectories.Sort();
 
             Playlists = playlists;
@@ -28,6 +30,7 @@ namespace Playlist
         public List<string> PlaylistFiles { get; set; }
         public List<string> MusicFolders { get; set; }
         public MusicLibraryDirectory ItemFolder { get; set; }
+        private ICollection<string> _nonAudioDataTypes;
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
         public event EventHandler MissingElementFound;
@@ -42,7 +45,7 @@ namespace Playlist
             if (musicFolders.Count > 0)
             {
                 //first Element
-                var dir = new MusicLibraryDirectory(musicFolders[0], null);
+                var dir = new MusicLibraryDirectory(musicFolders[0], null, _nonAudioDataTypes);
                 dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
 
                 string directory = dir.DirectoryPath;
@@ -52,12 +55,12 @@ namespace Playlist
                 {
                     if (i == parentDirectories.Length - 1)
                     {
-                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { dir });
+                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { dir }, _nonAudioDataTypes);
                         dir.Parent = directories[i];
                     }
                     else
                     {
-                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { directories[i + 1] });
+                        directories[i] = new MusicLibraryDirectory(parentDirectories[i], null, new List<MusicLibraryItem>() { directories[i + 1] }, _nonAudioDataTypes);
                         directories[i + 1].Parent = directories[i];
                     }
                 }
@@ -193,7 +196,7 @@ namespace Playlist
 
         private void AddMusicFolderToLibrary(string musicFolderPath, MusicLibraryDirectory itemFolders)
         {
-            var dir = new MusicLibraryDirectory(musicFolderPath, null);
+            var dir = new MusicLibraryDirectory(musicFolderPath, null, _nonAudioDataTypes);
             dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
 
             Stack<Index> libraryIndex = new Stack<Index>();
@@ -222,7 +225,7 @@ namespace Playlist
                     else
                     {
                         var prevDir = dir;
-                        dir = new MusicLibraryDirectory(directories[i], null, new List<MusicLibraryItem>() { dir });
+                        dir = new MusicLibraryDirectory(directories[i], null, new List<MusicLibraryItem>() { dir }, _nonAudioDataTypes);
                         prevDir.Parent = dir;
                     }
                 }

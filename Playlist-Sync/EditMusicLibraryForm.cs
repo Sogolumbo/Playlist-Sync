@@ -415,10 +415,26 @@ namespace PlaylistConverterGUI
 
         private void CreateMusicLibrary()
         {
-            _library = new MusicLibrary(_playlists, _folders);
-            _library.UnauthorizedAccess += _library_UnauthorizedAccess;
-            _library.MissingElementFound += _library_MissingElementFound;
-            _missingElementFound = false;
+            HashSet<string> nonAudioDatatypes = new HashSet<string>(Properties.Settings.Default.nonAudioDataTypes.Cast<string>());
+            try
+            {
+                _library = new MusicLibrary(_playlists, _folders, nonAudioDatatypes);
+                _library.UnauthorizedAccess += _library_UnauthorizedAccess;
+                _library.MissingElementFound += _library_MissingElementFound;
+                _missingElementFound = false;
+            }
+            catch(NonAudioDataTypeMissingException e)
+            {
+                string exceptionHeader = "Unknown Fily Type in Music Library detected";
+                MessageBox.Show(e.Message , exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                var res = MessageBox.Show("Do you want to open the folder to change the ignored file type? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                Close(); //TODO remove this line if the rest of the program won't crash
+                if (res == DialogResult.Yes)
+                {
+                    OpenPathInExplorer(NonAudioDataTypeMissingException.PropertyFilePath);
+                }
+                throw e;
+            }
         }
 
         private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
