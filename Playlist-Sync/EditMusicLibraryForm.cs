@@ -423,10 +423,10 @@ namespace PlaylistConverterGUI
                 _library.MissingElementFound += _library_MissingElementFound;
                 _missingElementFound = false;
             }
-            catch(NonAudioDataTypeMissingException e)
+            catch (NonAudioDataTypeMissingException e)
             {
                 string exceptionHeader = "Unknown Fily Type in Music Library detected";
-                MessageBox.Show(e.Message , exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(e.Message, exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 var res = MessageBox.Show("Do you want to open the folder to change the ignored file type? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
                 Close(); //TODO remove this line if the rest of the program won't crash
                 if (res == DialogResult.Yes)
@@ -535,7 +535,10 @@ namespace PlaylistConverterGUI
         private void expandAllButton_Click(object sender, EventArgs e)
         {
             libraryTreeView.ExpandAll();
-            libraryTreeView.SelectedNode.EnsureVisible();
+            if (libraryTreeView.SelectedNode != null)
+            {
+                libraryTreeView.SelectedNode.EnsureVisible();
+            }
         }
 
         private void reduceAllButton_Click(object sender, EventArgs e)
@@ -680,6 +683,45 @@ namespace PlaylistConverterGUI
             current.EnsureVisible();
             Cursor = DefaultCursor;
             libraryTreeView.Focus();
+        }
+
+        private void selectedSongControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            handleArrowKeysInSelectedSongControls(e);
+        }
+        private void selectedSongControl_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            declareArrowKeysAsInputKeysInSelectedSongControls(e);
+        }
+
+        private void handleArrowKeysInSelectedSongControls(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down && libraryTreeView.SelectedNode != null && libraryTreeView.SelectedNode.NextVisibleNode != null)
+            {
+                libraryTreeView.SelectedNode = libraryTreeView.SelectedNode.NextVisibleNode;
+            }
+            else if (e.KeyCode == Keys.Up && libraryTreeView.SelectedNode != null && libraryTreeView.SelectedNode.PrevVisibleNode != null)
+            {
+                libraryTreeView.SelectedNode = libraryTreeView.SelectedNode.PrevVisibleNode;
+            }
+        }
+
+        private static void declareArrowKeysAsInputKeysInSelectedSongControls(PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Up:
+                    e.IsInputKey = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void appendPathToClipboardButton_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(Clipboard.GetText() + "\n" + (selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
         }
     }
 }

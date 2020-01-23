@@ -68,6 +68,7 @@
             this.reduceAllExceptMissingItemsButton = new System.Windows.Forms.Button();
             this.reduceAllExceptBadArtistItemsButton = new System.Windows.Forms.Button();
             this.reduceChildrenButton = new System.Windows.Forms.Button();
+            this.appendPathToClipboardButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -77,9 +78,10 @@
             this.libraryTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.libraryTreeView.HideSelection = false;
             this.libraryTreeView.Location = new System.Drawing.Point(13, 13);
             this.libraryTreeView.Name = "libraryTreeView";
-            this.libraryTreeView.Size = new System.Drawing.Size(695, 684);
+            this.libraryTreeView.Size = new System.Drawing.Size(695, 712);
             this.libraryTreeView.TabIndex = 0;
             this.libraryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
             // 
@@ -92,6 +94,8 @@
             this.itemNameTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemNameTextBox.TabIndex = 2;
             this.itemNameTextBox.TextChanged += new System.EventHandler(this.itemNameTextBox_TextChanged);
+            this.itemNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.itemNameTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // itemPathTextBox
             // 
@@ -101,13 +105,14 @@
             this.itemPathTextBox.Name = "itemPathTextBox";
             this.itemPathTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemPathTextBox.TabIndex = 3;
+            this.itemPathTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // itemTitleTextBox
             // 
             this.itemTitleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTitleTextBox.Enabled = false;
-            this.itemTitleTextBox.Location = new System.Drawing.Point(56, 272);
+            this.itemTitleTextBox.Location = new System.Drawing.Point(56, 301);
             this.itemTitleTextBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.itemTitleTextBox.Name = "itemTitleTextBox";
             this.itemTitleTextBox.Size = new System.Drawing.Size(403, 20);
@@ -143,7 +148,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 275);
+            this.label5.Location = new System.Drawing.Point(6, 304);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(30, 13);
             this.label5.TabIndex = 10;
@@ -152,7 +157,7 @@
             // applyButton
             // 
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyButton.Location = new System.Drawing.Point(1104, 674);
+            this.applyButton.Location = new System.Drawing.Point(1104, 705);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 11;
@@ -163,7 +168,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(1023, 674);
+            this.cancelButton.Location = new System.Drawing.Point(1023, 705);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
@@ -174,6 +179,7 @@
             // selectedItemGroupBox
             // 
             this.selectedItemGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectedItemGroupBox.Controls.Add(this.appendPathToClipboardButton);
             this.selectedItemGroupBox.Controls.Add(this.copyFullPathButton);
             this.selectedItemGroupBox.Controls.Add(this.openSelectedItemButton);
             this.selectedItemGroupBox.Controls.Add(this.selectedItemPlaylistsListBox);
@@ -199,20 +205,22 @@
             this.selectedItemGroupBox.Controls.Add(this.label4);
             this.selectedItemGroupBox.Location = new System.Drawing.Point(714, 266);
             this.selectedItemGroupBox.Name = "selectedItemGroupBox";
-            this.selectedItemGroupBox.Size = new System.Drawing.Size(465, 402);
+            this.selectedItemGroupBox.Size = new System.Drawing.Size(465, 433);
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
             // 
             // copyFullPathButton
             // 
-            this.copyFullPathButton.Location = new System.Drawing.Point(90, 98);
+            this.copyFullPathButton.Location = new System.Drawing.Point(9, 127);
             this.copyFullPathButton.Name = "copyFullPathButton";
             this.copyFullPathButton.Size = new System.Drawing.Size(84, 23);
             this.copyFullPathButton.TabIndex = 29;
             this.copyFullPathButton.Text = "Copy full path";
             this.copyFullPathButton.UseVisualStyleBackColor = true;
             this.copyFullPathButton.Click += new System.EventHandler(this.copyFullPathButton_Click);
+            this.copyFullPathButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.copyFullPathButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // openSelectedItemButton
             // 
@@ -223,13 +231,15 @@
             this.openSelectedItemButton.Text = "Open Item";
             this.openSelectedItemButton.UseVisualStyleBackColor = true;
             this.openSelectedItemButton.Click += new System.EventHandler(this.openSelectedItemButton_Click);
+            this.openSelectedItemButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openSelectedItemButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // selectedItemPlaylistsListBox
             // 
             this.selectedItemPlaylistsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.selectedItemPlaylistsListBox.FormattingEnabled = true;
-            this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 134);
+            this.selectedItemPlaylistsListBox.Location = new System.Drawing.Point(9, 163);
             this.selectedItemPlaylistsListBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
             this.selectedItemPlaylistsListBox.Name = "selectedItemPlaylistsListBox";
             this.selectedItemPlaylistsListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -240,7 +250,7 @@
             // 
             this.artistLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.artistLinkLabel.AutoSize = true;
-            this.artistLinkLabel.Location = new System.Drawing.Point(441, 327);
+            this.artistLinkLabel.Location = new System.Drawing.Point(441, 356);
             this.artistLinkLabel.Name = "artistLinkLabel";
             this.artistLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.artistLinkLabel.TabIndex = 22;
@@ -250,7 +260,7 @@
             // 
             this.albumLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.albumLinkLabel.AutoSize = true;
-            this.albumLinkLabel.Location = new System.Drawing.Point(440, 301);
+            this.albumLinkLabel.Location = new System.Drawing.Point(440, 330);
             this.albumLinkLabel.Name = "albumLinkLabel";
             this.albumLinkLabel.Size = new System.Drawing.Size(19, 13);
             this.albumLinkLabel.TabIndex = 21;
@@ -266,13 +276,15 @@
             this.openPathInKid3Button.Text = "Open Path in Kid3";
             this.openPathInKid3Button.UseVisualStyleBackColor = true;
             this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
+            this.openPathInKid3Button.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openPathInKid3Button.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // itemGenreTextBox
             // 
             this.itemGenreTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemGenreTextBox.Enabled = false;
-            this.itemGenreTextBox.Location = new System.Drawing.Point(56, 376);
+            this.itemGenreTextBox.Location = new System.Drawing.Point(56, 405);
             this.itemGenreTextBox.Name = "itemGenreTextBox";
             this.itemGenreTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemGenreTextBox.TabIndex = 18;
@@ -287,11 +299,13 @@
             this.openPathInExplorerButton.Text = "Open Path in explorer";
             this.openPathInExplorerButton.UseVisualStyleBackColor = true;
             this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
+            this.openPathInExplorerButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openPathInExplorerButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 379);
+            this.label8.Location = new System.Drawing.Point(6, 408);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(44, 13);
             this.label8.TabIndex = 19;
@@ -302,7 +316,7 @@
             this.itemTrackNumberTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTrackNumberTextBox.Enabled = false;
-            this.itemTrackNumberTextBox.Location = new System.Drawing.Point(56, 350);
+            this.itemTrackNumberTextBox.Location = new System.Drawing.Point(56, 379);
             this.itemTrackNumberTextBox.Name = "itemTrackNumberTextBox";
             this.itemTrackNumberTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemTrackNumberTextBox.TabIndex = 16;
@@ -310,7 +324,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 353);
+            this.label7.Location = new System.Drawing.Point(6, 382);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(21, 13);
             this.label7.TabIndex = 17;
@@ -321,7 +335,7 @@
             this.itemArtistTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemArtistTextBox.Enabled = false;
-            this.itemArtistTextBox.Location = new System.Drawing.Point(56, 324);
+            this.itemArtistTextBox.Location = new System.Drawing.Point(56, 353);
             this.itemArtistTextBox.Name = "itemArtistTextBox";
             this.itemArtistTextBox.Size = new System.Drawing.Size(378, 20);
             this.itemArtistTextBox.TabIndex = 14;
@@ -329,7 +343,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 327);
+            this.label6.Location = new System.Drawing.Point(6, 356);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 15;
@@ -340,7 +354,7 @@
             this.itemAlbumTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemAlbumTextBox.Enabled = false;
-            this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 298);
+            this.itemAlbumTextBox.Location = new System.Drawing.Point(56, 327);
             this.itemAlbumTextBox.Name = "itemAlbumTextBox";
             this.itemAlbumTextBox.Size = new System.Drawing.Size(378, 20);
             this.itemAlbumTextBox.TabIndex = 12;
@@ -348,7 +362,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 301);
+            this.label1.Location = new System.Drawing.Point(6, 330);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 13;
@@ -513,11 +527,23 @@
             this.reduceChildrenButton.UseVisualStyleBackColor = true;
             this.reduceChildrenButton.Click += new System.EventHandler(this.reduceChildrenButton_Click);
             // 
+            // appendPathToClipboardButton
+            // 
+            this.appendPathToClipboardButton.Location = new System.Drawing.Point(99, 127);
+            this.appendPathToClipboardButton.Name = "appendPathToClipboardButton";
+            this.appendPathToClipboardButton.Size = new System.Drawing.Size(161, 23);
+            this.appendPathToClipboardButton.TabIndex = 30;
+            this.appendPathToClipboardButton.Text = "Append full path to clipboard";
+            this.appendPathToClipboardButton.UseVisualStyleBackColor = true;
+            this.appendPathToClipboardButton.Click += new System.EventHandler(this.appendPathToClipboardButton_Click);
+            this.appendPathToClipboardButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.appendPathToClipboardButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1191, 709);
+            this.ClientSize = new System.Drawing.Size(1191, 737);
             this.Controls.Add(this.reduceChildrenButton);
             this.Controls.Add(this.reduceAllExceptBadArtistItemsButton);
             this.Controls.Add(this.reduceAllExceptMissingItemsButton);
@@ -584,5 +610,6 @@
         private System.Windows.Forms.Button reduceAllExceptBadArtistItemsButton;
         private System.Windows.Forms.Button copyFullPathButton;
         private System.Windows.Forms.Button reduceChildrenButton;
+        private System.Windows.Forms.Button appendPathToClipboardButton;
     }
 }
