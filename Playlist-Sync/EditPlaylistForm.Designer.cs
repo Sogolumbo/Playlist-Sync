@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditPlaylistForm));
             this.playlistTreeView = new System.Windows.Forms.TreeView();
             this.playlistNameTextBox = new System.Windows.Forms.TextBox();
             this.itemNameTextBox = new System.Windows.Forms.TextBox();
@@ -426,6 +427,7 @@
             this.Controls.Add(this.playlistNameLabel);
             this.Controls.Add(this.playlistNameTextBox);
             this.Controls.Add(this.playlistTreeView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditPlaylistForm";
             this.Text = "Edit Playlist";
             this.selectedItemGroupBox.ResumeLayout(false);

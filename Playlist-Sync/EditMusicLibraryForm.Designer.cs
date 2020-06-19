@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditMusicLibraryForm));
             this.libraryTreeView = new System.Windows.Forms.TreeView();
             this.itemNameTextBox = new System.Windows.Forms.TextBox();
             this.itemPathTextBox = new System.Windows.Forms.TextBox();
@@ -39,6 +40,7 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.appendPathToClipboardButton = new System.Windows.Forms.Button();
             this.copyFullPathButton = new System.Windows.Forms.Button();
             this.openSelectedItemButton = new System.Windows.Forms.Button();
             this.selectedItemPlaylistsListBox = new System.Windows.Forms.ListBox();
@@ -68,7 +70,6 @@
             this.reduceAllExceptMissingItemsButton = new System.Windows.Forms.Button();
             this.reduceAllExceptBadArtistItemsButton = new System.Windows.Forms.Button();
             this.reduceChildrenButton = new System.Windows.Forms.Button();
-            this.appendPathToClipboardButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -209,6 +210,18 @@
             this.selectedItemGroupBox.TabIndex = 16;
             this.selectedItemGroupBox.TabStop = false;
             this.selectedItemGroupBox.Text = "Selected Item";
+            // 
+            // appendPathToClipboardButton
+            // 
+            this.appendPathToClipboardButton.Location = new System.Drawing.Point(99, 127);
+            this.appendPathToClipboardButton.Name = "appendPathToClipboardButton";
+            this.appendPathToClipboardButton.Size = new System.Drawing.Size(161, 23);
+            this.appendPathToClipboardButton.TabIndex = 30;
+            this.appendPathToClipboardButton.Text = "Append full path to clipboard";
+            this.appendPathToClipboardButton.UseVisualStyleBackColor = true;
+            this.appendPathToClipboardButton.Click += new System.EventHandler(this.appendPathToClipboardButton_Click);
+            this.appendPathToClipboardButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.appendPathToClipboardButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // copyFullPathButton
             // 
@@ -490,7 +503,7 @@
             this.reduceAllButton.Name = "reduceAllButton";
             this.reduceAllButton.Size = new System.Drawing.Size(75, 23);
             this.reduceAllButton.TabIndex = 30;
-            this.reduceAllButton.Text = "Reduce all";
+            this.reduceAllButton.Text = "Collapse all";
             this.reduceAllButton.UseVisualStyleBackColor = true;
             this.reduceAllButton.Click += new System.EventHandler(this.reduceAllButton_Click);
             // 
@@ -499,20 +512,20 @@
             this.reduceAllExceptMissingItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.reduceAllExceptMissingItemsButton.Location = new System.Drawing.Point(714, 237);
             this.reduceAllExceptMissingItemsButton.Name = "reduceAllExceptMissingItemsButton";
-            this.reduceAllExceptMissingItemsButton.Size = new System.Drawing.Size(138, 23);
+            this.reduceAllExceptMissingItemsButton.Size = new System.Drawing.Size(141, 23);
             this.reduceAllExceptMissingItemsButton.TabIndex = 31;
-            this.reduceAllExceptMissingItemsButton.Text = "Reduce all except missing";
+            this.reduceAllExceptMissingItemsButton.Text = "Collapse all except missing";
             this.reduceAllExceptMissingItemsButton.UseVisualStyleBackColor = true;
             this.reduceAllExceptMissingItemsButton.Click += new System.EventHandler(this.reduceAllExceptMissingItemsButton_Click);
             // 
             // reduceAllExceptBadArtistItemsButton
             // 
             this.reduceAllExceptBadArtistItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reduceAllExceptBadArtistItemsButton.Location = new System.Drawing.Point(858, 237);
+            this.reduceAllExceptBadArtistItemsButton.Location = new System.Drawing.Point(861, 237);
             this.reduceAllExceptBadArtistItemsButton.Name = "reduceAllExceptBadArtistItemsButton";
             this.reduceAllExceptBadArtistItemsButton.Size = new System.Drawing.Size(149, 23);
             this.reduceAllExceptBadArtistItemsButton.TabIndex = 32;
-            this.reduceAllExceptBadArtistItemsButton.Text = "Reduce all except bad artist";
+            this.reduceAllExceptBadArtistItemsButton.Text = "Collapse all except bad artist";
             this.reduceAllExceptBadArtistItemsButton.UseVisualStyleBackColor = true;
             this.reduceAllExceptBadArtistItemsButton.Click += new System.EventHandler(this.reduceAllExceptBadArtistItemsButton_Click);
             // 
@@ -523,21 +536,9 @@
             this.reduceChildrenButton.Name = "reduceChildrenButton";
             this.reduceChildrenButton.Size = new System.Drawing.Size(98, 23);
             this.reduceChildrenButton.TabIndex = 33;
-            this.reduceChildrenButton.Text = "Reduce children";
+            this.reduceChildrenButton.Text = "Collapse children";
             this.reduceChildrenButton.UseVisualStyleBackColor = true;
             this.reduceChildrenButton.Click += new System.EventHandler(this.reduceChildrenButton_Click);
-            // 
-            // appendPathToClipboardButton
-            // 
-            this.appendPathToClipboardButton.Location = new System.Drawing.Point(99, 127);
-            this.appendPathToClipboardButton.Name = "appendPathToClipboardButton";
-            this.appendPathToClipboardButton.Size = new System.Drawing.Size(161, 23);
-            this.appendPathToClipboardButton.TabIndex = 30;
-            this.appendPathToClipboardButton.Text = "Append full path to clipboard";
-            this.appendPathToClipboardButton.UseVisualStyleBackColor = true;
-            this.appendPathToClipboardButton.Click += new System.EventHandler(this.appendPathToClipboardButton_Click);
-            this.appendPathToClipboardButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
-            this.appendPathToClipboardButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // EditMusicLibraryForm
             // 
@@ -557,6 +558,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.libraryTreeView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditMusicLibraryForm";
             this.Text = "Edit Music Library";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditMusicLibraryForm_FormClosing);

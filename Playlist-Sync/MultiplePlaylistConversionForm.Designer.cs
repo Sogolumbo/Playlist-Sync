@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MultiplePlaylistConversionForm));
             this.conversionsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.addConversionButton = new System.Windows.Forms.Button();
             this.optionsButton = new System.Windows.Forms.Button();
@@ -78,6 +79,7 @@
             this.Controls.Add(this.optionsButton);
             this.Controls.Add(this.addConversionButton);
             this.Controls.Add(this.conversionsFlowLayoutPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MultiplePlaylistConversionForm";
             this.Text = "MultiplePlaylistConversion";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MultiplePlaylistConversionForm_FormClosing);

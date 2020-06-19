@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigureMusicLibrary));
             this.foldersListBox = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.AddFolderButton = new System.Windows.Forms.Button();
@@ -224,6 +225,7 @@
             this.Controls.Add(this.AddPlaylistButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConfigureMusicLibrary";
             this.Text = "Configure Music Library";
             this.groupBox1.ResumeLayout(false);

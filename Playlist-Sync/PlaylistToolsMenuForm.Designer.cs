@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlaylistToolsMenuForm));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.editMusicLibraryButton = new System.Windows.Forms.Button();
+            this.iconlabel = new System.Windows.Forms.Label();
+            this.iconLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.iconLinkToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // button1
@@ -74,18 +79,49 @@
             this.editMusicLibraryButton.UseVisualStyleBackColor = true;
             this.editMusicLibraryButton.Click += new System.EventHandler(this.editMusicLibraryButton_Click);
             // 
+            // iconlabel
+            // 
+            this.iconlabel.AutoSize = true;
+            this.iconlabel.Location = new System.Drawing.Point(12, 145);
+            this.iconlabel.Name = "iconlabel";
+            this.iconlabel.Size = new System.Drawing.Size(31, 13);
+            this.iconlabel.TabIndex = 4;
+            this.iconlabel.Text = "Icon:";
+            // 
+            // iconLinkLabel
+            // 
+            this.iconLinkLabel.AutoSize = true;
+            this.iconLinkLabel.Location = new System.Drawing.Point(49, 145);
+            this.iconLinkLabel.Name = "iconLinkLabel";
+            this.iconLinkLabel.Size = new System.Drawing.Size(117, 13);
+            this.iconLinkLabel.TabIndex = 5;
+            this.iconLinkLabel.TabStop = true;
+            this.iconLinkLabel.Text = "Smart Playlist by icons8";
+            this.iconLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.iconLinkLabel_LinkClicked);
+            // 
+            // iconLinkToolTip
+            // 
+            this.iconLinkToolTip.AutomaticDelay = 0;
+            this.iconLinkToolTip.ToolTipTitle = "Link:";
+            this.iconLinkToolTip.UseAnimation = false;
+            this.iconLinkToolTip.UseFading = false;
+            // 
             // PlaylistToolsMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 147);
+            this.ClientSize = new System.Drawing.Size(216, 165);
+            this.Controls.Add(this.iconLinkLabel);
+            this.Controls.Add(this.iconlabel);
             this.Controls.Add(this.editMusicLibraryButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PlaylistToolsMenuForm";
             this.Text = "Tools";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -95,5 +131,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button editMusicLibraryButton;
+        private System.Windows.Forms.Label iconlabel;
+        private System.Windows.Forms.LinkLabel iconLinkLabel;
+        private System.Windows.Forms.ToolTip iconLinkToolTip;
     }
 }

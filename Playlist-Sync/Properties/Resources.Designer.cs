@@ -59,5 +59,15 @@ namespace PlaylistConverterGUI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Icon___Smart_Playlist_by_icons8 {
+            get {
+                object obj = ResourceManager.GetObject("Icon___Smart_Playlist_by_icons8", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlaylistConverterPreviewForm));
             this.openSourceFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveTargetFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.sourceFilePathTextBox = new System.Windows.Forms.TextBox();
@@ -428,13 +429,14 @@
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
-            // Form1
+            // PlaylistConverterPreviewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1022, 525);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "PlaylistConverterPreviewForm";
             this.ShowIcon = false;
             this.Text = "Playlist Converter Preview";
             this.sourceFileGroupBox.ResumeLayout(false);
