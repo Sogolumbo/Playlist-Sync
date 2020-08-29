@@ -48,6 +48,11 @@ namespace PlaylistConverterGUI
             OpenForm(new EditMusicLibraryForm());
         }
 
+        private void cleanM3uFilesButton_Click(object sender, EventArgs e)
+        {
+            OpenForm(new M3uCleanerGUI());
+        }
+
         private void iconLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(e.Link.LinkData.ToString());

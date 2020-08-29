@@ -37,6 +37,7 @@
             this.iconlabel = new System.Windows.Forms.Label();
             this.iconLinkLabel = new System.Windows.Forms.LinkLabel();
             this.iconLinkToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.cleanM3uFilesButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -81,8 +82,9 @@
             // 
             // iconlabel
             // 
+            this.iconlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iconlabel.AutoSize = true;
-            this.iconlabel.Location = new System.Drawing.Point(12, 145);
+            this.iconlabel.Location = new System.Drawing.Point(12, 213);
             this.iconlabel.Name = "iconlabel";
             this.iconlabel.Size = new System.Drawing.Size(31, 13);
             this.iconlabel.TabIndex = 4;
@@ -90,8 +92,9 @@
             // 
             // iconLinkLabel
             // 
+            this.iconLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iconLinkLabel.AutoSize = true;
-            this.iconLinkLabel.Location = new System.Drawing.Point(49, 145);
+            this.iconLinkLabel.Location = new System.Drawing.Point(49, 213);
             this.iconLinkLabel.Name = "iconLinkLabel";
             this.iconLinkLabel.Size = new System.Drawing.Size(117, 13);
             this.iconLinkLabel.TabIndex = 5;
@@ -106,13 +109,24 @@
             this.iconLinkToolTip.UseAnimation = false;
             this.iconLinkToolTip.UseFading = false;
             // 
+            // cleanM3uFilesButton
+            // 
+            this.cleanM3uFilesButton.Location = new System.Drawing.Point(12, 144);
+            this.cleanM3uFilesButton.Name = "cleanM3uFilesButton";
+            this.cleanM3uFilesButton.Size = new System.Drawing.Size(95, 60);
+            this.cleanM3uFilesButton.TabIndex = 3;
+            this.cleanM3uFilesButton.Text = "Clean M3u files";
+            this.cleanM3uFilesButton.UseVisualStyleBackColor = true;
+            this.cleanM3uFilesButton.Click += new System.EventHandler(this.cleanM3uFilesButton_Click);
+            // 
             // PlaylistToolsMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 165);
+            this.ClientSize = new System.Drawing.Size(216, 233);
             this.Controls.Add(this.iconLinkLabel);
             this.Controls.Add(this.iconlabel);
+            this.Controls.Add(this.cleanM3uFilesButton);
             this.Controls.Add(this.editMusicLibraryButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -134,5 +148,6 @@
         private System.Windows.Forms.Label iconlabel;
         private System.Windows.Forms.LinkLabel iconLinkLabel;
         private System.Windows.Forms.ToolTip iconLinkToolTip;
+        private System.Windows.Forms.Button cleanM3uFilesButton;
     }
 }

@@ -82,6 +82,12 @@
     <Compile Include="EditMusicLibraryForm.Designer.cs">
       <DependentUpon>EditMusicLibraryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="M3uCleanerGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="M3uCleanerGUI.Designer.cs">
+      <DependentUpon>M3uCleanerGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="MultiplePlaylistConversionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditMusicLibraryForm.resx">
       <DependentUpon>EditMusicLibraryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="M3uCleanerGUI.resx">
+      <DependentUpon>M3uCleanerGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MultiplePlaylistConversionForm.resx">
       <DependentUpon>MultiplePlaylistConversionForm.cs</DependentUpon>
