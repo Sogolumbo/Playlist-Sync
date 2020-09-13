@@ -56,6 +56,10 @@ namespace Playlist
             Regex[] FolderPathRegex = sourceFolders.Select(key => new Regex("^" + Regex.Escape(key))).ToArray();
             foreach (string sourceLine in playlistLines)
             {
+                if(sourceLine.Length > 0 && sourceLine[0] == '#')
+                {
+                    continue; // skip lines starting with #
+                }
                 int i = 0;
                 while (!FolderPathRegex[i].IsMatch(sourceLine))
                 {
