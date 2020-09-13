@@ -87,7 +87,7 @@ namespace Playlist
         /// </summary>
         /// <param name="stack"></param>
         /// <param name="includeChildren"></param>
-        /// <returns>Ar true if there are elements left, false otherwise</returns>
+        /// <returns>Returns true if there are elements left, false otherwise</returns>
         internal static bool IncrementIndex(Stack<Index> stack, bool includeChildren = false)
         {
             List<object> children;
