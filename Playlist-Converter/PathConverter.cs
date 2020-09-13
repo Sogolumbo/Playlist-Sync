@@ -26,6 +26,11 @@ namespace Playlist
         {
             return ConvertedLines(playlistLines, false); ;
         }
+        public string[] GetNeutralLines(string playlistFilePath, Encoding encoding)
+        {
+            string[] playlistLines = File.ReadAllLines(playlistFilePath, encoding);
+            return GetNeutralLines(playlistLines);
+        }
         public string[] GetNeutralLines(string playlistFilePath)
         {
             string[] playlistLines = File.ReadAllLines(playlistFilePath);
