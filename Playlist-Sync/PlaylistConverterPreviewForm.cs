@@ -66,7 +66,6 @@ namespace PlaylistConverterGUI
         {
             sourceFilePreviewLabel.Text = "Preview (platform independent preview)";
             sourceFilePreviewRichTextBox.Text = String.Join("\n", _converter.GetNeutralLines(openSourceFileDialog.FileName));
-
         }
 
         private void sourceFileMusicFolderTextBox_TextChanged(object sender, EventArgs e)

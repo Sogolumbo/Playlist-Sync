@@ -95,7 +95,7 @@
             this.itemNameTextBox.Size = new System.Drawing.Size(403, 20);
             this.itemNameTextBox.TabIndex = 2;
             this.itemNameTextBox.TextChanged += new System.EventHandler(this.itemNameTextBox_TextChanged);
-            this.itemNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.itemNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongTextBox_KeyDown);
             this.itemNameTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // itemPathTextBox
@@ -220,7 +220,7 @@
             this.appendPathToClipboardButton.Text = "Append full path to clipboard";
             this.appendPathToClipboardButton.UseVisualStyleBackColor = true;
             this.appendPathToClipboardButton.Click += new System.EventHandler(this.appendPathToClipboardButton_Click);
-            this.appendPathToClipboardButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.appendPathToClipboardButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongButton_KeyDown);
             this.appendPathToClipboardButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // copyFullPathButton
@@ -232,7 +232,7 @@
             this.copyFullPathButton.Text = "Copy full path";
             this.copyFullPathButton.UseVisualStyleBackColor = true;
             this.copyFullPathButton.Click += new System.EventHandler(this.copyFullPathButton_Click);
-            this.copyFullPathButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.copyFullPathButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongButton_KeyDown);
             this.copyFullPathButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // openSelectedItemButton
@@ -244,7 +244,7 @@
             this.openSelectedItemButton.Text = "Open Item";
             this.openSelectedItemButton.UseVisualStyleBackColor = true;
             this.openSelectedItemButton.Click += new System.EventHandler(this.openSelectedItemButton_Click);
-            this.openSelectedItemButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openSelectedItemButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongButton_KeyDown);
             this.openSelectedItemButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // selectedItemPlaylistsListBox
@@ -289,7 +289,7 @@
             this.openPathInKid3Button.Text = "Open Path in Kid3";
             this.openPathInKid3Button.UseVisualStyleBackColor = true;
             this.openPathInKid3Button.Click += new System.EventHandler(this.openPathInKid3Button_Click);
-            this.openPathInKid3Button.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openPathInKid3Button.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongButton_KeyDown);
             this.openPathInKid3Button.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // itemGenreTextBox
@@ -312,7 +312,7 @@
             this.openPathInExplorerButton.Text = "Open Path in explorer";
             this.openPathInExplorerButton.UseVisualStyleBackColor = true;
             this.openPathInExplorerButton.Click += new System.EventHandler(this.openInExplorerButton_Click);
-            this.openPathInExplorerButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongControl_KeyDown);
+            this.openPathInExplorerButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.selectedSongButton_KeyDown);
             this.openPathInExplorerButton.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.selectedSongControl_PreviewKeyDown);
             // 
             // label8

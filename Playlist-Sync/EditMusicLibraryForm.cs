@@ -384,6 +384,21 @@ namespace PlaylistConverterGUI
             {
                 FullReload();
             }
+
+            RestoreTreeViewSelection(selectedLibraryItem);
+        }
+
+        private void RestoreTreeViewSelection(MusicLibraryItem selectedLibraryItem)
+        {
+            TreeNode[] previouslySelectedNodes = libraryTreeView.Nodes.Find(selectedLibraryItem.Name, true);
+            if (previouslySelectedNodes.Length == 1)
+            {
+                libraryTreeView.SelectedNode = previouslySelectedNodes[0];
+            }
+            else
+            {
+                throw new NotImplementedException("Could not restore selected Item. Missing implementation to uniquely identify the object.");
+            }
         }
 
         private void _library_MissingElementFound(object sender, EventArgs e)
@@ -685,10 +700,17 @@ namespace PlaylistConverterGUI
             libraryTreeView.Focus();
         }
 
-        private void selectedSongControl_KeyDown(object sender, KeyEventArgs e)
+        private void selectedSongButton_KeyDown(object sender, KeyEventArgs e)
         {
             handleArrowKeysInSelectedSongControls(e);
         }
+        private void selectedSongTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            handleArrowKeysInSelectedSongControls(e);
+            handleEnterKeyInSelectedSongTextBox(sender, e);
+        }
+
+
         private void selectedSongControl_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             declareArrowKeysAsInputKeysInSelectedSongControls(e);
@@ -703,6 +725,16 @@ namespace PlaylistConverterGUI
             else if (e.KeyCode == Keys.Up && libraryTreeView.SelectedNode != null && libraryTreeView.SelectedNode.PrevVisibleNode != null)
             {
                 libraryTreeView.SelectedNode = libraryTreeView.SelectedNode.PrevVisibleNode;
+            }
+        }
+        private void handleEnterKeyInSelectedSongTextBox(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && libraryTreeView.SelectedNode != null)
+            {
+                Cursor = Cursors.WaitCursor;
+                ApplyChanges();
+                (sender as Control).Focus();
+                Cursor = DefaultCursor;
             }
         }
 
