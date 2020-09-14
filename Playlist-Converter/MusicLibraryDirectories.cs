@@ -32,13 +32,23 @@ namespace Playlist
             {
                 foreach (string item in Directory.GetDirectories(directoryPath))
                 {
+                    if (Path.GetFileName(item) == ".git")
+                    {
+                        continue;
+                    }
                     var dir = new MusicLibraryDirectory(item, this, nonAudioDataTypes);
                     dir.UnauthorizedAccess += ThrowUnauthorizedAccessException;
                     Directories.Add(dir);
                 }
                 foreach (string item in Directory.GetFiles(directoryPath))
                 {
-                    string extensionWithoutDot = Path.GetExtension(item).Substring(1);
+
+                    string extensionWithoutDot = null;
+                    string fullExtension = Path.GetExtension(item);
+                    if (!String.IsNullOrWhiteSpace(fullExtension))
+                    {
+                        extensionWithoutDot = Path.GetExtension(item)?.Substring(1);
+                    }
                     AudioFileType Type;
                     if (Enum.TryParse<AudioFileType>(extensionWithoutDot, true, out Type))
                     {
