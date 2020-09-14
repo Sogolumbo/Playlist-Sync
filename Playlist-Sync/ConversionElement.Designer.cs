@@ -44,7 +44,7 @@
             // 
             this.convertPlaylistsButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.convertPlaylistsButton.Location = new System.Drawing.Point(335, 5);
+            this.convertPlaylistsButton.Location = new System.Drawing.Point(448, 5);
             this.convertPlaylistsButton.Margin = new System.Windows.Forms.Padding(3, 5, 5, 2);
             this.convertPlaylistsButton.Name = "convertPlaylistsButton";
             this.convertPlaylistsButton.Size = new System.Drawing.Size(110, 67);
@@ -57,10 +57,10 @@
             // 
             this.sourcePathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sourcePathLabel.Location = new System.Drawing.Point(72, 25);
+            this.sourcePathLabel.Location = new System.Drawing.Point(106, 25);
             this.sourcePathLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.sourcePathLabel.Name = "sourcePathLabel";
-            this.sourcePathLabel.Size = new System.Drawing.Size(257, 13);
+            this.sourcePathLabel.Size = new System.Drawing.Size(336, 13);
             this.sourcePathLabel.TabIndex = 1;
             this.sourcePathLabel.Text = "sourcePathLabel";
             // 
@@ -69,7 +69,7 @@
             this.sourceTypeLabel.Location = new System.Drawing.Point(3, 25);
             this.sourceTypeLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.sourceTypeLabel.Name = "sourceTypeLabel";
-            this.sourceTypeLabel.Size = new System.Drawing.Size(63, 13);
+            this.sourceTypeLabel.Size = new System.Drawing.Size(97, 13);
             this.sourceTypeLabel.TabIndex = 2;
             this.sourceTypeLabel.Text = "sourceType";
             // 
@@ -77,10 +77,10 @@
             // 
             this.targetPathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPathLabel.Location = new System.Drawing.Point(72, 40);
+            this.targetPathLabel.Location = new System.Drawing.Point(106, 40);
             this.targetPathLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.targetPathLabel.Name = "targetPathLabel";
-            this.targetPathLabel.Size = new System.Drawing.Size(257, 13);
+            this.targetPathLabel.Size = new System.Drawing.Size(336, 13);
             this.targetPathLabel.TabIndex = 3;
             this.targetPathLabel.Text = "targetPathLabel";
             // 
@@ -94,7 +94,7 @@
             this.PlaylistNamesLabel.Location = new System.Drawing.Point(3, 59);
             this.PlaylistNamesLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PlaylistNamesLabel.Name = "PlaylistNamesLabel";
-            this.PlaylistNamesLabel.Size = new System.Drawing.Size(326, 41);
+            this.PlaylistNamesLabel.Size = new System.Drawing.Size(439, 41);
             this.PlaylistNamesLabel.TabIndex = 4;
             this.PlaylistNamesLabel.Text = resources.GetString("PlaylistNamesLabel.Text");
             // 
@@ -103,7 +103,7 @@
             this.targetTypeLabel.Location = new System.Drawing.Point(3, 40);
             this.targetTypeLabel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.targetTypeLabel.Name = "targetTypeLabel";
-            this.targetTypeLabel.Size = new System.Drawing.Size(63, 13);
+            this.targetTypeLabel.Size = new System.Drawing.Size(97, 13);
             this.targetTypeLabel.TabIndex = 5;
             this.targetTypeLabel.Text = "targetType";
             // 
@@ -114,7 +114,7 @@
             this.removeButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.removeButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(150)))), ((int)(((byte)(160)))));
             this.removeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.removeButton.Location = new System.Drawing.Point(385, 77);
+            this.removeButton.Location = new System.Drawing.Point(498, 77);
             this.removeButton.Margin = new System.Windows.Forms.Padding(3, 3, 5, 5);
             this.removeButton.Name = "removeButton";
             this.removeButton.Size = new System.Drawing.Size(60, 23);
@@ -130,7 +130,7 @@
             this.editButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.editButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(210)))), ((int)(((byte)(110)))));
             this.editButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.editButton.Location = new System.Drawing.Point(335, 77);
+            this.editButton.Location = new System.Drawing.Point(448, 77);
             this.editButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.editButton.Name = "editButton";
             this.editButton.Size = new System.Drawing.Size(44, 23);
@@ -147,7 +147,7 @@
             this.titleLabel.Location = new System.Drawing.Point(4, 4);
             this.titleLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(325, 17);
+            this.titleLabel.Size = new System.Drawing.Size(438, 17);
             this.titleLabel.TabIndex = 8;
             this.titleLabel.Text = "Title";
             // 
@@ -168,7 +168,7 @@
             this.Controls.Add(this.convertPlaylistsButton);
             this.Name = "ConversionElement";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
-            this.Size = new System.Drawing.Size(451, 106);
+            this.Size = new System.Drawing.Size(564, 106);
             this.Load += new System.EventHandler(this.ConversionElement_Load);
             this.ResumeLayout(false);
 

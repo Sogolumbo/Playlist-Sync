@@ -49,26 +49,15 @@ namespace PlaylistConverterGUI
 
         private void convertPlaylistsButton_Click(object sender, EventArgs e)
         {
-            string[] sourceFiles = Conversion.GetSourcePlaylistFiles();
-            PathConverter converter = new PathConverter
+            ConversionOutput output = Conversion.DoConversion();
+            
+            foreach (var tuple in output.LostSongsPerPlaylist)
             {
-                MusicFolderPaths = Conversion.MusicFolderPaths,
-                SourceUsesSlashesAsDirectorySeperator = Conversion.SourceUseSlashAsSeperator,
-                TargetUsesSlashesAsDirectorySeperator = Conversion.TargetUseSlashAsSeperator
-            };
-
-            string targetFile;
-            foreach (string sourceFile in sourceFiles)
-            {
-                targetFile = Path.GetFileNameWithoutExtension(sourceFile);
-                targetFile = Regex.Replace(targetFile, @"^(Synced - )*([^.]+)(.playlistsync)?$", @"$2"); //Clean name
-                targetFile = Path.Combine(Conversion.TargetPlaylistFolderPath, Conversion.TargetFileNamePrefix + targetFile + '.' + Conversion.TargetPlaylistType.ToString().ToLower() + Conversion.TargetFileTypeSuffix);
-                File.WriteAllLines(targetFile, converter.GetConvertedLines(sourceFile, Conversion.GetSourceEncoding()), Conversion.GetTargetEncoding());
-                String[] LostLines = converter.GetMissingLines();
-                if (LostLines.Length > 0)
-                {
-                    MessageBox.Show("The following lines are left out in the playlist \"" + Path.GetFileNameWithoutExtension(sourceFile) + "\":\n" + String.Join("\n", LostLines), "Error while converting the playlist \"" + Path.GetFileNameWithoutExtension(sourceFile) + "\"!");
-                }
+                string playlistName = Path.GetFileNameWithoutExtension(tuple.Item1);
+                string missingLines = String.Join("\n", tuple.Item2);
+                string caption = "Error while converting the playlist \"" + playlistName + "\"!";
+                string text = "The following songs/lines are left out in the playlist \"" + playlistName + "\":\n" + missingLines;
+                MessageBox.Show(text, caption);
             }
         }
     }
