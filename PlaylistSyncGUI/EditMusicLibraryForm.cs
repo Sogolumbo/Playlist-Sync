@@ -106,7 +106,7 @@ namespace PlaylistSyncGUI
                 }
                 else
                 {
-                    //TODO
+                    MessageBox.Show("Could not restore the selection. There are " + possiblyEquivalentNodes.Count() + " items which have the name " + previouslySelectedNode.Name + " out of which " + equivalentToSelectedNodes.Count() + " have the path" + (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
                 }
                 libraryTreeView.Focus();
             }
