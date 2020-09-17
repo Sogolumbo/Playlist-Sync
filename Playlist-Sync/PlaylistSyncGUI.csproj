@@ -170,9 +170,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Playlist-Converter\Playlist.csproj">
+    <ProjectReference Include="..\Playlist-Converter\PlaylistSyncLib.csproj">
       <Project>{3e57b1a0-06b4-45aa-a7b2-ac0bfc1f9ac7}</Project>
-      <Name>Playlist</Name>
+      <Name>PlaylistSyncLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
