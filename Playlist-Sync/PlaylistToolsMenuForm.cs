@@ -17,10 +17,17 @@ namespace PlaylistConverterGUI
         {
             InitializeComponent();
 
-            string iconSourceLink = "https://www.visualpharm.com/free-icons/smart%20playlist-595b40b85ba036ed117daac8";
-            LinkLabel.Link iconLink = new LinkLabel.Link(0, iconLinkLabel.Text.Length, iconSourceLink);
+            string iconSourceUrl = "https://www.visualpharm.com/free-icons/smart%20playlist-595b40b85ba036ed117daac8";
+            string directSourceUrl = "https://icons8.com/icon/31561/smart-playlist";
+            string iconOwnerUrl = "https://icons8.com/";
+
+            LinkLabel.Link iconLink = new LinkLabel.Link(0, 14, iconSourceUrl);
             iconLinkLabel.Links.Add(iconLink);
-            iconLinkToolTip.SetToolTip(iconLinkLabel, iconSourceLink);
+
+            LinkLabel.Link iconOwnerLink = new LinkLabel.Link(18, 10, iconOwnerUrl);
+            iconLinkLabel.Links.Add(iconOwnerLink);
+            iconLinkToolTip.SetToolTip(iconLinkLabel, iconSourceUrl + "\n" + iconOwnerUrl);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
