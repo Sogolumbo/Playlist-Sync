@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistConverterGUI", "PlaylistConverterGUI.csproj", "{43826C58-1870-4988-AAB2-EDF3EF8C58C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistConverterGUI", ".\Playlist-Sync\PlaylistConverterGUI.csproj", "{43826C58-1870-4988-AAB2-EDF3EF8C58C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playlist", "..\Playlist-Converter\Playlist.csproj", "{3E57B1A0-06B4-45AA-A7B2-AC0BFC1F9AC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playlist", ".\Playlist-Converter\Playlist.csproj", "{3E57B1A0-06B4-45AA-A7B2-AC0BFC1F9AC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
