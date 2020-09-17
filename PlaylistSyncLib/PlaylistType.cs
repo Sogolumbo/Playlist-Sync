@@ -22,8 +22,7 @@ namespace Playlist
             switch (type)
             {
                 case PlaylistType.M3u:
-                    //return Encoding.Default;
-                    return Encoding.GetEncoding(1252); //TODO right number of encoding
+                    return Encoding.Default; //previously Encoding.GetEncoding(1252);
 
                 case PlaylistType.Playlistsync:
                 case PlaylistType.M3u8:
