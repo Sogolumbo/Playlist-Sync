@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class M3uCleanerGUI : Form
     {

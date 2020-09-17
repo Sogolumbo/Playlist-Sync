@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public static class StringExt
     {

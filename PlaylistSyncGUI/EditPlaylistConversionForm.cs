@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Playlist;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class EditPlaylistConversionForm : Form
     {

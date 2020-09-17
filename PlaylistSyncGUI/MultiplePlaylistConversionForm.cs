@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Playlist;
 using Newtonsoft.Json;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class MultiplePlaylistConversionForm : Form
     {

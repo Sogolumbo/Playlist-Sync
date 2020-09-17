@@ -11,7 +11,7 @@ using Playlist;
 using System.IO;
 using System.Diagnostics;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class EditPlaylistForm : Form
     {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class PlaylistConverterPreviewForm : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace PlaylistConverterGUI
+﻿namespace PlaylistSyncGUI
 {
     partial class M3uCleanerGUI
     {

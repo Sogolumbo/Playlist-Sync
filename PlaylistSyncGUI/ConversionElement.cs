@@ -11,7 +11,7 @@ using Playlist;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class ConversionElement : UserControl
     {

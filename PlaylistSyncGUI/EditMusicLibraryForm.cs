@@ -12,7 +12,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace PlaylistConverterGUI
+namespace PlaylistSyncGUI
 {
     public partial class EditMusicLibraryForm : Form
     {
