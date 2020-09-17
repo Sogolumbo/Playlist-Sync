@@ -3,6 +3,13 @@ The icon is called "Smart Playlist Icon" [0] and licensed under the linkware lic
 	[1] https://icons8.com/license
 	[2] https://www.visualpharm.com/free-icons/smart%20playlist-595b40b85ba036ed117daac8
 
+
+
+The library Newtonsoft.Json is covered by the MIT license:
+	https://licenses.nuget.org/MIT
+
+
+
 The library taglib-sharp is covered by the following license:
 			  GNU LESSER GENERAL PUBLIC LICENSE
 					 Version 2.1, February 1999
@@ -468,6 +475,8 @@ The library taglib-sharp is covered by the following license:
 	FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 	SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
 	DAMAGES.
+
+
 
 The rest is covered by the following license:
 	MIT License
