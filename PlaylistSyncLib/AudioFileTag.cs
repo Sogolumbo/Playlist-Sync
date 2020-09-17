@@ -14,7 +14,10 @@ namespace Playlist
             {
                 ReadFromFile(fullPath);
             }
-            catch (ArgumentOutOfRangeException) { } //TODO
+            catch (ArgumentOutOfRangeException ex) //TODO remove the try-catch cause it does not seem to be necessary
+            {
+                throw ex;
+            }
         }
         public AudioFileTag()
         {
