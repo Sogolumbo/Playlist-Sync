@@ -180,8 +180,8 @@ namespace PlaylistSyncGUI
 
         private void OpenPathInKid(string path)
         {
-            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
-            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
+            string kid3Path = Properties.Settings.Default.kid3_FilePath;
+            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\"");
         }
         private void OpenPathInExplorer(string path)
         {
@@ -189,7 +189,7 @@ namespace PlaylistSyncGUI
         }
         private void OpenPlaylistInNotepad(string path)
         {
-            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string notepadPath = Properties.Settings.Default.notepadPlusPlus_FilePath;
             Process.Start("\"" + notepadPath + "\"", "\"" + path + "\"");
         }
 

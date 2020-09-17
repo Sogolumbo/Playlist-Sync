@@ -116,5 +116,29 @@ namespace PlaylistSyncGUI.Properties {
                 this["nonAudioDataTypes"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Portable Programs\\kid3-3.7.0-win32\\kid3.exe")]
+        public string kid3_FilePath {
+            get {
+                return ((string)(this["kid3_FilePath"]));
+            }
+            set {
+                this["kid3_FilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Notepad++\\notepad++.exe")]
+        public string notepadPlusPlus_FilePath {
+            get {
+                return ((string)(this["notepadPlusPlus_FilePath"]));
+            }
+            set {
+                this["notepadPlusPlus_FilePath"] = value;
+            }
+        }
     }
 }

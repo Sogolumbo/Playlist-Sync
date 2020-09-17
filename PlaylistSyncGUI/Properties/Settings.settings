@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PlaylistConverterGUI.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PlaylistSyncGUI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="TargetMusicFolder" Type="System.String" Scope="User">
@@ -34,6 +34,12 @@
   &lt;string&gt;pdf&lt;/string&gt;
   &lt;string&gt;reapeaks&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="kid3_FilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Portable Programs\kid3-3.7.0-win32\kid3.exe</Value>
+    </Setting>
+    <Setting Name="notepadPlusPlus_FilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Notepad++\notepad++.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>
