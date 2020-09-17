@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MediaInfo.Wrapper, Version=18.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Playlist-Sync\packages\MediaInfo.Wrapper.18.12.0\lib\net45\MediaInfo.Wrapper.dll</HintPath>
-    </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\Playlist-Sync\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
