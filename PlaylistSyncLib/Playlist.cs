@@ -396,7 +396,7 @@ namespace Playlist
                 {
                     if (File.Exists(FullPath) == false)
                     {
-                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the artist tag could not be changed.", FullPath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the artist tag could not be changed.", FullPath);
                     }
                     Tag.Artist = artist;
                 }
@@ -413,7 +413,7 @@ namespace Playlist
                     Tag.Album = album;
                     if (File.Exists(FullPath) == false)
                     {
-                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the album tag could not be changed.", FullPath); //TODO maybe define own exception class
+                        throw new FileNotFoundException("The File " + FullPath + " was not found. So the album tag could not be changed.", FullPath);
                     }
                 }
             }
@@ -426,7 +426,7 @@ namespace Playlist
             {
                 if (File.Exists(FullPath) == false)
                 {
-                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
+                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the title tag could not be changed.", FullPath);
                 }
                 if (editFileOrFolder)
                 {
@@ -447,7 +447,7 @@ namespace Playlist
             {
                 if (File.Exists(FullPath) == false)
                 {
-                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath); //TODO maybe define own exception class
+                    throw new FileNotFoundException("The File " + FullPath + " was not found. So the track number tag could not be changed.", FullPath);
                 }
                 Tag.Nr = number;
             }

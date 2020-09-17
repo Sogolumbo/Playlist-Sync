@@ -306,7 +306,7 @@ namespace Playlist
             int loopCounterDecrement = 0;
             StringBuilder history = new StringBuilder();
 
-            while (!(libraryFinished && playlistIndices.Count == 0)) // TODO && playlistIndices.Count == 0
+            while (!(libraryFinished && playlistIndices.Count == 0))
             {
                 foreach (var plIndex in playlistIndices.ToArray())
                 {
@@ -401,7 +401,6 @@ namespace Playlist
             }
             else if (comparisonValue <= -1) //playlist item preceeds library item
                                             //this playlist item is missing in the library item
-                                            //TODO check which cases end up here
             {
                 MusicLibraryMissingElement missingElement = AddMissingElement(playlistIndex, libraryIndex);
                 comparisonValue = -RecursiveAmountOfElements(missingElement);

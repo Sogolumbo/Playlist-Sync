@@ -83,7 +83,7 @@ namespace PlaylistSyncGUI
                 {
                     MusicFolderPaths.Add(folderLink.SourceFolder, folderLink.TargetFolder);
                 }
-                catch(ArgumentException ex) //TODO name explicit exception
+                catch(ArgumentException)
                 {
                     folderLink.ShowError();
                     noErrors = false;
