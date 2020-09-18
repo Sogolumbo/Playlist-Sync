@@ -63,3 +63,26 @@ Use Free file sync to copy the .xml files from your phone to your pc.
 Use Playlist-Sync to convert the newest .xml file into m3u playlists and save them into your folder.
 
 *Check all the changes you made on git. If everything looks fine you can commit now. If you had changes made on your pc at the beginning you might have to repair some stuff now. Open the "music library" and make sure there are no "missing items" (red background).*
+
+## Configuration
+
+The default settings are stored in `PlaylistSyncGUI.exe.config`.
+
+Your user settings are stored at `%Appdata%\..\Local\PlaylistSyncGUI` in the file `user.config` (this is where the button in the main menu takes you).
+
+To use the external programs (notepad++, kid3) you might have to change the file paths in the config file:
+
+Copy the following lines from the default settings into your user settings. Then replace the file paths with the file paths of your system.
+
+
+
+```xml
+    <setting name="kid3_FilePath" serializeAs="String">
+        <value>C:\Portable Programs\kid3-3.7.0-win32\kid3.exe</value>
+    </setting>
+    <setting name="notepadPlusPlus_FilePath" serializeAs="String">
+        <value>C:\Program Files (x86)\Notepad++\notepad++.exe</value>
+    </setting>
+```
+
+It happened to me multiple times that I lost my settings. If this happens to you you can most likely restore the old settings by finding the old `user.config` file and copying the contents into the new file.
