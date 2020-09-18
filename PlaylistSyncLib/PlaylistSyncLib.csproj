@@ -51,10 +51,10 @@
     <Compile Include="Indexing.cs" />
     <Compile Include="M3uCleaner.cs" />
     <Compile Include="MusicLibrary.cs" />
-    <Compile Include="MusicLibraryDirectories.cs" />
+    <Compile Include="MusicLibraryDirectory.cs" />
     <Compile Include="MusicLibraryFile.cs" />
     <Compile Include="MusicLibraryItem.cs" />
-    <Compile Include="MusicLibraryMissingFile.cs" />
+    <Compile Include="MusicLibraryMissingElement.cs" />
     <Compile Include="PlaylistIndex.cs" />
     <Compile Include="PlaylistType.cs" />
     <Compile Include="PathConverter.cs" />
