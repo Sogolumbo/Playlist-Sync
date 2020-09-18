@@ -39,6 +39,7 @@
             this.iconLinkToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.cleanM3uFilesButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.openSettingsFolderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -56,7 +57,7 @@
             this.button2.Location = new System.Drawing.Point(113, 165);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 60);
-            this.button2.TabIndex = 4;
+            this.button2.TabIndex = 11;
             this.button2.Text = "Conversion\r\nPreview";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -66,7 +67,7 @@
             this.button3.Location = new System.Drawing.Point(12, 165);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 60);
-            this.button3.TabIndex = 3;
+            this.button3.TabIndex = 10;
             this.button3.Text = "Edit playlist \r\nand folder\r\n structure";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -98,7 +99,7 @@
             this.iconLinkLabel.Location = new System.Drawing.Point(49, 236);
             this.iconLinkLabel.Name = "iconLinkLabel";
             this.iconLinkLabel.Size = new System.Drawing.Size(140, 13);
-            this.iconLinkLabel.TabIndex = 5;
+            this.iconLinkLabel.TabIndex = 20;
             this.iconLinkLabel.TabStop = true;
             this.iconLinkLabel.Text = "Smart Playlist by icons8.com";
             this.iconLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.iconLinkLabel_LinkClicked);
@@ -130,11 +131,22 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Legacy:";
             // 
+            // openSettingsFolderButton
+            // 
+            this.openSettingsFolderButton.Location = new System.Drawing.Point(113, 78);
+            this.openSettingsFolderButton.Name = "openSettingsFolderButton";
+            this.openSettingsFolderButton.Size = new System.Drawing.Size(95, 60);
+            this.openSettingsFolderButton.TabIndex = 3;
+            this.openSettingsFolderButton.Text = "Open Settings Folder";
+            this.openSettingsFolderButton.UseVisualStyleBackColor = true;
+            this.openSettingsFolderButton.Click += new System.EventHandler(this.openSettingsFolderButton_Click);
+            // 
             // PlaylistToolsMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 256);
+            this.ClientSize = new System.Drawing.Size(220, 256);
+            this.Controls.Add(this.openSettingsFolderButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.iconLinkLabel);
             this.Controls.Add(this.iconlabel);
@@ -162,5 +174,6 @@
         private System.Windows.Forms.ToolTip iconLinkToolTip;
         private System.Windows.Forms.Button cleanM3uFilesButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button openSettingsFolderButton;
     }
 }

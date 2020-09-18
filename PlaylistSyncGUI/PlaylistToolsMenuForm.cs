@@ -11,6 +11,8 @@ using System.Windows.Forms;
 
 namespace PlaylistSyncGUI
 {
+    using static OpenExternalStuff;
+
     public partial class PlaylistToolsMenuForm : Form
     {
         public PlaylistToolsMenuForm()
@@ -63,6 +65,11 @@ namespace PlaylistSyncGUI
         private void iconLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(e.Link.LinkData.ToString());
+        }
+
+        private void openSettingsFolderButton_Click(object sender, EventArgs e)
+        {
+            OpenPathWithStandardApplication(Properties.Resources.SettingsFilePath);
         }
     }
 }
