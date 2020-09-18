@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Playlist;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+
+using Playlist;
+using static PlaylistSyncGUI.OpenExternalStuff;
 
 namespace PlaylistSyncGUI
 {
@@ -176,21 +178,6 @@ namespace PlaylistSyncGUI
             itemArtistTextBox.Enabled = showSongTagData;
             itemGenreTextBox.Enabled = showSongTagData;
             itemTrackNumberTextBox.Enabled = showSongTagData;
-        }
-
-        private void OpenPathInKid(string path)
-        {
-            string kid3Path = Properties.Settings.Default.kid3_FilePath;
-            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\"");
-        }
-        private void OpenPathInExplorer(string path)
-        {
-            Process.Start("explorer", path);
-        }
-        private void OpenPlaylistInNotepad(string path)
-        {
-            string notepadPath = Properties.Settings.Default.notepadPlusPlus_FilePath;
-            Process.Start("\"" + notepadPath + "\"", "\"" + path + "\"");
         }
 
         private TreeNode[] NodesFromLibrary(MusicLibrary library)
@@ -549,7 +536,7 @@ namespace PlaylistSyncGUI
             if (playlistListBox.SelectedItem != null)
             {
                 var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
-                OpenPlaylistInNotepad(playlistPath);
+                OpenFileInNotepad(playlistPath);
             }
         }
 
@@ -611,27 +598,20 @@ namespace PlaylistSyncGUI
         private void OpenItem(string fullPath)
         {
             Cursor = Cursors.WaitCursor;
-            string command = "start \"\" \"" + fullPath + "\"";
             try
             {
-                Process cmd = new Process();
-                cmd.StartInfo.FileName = "cmd.exe";
-                cmd.StartInfo.RedirectStandardInput = true;
-                cmd.StartInfo.RedirectStandardOutput = true;
-                cmd.StartInfo.CreateNoWindow = true;
-                cmd.StartInfo.UseShellExecute = false;
-                cmd.Start();
-
-                cmd.StandardInput.WriteLine("chcp " + Encoding.Default.CodePage); //z.B. Deutsche codepage für Umlaute usw.
-                cmd.StandardInput.WriteLine(command);
-                cmd.StandardInput.Flush();
-                cmd.StandardInput.Close();
-                cmd.WaitForExit();
-                Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+                Process process = OpenPathWithStandardApplication(fullPath);
+                int maxTimeInMiliseconds = 5*1000;
+                bool done = process.WaitForExit(maxTimeInMiliseconds);
+                if (!done)
+                {
+                    process.Kill();
+                    MessageBox.Show("Could not open the item in a resonable time (" + maxTimeInMiliseconds + "ms). You might have to restart the standard application for this file type.", "Error while trying to open the item",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n(File: '" + fullPath + "',\nCommand: '" + command + "')", "Error while opening " + Path.GetFileName(fullPath));
+                MessageBox.Show(ex.Message + "\n(Path: '" + fullPath + "')", "Error while opening " + Path.GetFileName(fullPath));
             }
             Cursor = Cursors.Default;
         }

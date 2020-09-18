@@ -94,6 +94,7 @@
     <Compile Include="MultiplePlaylistConversionForm.Designer.cs">
       <DependentUpon>MultiplePlaylistConversionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OpenExternalStuff.cs" />
     <Compile Include="PlaylistConverterPreviewForm.cs">
       <SubType>Form</SubType>
     </Compile>

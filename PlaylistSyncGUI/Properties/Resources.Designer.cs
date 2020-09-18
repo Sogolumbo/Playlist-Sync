@@ -69,5 +69,14 @@ namespace PlaylistSyncGUI.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %AppData%\..\Local\PlaylistSyncGUI.
+        /// </summary>
+        internal static string SettingsFilePath {
+            get {
+                return ResourceManager.GetString("SettingsFilePath", resourceCulture);
+            }
+        }
     }
 }

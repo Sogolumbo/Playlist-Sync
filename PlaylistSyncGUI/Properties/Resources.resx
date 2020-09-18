@@ -121,4 +121,7 @@
   <data name="Icon___Smart_Playlist_by_icons8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icon - Smart Playlist by icons8.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SettingsFilePath" xml:space="preserve">
+    <value>%AppData%\..\Local\PlaylistSyncGUI</value>
+  </data>
 </root>

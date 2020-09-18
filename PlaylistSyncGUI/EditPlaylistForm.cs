@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Playlist;
 using System.IO;
 using System.Diagnostics;
+using static PlaylistSyncGUI.OpenExternalStuff;
 
 namespace PlaylistSyncGUI
 {
@@ -118,22 +119,6 @@ namespace PlaylistSyncGUI
 
             albumLinkLabel.Text = linkStateToText(playlistItem.AlbumLink);
             artistLinkLabel.Text = linkStateToText(playlistItem.ArtistLink);
-        }
-
-        private void OpenPathInKid(string path)
-        {
-            string kid3Path = @"C:\Portable Programs\kid3-3.7.0-win32\kid3.exe";
-            Process.Start("\"" + kid3Path + "\"", "\"" + path + "\""); //TODO better kid3 path
-        }
-        private void OpenPathInExplorer(string path)
-        {
-            Process.Start("explorer", path);
-        }
-        private void OpenPlaylistInNotepad()
-        {
-            string notepadPath = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
-            Process.Start("\"" + notepadPath + "\"", "\"" + playlist.Path + "\\" + playlist.Name + "\"");
         }
 
         private TreeNode NodeFromPlaylistItem(PlaylistItem playlistItem)
@@ -293,7 +278,8 @@ namespace PlaylistSyncGUI
 
         private void openPlaylistInNotepad_Click(object sender, EventArgs e)
         {
-            OpenPlaylistInNotepad();
+            PlaylistItem playlist = (PlaylistItem)playlistTreeView.Tag;
+            OpenFileInNotepad(playlist.FullPath);
         }
         private void openInExplorerButton_Click(object sender, EventArgs e)
         {
