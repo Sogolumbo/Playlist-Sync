@@ -436,6 +436,7 @@ namespace PlaylistSyncGUI
                 _library = new MusicLibrary(_playlists, _folders, nonAudioDatatypes);
                 _library.UnauthorizedAccess += _library_UnauthorizedAccess;
                 _library.MissingElementFound += _library_MissingElementFound;
+                _library.FileNameAlreadyExists += _library_FileNameAlreadyExists;
                 _missingElementFound = false;
             }
             catch (NonAudioDataTypeMissingException e)
@@ -450,6 +451,11 @@ namespace PlaylistSyncGUI
                 }
                 throw e;
             }
+        }
+
+        private void _library_FileNameAlreadyExists(object sender, FileNameAlreadyExistsEventArgs e)
+        {
+            MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void _library_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)

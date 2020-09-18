@@ -38,6 +38,7 @@ namespace Playlist
                     }
                     var dir = new MusicLibraryDirectory(item, this, nonAudioDataTypes);
                     dir.UnauthorizedAccess += ThrowUnauthorizedAccessException;
+                    dir.FileNameAlreadyExists += FireFileNameAlreadyExists;
                     Directories.Add(dir);
                 }
                 foreach (string item in Directory.GetFiles(directoryPath))
@@ -55,6 +56,7 @@ namespace Playlist
                         var file = new MusicLibraryFile(item, Type, this);
                         Files.Add(file);
                         file.UnauthorizedAccess += ThrowUnauthorizedAccessException;
+                        file.FileNameAlreadyExists += FireFileNameAlreadyExists;
                     }
                     else if (!(nonAudioDataTypes.Contains(extensionWithoutDot)) && item[0] != '.')
                     {

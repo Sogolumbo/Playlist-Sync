@@ -34,6 +34,7 @@ namespace Playlist
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
         public event EventHandler MissingElementFound;
+        public event EventHandler<FileNameAlreadyExistsEventArgs> FileNameAlreadyExists;
 
         public MusicLibraryDirectory ItemFoldersFromMusicDirectories()
         {
@@ -47,6 +48,7 @@ namespace Playlist
                 //first Element
                 var dir = new MusicLibraryDirectory(musicFolders[0], null, _nonAudioDataTypes);
                 dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
+                dir.FileNameAlreadyExists += Dir_FileNameAlreadyExists;
 
                 string directory = dir.DirectoryPath;
                 string[] parentDirectories = ParentDirectories(directory, true);
@@ -198,6 +200,7 @@ namespace Playlist
         {
             var dir = new MusicLibraryDirectory(musicFolderPath, null, _nonAudioDataTypes);
             dir.UnauthorizedAccess += Dir_UnauthorizedAccess;
+            dir.FileNameAlreadyExists += Dir_FileNameAlreadyExists;
 
             Stack<Index> libraryIndex = new Stack<Index>();
             libraryIndex.Push(new Index(0, new List<object>() { itemFolders }));
@@ -525,6 +528,18 @@ namespace Playlist
             else
             {
                 throw e.OriginalException;
+            }
+        }
+
+        private void Dir_FileNameAlreadyExists(object sender, FileNameAlreadyExistsEventArgs e)
+        {
+            if (FileNameAlreadyExists != null)
+            {
+                FileNameAlreadyExists.Invoke(sender, e);
+            }
+            else
+            {
+                throw new Exception(e.Message);
             }
         }
     }

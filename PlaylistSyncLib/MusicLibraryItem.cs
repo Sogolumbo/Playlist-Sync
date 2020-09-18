@@ -27,7 +27,8 @@ namespace Playlist
                     {
                         if (IsFile())
                         {
-                            throw new NotImplementedException(); //TODO fire custom "file already exists" event
+                            FireFileNameAlreadyExists(this, new FileNameAlreadyExistsEventArgs(_name, value));
+                            return;
                         }
                         else if (this is MusicLibraryMissingElement) // this is a missing folder
                         {
@@ -48,10 +49,16 @@ namespace Playlist
                             }
                         }
                     }
+                    else if (File.Exists(DirectoryPath + "\\" + value))
+                    {
+                        FireFileNameAlreadyExists(this, new FileNameAlreadyExistsEventArgs(_name, value));
+                        return;
+                    }
                     else
                     {
                         ChangeName(value);
                     }
+
                     foreach (var playlistLink in PlaylistItems)
                     {
                         playlistLink.Item.ChangeName(Name, false);
@@ -145,6 +152,7 @@ namespace Playlist
 
         public event EventHandler<UnauthorizedAccessEventArgs> UnauthorizedAccess;
         public event EventHandler ParentChanged;
+        public event EventHandler<FileNameAlreadyExistsEventArgs> FileNameAlreadyExists;
 
         public virtual void Reload()
         {
@@ -222,6 +230,18 @@ namespace Playlist
             }
         }
 
+        internal void FireFileNameAlreadyExists(object sender, FileNameAlreadyExistsEventArgs fileNameAlreadyExistsEventArgs)
+        {
+            if (FileNameAlreadyExists != null)
+            {
+                FileNameAlreadyExists.Invoke(sender, fileNameAlreadyExistsEventArgs);
+            }
+            else
+            {
+                throw new Exception(fileNameAlreadyExistsEventArgs.Message);
+            }
+        }
+
         public static void InsertItemOrdered<T>(MusicLibraryItem item, List<T> list) where T : MusicLibraryItem
         {
             int index = 0;
@@ -247,4 +267,23 @@ namespace Playlist
         public PlaylistItem Item;
         public PlaylistItem Playlist;
     }
+
+    public class FileNameAlreadyExistsEventArgs : EventArgs
+    {
+        public FileNameAlreadyExistsEventArgs(string previousFileName, string newFileName)
+        {
+            PreviousFileName = previousFileName;
+            NewFileName = newFileName;
+        }
+        public string PreviousFileName { get; private set; }
+        public string NewFileName { get; private set; }
+        public string Message
+        {
+            get
+            {
+                return "Error while trying to rename " + PreviousFileName + " into " + NewFileName + ". A file with that name already exists!";
+            }
+        }
+    }
+
 }
