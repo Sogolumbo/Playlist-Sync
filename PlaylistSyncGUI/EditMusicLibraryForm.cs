@@ -30,154 +30,65 @@ namespace PlaylistSyncGUI
         List<string> _folders = new List<string>();
         bool _missingElementFound = false;
 
-        #region fuctions
-        private void ShowListboxEntries()
+        private void EditMusicLibraryForm_Load(object sender, EventArgs e)
         {
-            playlistListBox.Items.Clear();
-            playlistListBox.Items.AddRange(_playlists.Select(filepath => Path.GetFileName(filepath)).ToArray());
-            foldersListBox.Items.Clear();
-            foldersListBox.Items.AddRange(_folders.Select(filepath => Path.GetFileName(filepath)).ToArray());
+            Cursor.Current = Cursors.WaitCursor;
+
+            var folderCollection = Properties.Settings.Default.MusicLibraryFolders;
+            var playlistCollection = Properties.Settings.Default.MusicLibraryPlaylists;
+            if (folderCollection != null)
+            {
+                _folders = Properties.Settings.Default.MusicLibraryFolders.Cast<string>().ToList();
+            }
+            if (playlistCollection != null)
+            {
+                _playlists = Properties.Settings.Default.MusicLibraryPlaylists.Cast<string>().ToList();
+            }
+            ShowListboxEntries();
+            CreateMusicLibrary();
+            ShowLibrary();
+
+            Cursor.Current = Cursors.Default;
+        }
+        private void EditMusicLibraryForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            System.Collections.Specialized.StringCollection folderCollection = new System.Collections.Specialized.StringCollection();
+            System.Collections.Specialized.StringCollection playlistCollection = new System.Collections.Specialized.StringCollection();
+            folderCollection.AddRange(_folders.ToArray());
+            playlistCollection.AddRange(_playlists.ToArray());
+            Properties.Settings.Default.MusicLibraryFolders = folderCollection;
+            Properties.Settings.Default.MusicLibraryPlaylists = playlistCollection;
+            Properties.Settings.Default.Save();
         }
 
+        private void CreateMusicLibrary()
+        {
+            HashSet<string> nonAudioDatatypes = new HashSet<string>(Properties.Settings.Default.nonAudioDataTypes.Cast<string>());
+            try
+            {
+                _library = new MusicLibrary(_playlists, _folders, nonAudioDatatypes);
+                _library.UnauthorizedAccess += _library_UnauthorizedAccess;
+                _library.MissingElementFound += _library_MissingElementFound;
+                _library.FileNameAlreadyExists += _library_FileNameAlreadyExists;
+                _missingElementFound = false;
+            }
+            catch (NonAudioDataTypeMissingException e)
+            {
+                string exceptionHeader = "Unknown Fily Type in Music Library detected";
+                MessageBox.Show(e.Message, exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                var res = MessageBox.Show("Do you want to open the folder to change the ignored file type? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                Close(); //TODO remove this line if the rest of the program won't crash
+                if (res == DialogResult.Yes)
+                {
+                    OpenPathInExplorer(NonAudioDataTypeMissingException.PropertyFilePath);
+                }
+                throw e;
+            }
+        }
         private void ShowLibrary()
         {
             libraryTreeView.Nodes.Clear();
             libraryTreeView.Nodes.AddRange(NodesFromLibrary(_library));
-        }
-        private void ReloadNode(TreeNode changedTreeNode)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            if (_missingElementFound)
-            {
-                FullReload();
-            }
-            else if (changedTreeNode.Parent != null)
-            {
-                var parent = changedTreeNode.Parent;
-                int index = parent.Nodes.IndexOf(changedTreeNode);
-                var libraryItem = changedTreeNode.Tag as MusicLibraryItem;
-
-                List<MusicLibraryItem> parentsChildren = null;
-                if (libraryItem.Parent is MusicLibraryDirectory)
-                    parentsChildren = (libraryItem.Parent as MusicLibraryDirectory).Children.ToList();
-                if (libraryItem.Parent is MusicLibraryMissingElement)
-                    parentsChildren = (libraryItem.Parent as MusicLibraryMissingElement).Children.ToList<MusicLibraryItem>();
-
-                if (parentsChildren == null || !parentsChildren.Contains(libraryItem))
-                {
-                    ReloadNode(changedTreeNode.Parent);
-                }
-                else
-                {
-                    libraryTreeView.Nodes.Remove(changedTreeNode);
-                    libraryItem.Reload();
-                    var reloadedNode = NodeFromLibraryItem(libraryItem);
-                    if (changedTreeNode.Text != reloadedNode.Text)
-                    {
-                        index = 0;
-                        while (index < parent.Nodes.Count && MusicLibrary.CompareFilePaths(libraryItem.FullPath, parent.Nodes[index].FullPath) > 0)
-                        {
-                            index++;
-                        }
-                    }
-                    parent.Nodes.Insert(index, reloadedNode);
-                    libraryTreeView.SelectedNode = reloadedNode;
-                }
-
-            }
-            else
-            {
-                ShowLibrary();
-            }
-
-            Cursor.Current = Cursors.Default;
-        }
-        private void FullReload()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            var previouslySelectedNode = libraryTreeView.SelectedNode;
-            CreateMusicLibrary();
-            ShowLibrary();
-            if (previouslySelectedNode != null)
-            {
-                var possiblyEquivalentNodes = libraryTreeView.Nodes.Find(previouslySelectedNode.Name, true);
-                var equivalentToSelectedNodes = possiblyEquivalentNodes.Where(node => node.FullPath == (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
-                if (equivalentToSelectedNodes.Count() == 1)
-                {
-                    libraryTreeView.SelectedNode = equivalentToSelectedNodes.First();
-                }
-                else
-                {
-                    MessageBox.Show("Could not restore the selection. There are " + possiblyEquivalentNodes.Count() + " items which have the name " + previouslySelectedNode.Name + " out of which " + equivalentToSelectedNodes.Count() + " have the path" + (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
-                }
-                libraryTreeView.Focus();
-            }
-            Cursor.Current = Cursors.Default;
-        }
-
-        private void ShowDataOfSelectedNode()
-        {
-            MusicLibraryItem libraryItem = libraryTreeView.SelectedNode.Tag as MusicLibraryItem;
-            selectedItemGroupBox.Tag = libraryItem;
-            itemNameTextBox.Text = libraryItem.Name;
-            itemPathTextBox.Text = libraryItem.DirectoryPath;
-            selectedItemPlaylistsListBox.Items.Clear();
-            if (libraryItem.IsFile())
-            {
-                selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
-            }
-            else
-            {
-                if (libraryItem.PlaylistItems.Count > 0)
-                {
-                    int maxLength(int childrenCount)
-                    {
-                        return Math.Max(2, 70 / childrenCount);
-                    }
-                    int currentMaxElementCountLength = libraryItem.PlaylistItems.Select(node => node.Item.Children.Count).Max().ToString().Length;
-                    string playlistText(PlaylistLink node, int maxElementCountLength)
-                    {
-                        string elementCount = node.Item.Children.Count.ToString();
-                        return "≥" + elementCount.PadLeft(maxElementCountLength, '\u2000') + " in "
-                                + node.Playlist
-                                + " ("
-                                + String.Join(", ", node.Item.Children.Select(item => item.Name.Truncate(maxLength(node.Item.Children.Count), true)))
-                                + ")";
-                    }
-                    selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => playlistText(node, currentMaxElementCountLength)).ToArray());
-                }
-            }
-
-            bool showSongTagData = libraryItem is MusicLibraryFile;
-            if (showSongTagData)
-            {
-                var tag = (libraryItem as MusicLibraryFile).Tag;
-                itemTitleTextBox.Text = tag.Title;
-                itemAlbumTextBox.Text = tag.Album;
-                itemArtistTextBox.Text = tag.Artist;
-                itemGenreTextBox.Text = tag.Genre;
-                itemTrackNumberTextBox.Text = tag.Nr.ToString();
-
-
-                albumLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).AlbumLink);
-                artistLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).ArtistLink);
-            }
-            else
-            {
-                itemTitleTextBox.Text = null;
-                itemAlbumTextBox.Text = null;
-                itemArtistTextBox.Text = null;
-                itemGenreTextBox.Text = null;
-                itemTrackNumberTextBox.Text = null;
-                artistLinkLabel.Text = linkStateToText(NodeLink.None);
-                albumLinkLabel.Text = linkStateToText(NodeLink.None);
-            }
-
-            itemTitleTextBox.Enabled = showSongTagData;
-            itemAlbumTextBox.Enabled = showSongTagData;
-            itemArtistTextBox.Enabled = showSongTagData;
-            itemGenreTextBox.Enabled = showSongTagData;
-            itemTrackNumberTextBox.Enabled = showSongTagData;
         }
 
         private TreeNode[] NodesFromLibrary(MusicLibrary library)
@@ -268,23 +179,6 @@ namespace PlaylistSyncGUI
 
         }
 
-        private string linkStateToText(NodeLink linkState)
-        {
-            switch (linkState)
-            {
-                case NodeLink.Parent:
-                    return "\u21911";
-                case NodeLink.ParentOfParent:
-                    return "\u21912";
-                case NodeLink.ParentPartially:
-                    return "(\u21911)";
-                case NodeLink.ParentOfParentPartially:
-                    return "(\u21912)";
-                case NodeLink.None:
-                default:
-                    return "-";
-            }
-        }
 
         private void ApplyChanges()
         {
@@ -388,21 +282,83 @@ namespace PlaylistSyncGUI
             }
         }
 
+
         private void _library_MissingElementFound(object sender, EventArgs e)
         {
             _missingElementFound = true;
         }
-        #endregion
 
-        #region EventHandlers
-        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
+
+        #region Reloading
+        private void ReloadNode(TreeNode changedTreeNode)
         {
-            MessageBox.Show(e.ToString());
+            Cursor.Current = Cursors.WaitCursor;
+            if (_missingElementFound)
+            {
+                FullReload();
+            }
+            else if (changedTreeNode.Parent != null)
+            {
+                var parent = changedTreeNode.Parent;
+                int index = parent.Nodes.IndexOf(changedTreeNode);
+                var libraryItem = changedTreeNode.Tag as MusicLibraryItem;
+
+                List<MusicLibraryItem> parentsChildren = null;
+                if (libraryItem.Parent is MusicLibraryDirectory)
+                    parentsChildren = (libraryItem.Parent as MusicLibraryDirectory).Children.ToList();
+                if (libraryItem.Parent is MusicLibraryMissingElement)
+                    parentsChildren = (libraryItem.Parent as MusicLibraryMissingElement).Children.ToList<MusicLibraryItem>();
+
+                if (parentsChildren == null || !parentsChildren.Contains(libraryItem))
+                {
+                    ReloadNode(changedTreeNode.Parent);
+                }
+                else
+                {
+                    libraryTreeView.Nodes.Remove(changedTreeNode);
+                    libraryItem.Reload();
+                    var reloadedNode = NodeFromLibraryItem(libraryItem);
+                    if (changedTreeNode.Text != reloadedNode.Text)
+                    {
+                        index = 0;
+                        while (index < parent.Nodes.Count && MusicLibrary.CompareFilePaths(libraryItem.FullPath, parent.Nodes[index].FullPath) > 0)
+                        {
+                            index++;
+                        }
+                    }
+                    parent.Nodes.Insert(index, reloadedNode);
+                    libraryTreeView.SelectedNode = reloadedNode;
+                }
+
+            }
+            else
+            {
+                ShowLibrary();
+            }
+
+            Cursor.Current = Cursors.Default;
         }
-
-        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        private void FullReload()
         {
-            ShowDataOfSelectedNode();
+            Cursor.Current = Cursors.WaitCursor;
+            var previouslySelectedNode = libraryTreeView.SelectedNode;
+            CreateMusicLibrary();
+            ShowLibrary();
+            if (previouslySelectedNode != null)
+            {
+                var possiblyEquivalentNodes = libraryTreeView.Nodes.Find(previouslySelectedNode.Name, true);
+                var equivalentToSelectedNodes = possiblyEquivalentNodes.Where(node => node.FullPath == (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
+                if (equivalentToSelectedNodes.Count() == 1)
+                {
+                    libraryTreeView.SelectedNode = equivalentToSelectedNodes.First();
+                }
+                else
+                {
+                    MessageBox.Show("Could not restore the selection. There are " + possiblyEquivalentNodes.Count() + " items which have the name " + previouslySelectedNode.Name + " out of which " + equivalentToSelectedNodes.Count() + " have the path" + (previouslySelectedNode.Tag as MusicLibraryItem).FullPath);
+                }
+                libraryTreeView.Focus();
+            }
+            Cursor.Current = Cursors.Default;
         }
 
         private void reloadSelectedButton_Click(object sender, EventArgs e)
@@ -413,31 +369,103 @@ namespace PlaylistSyncGUI
         {
             FullReload();
         }
+        #endregion
 
-
-        private void CreateMusicLibrary()
+        #region Show Data Of Selected Node
+        private void playlistTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            HashSet<string> nonAudioDatatypes = new HashSet<string>(Properties.Settings.Default.nonAudioDataTypes.Cast<string>());
-            try
+            ShowDataOfSelectedNode();
+        }
+        private void ShowDataOfSelectedNode()
+        {
+            MusicLibraryItem libraryItem = libraryTreeView.SelectedNode.Tag as MusicLibraryItem;
+            selectedItemGroupBox.Tag = libraryItem;
+            itemNameTextBox.Text = libraryItem.Name;
+            itemPathTextBox.Text = libraryItem.DirectoryPath;
+            selectedItemPlaylistsListBox.Items.Clear();
+            if (libraryItem.IsFile())
             {
-                _library = new MusicLibrary(_playlists, _folders, nonAudioDatatypes);
-                _library.UnauthorizedAccess += _library_UnauthorizedAccess;
-                _library.MissingElementFound += _library_MissingElementFound;
-                _library.FileNameAlreadyExists += _library_FileNameAlreadyExists;
-                _missingElementFound = false;
+                selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => node.Playlist).ToArray());
             }
-            catch (NonAudioDataTypeMissingException e)
+            else
             {
-                string exceptionHeader = "Unknown Fily Type in Music Library detected";
-                MessageBox.Show(e.Message, exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                var res = MessageBox.Show("Do you want to open the folder to change the ignored file type? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
-                Close(); //TODO remove this line if the rest of the program won't crash
-                if (res == DialogResult.Yes)
+                if (libraryItem.PlaylistItems.Count > 0)
                 {
-                    OpenPathInExplorer(NonAudioDataTypeMissingException.PropertyFilePath);
+                    int maxLength(int childrenCount)
+                    {
+                        return Math.Max(2, 70 / childrenCount);
+                    }
+                    int currentMaxElementCountLength = libraryItem.PlaylistItems.Select(node => node.Item.Children.Count).Max().ToString().Length;
+                    string playlistText(PlaylistLink node, int maxElementCountLength)
+                    {
+                        string elementCount = node.Item.Children.Count.ToString();
+                        return "≥" + elementCount.PadLeft(maxElementCountLength, '\u2000') + " in "
+                                + node.Playlist
+                                + " ("
+                                + String.Join(", ", node.Item.Children.Select(item => item.Name.Truncate(maxLength(node.Item.Children.Count), true)))
+                                + ")";
+                    }
+                    selectedItemPlaylistsListBox.Items.AddRange(libraryItem.PlaylistItems.Select(node => playlistText(node, currentMaxElementCountLength)).ToArray());
                 }
-                throw e;
             }
+
+            bool showSongTagData = libraryItem is MusicLibraryFile;
+            if (showSongTagData)
+            {
+                var tag = (libraryItem as MusicLibraryFile).Tag;
+                itemTitleTextBox.Text = tag.Title;
+                itemAlbumTextBox.Text = tag.Album;
+                itemArtistTextBox.Text = tag.Artist;
+                itemGenreTextBox.Text = tag.Genre;
+                itemTrackNumberTextBox.Text = tag.Nr.ToString();
+
+
+                albumLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).AlbumLink);
+                artistLinkLabel.Text = linkStateToText((libraryItem as MusicLibraryFile).ArtistLink);
+            }
+            else
+            {
+                itemTitleTextBox.Text = null;
+                itemAlbumTextBox.Text = null;
+                itemArtistTextBox.Text = null;
+                itemGenreTextBox.Text = null;
+                itemTrackNumberTextBox.Text = null;
+                artistLinkLabel.Text = linkStateToText(NodeLink.None);
+                albumLinkLabel.Text = linkStateToText(NodeLink.None);
+            }
+
+            itemTitleTextBox.Enabled = showSongTagData;
+            itemAlbumTextBox.Enabled = showSongTagData;
+            itemArtistTextBox.Enabled = showSongTagData;
+            itemGenreTextBox.Enabled = showSongTagData;
+            itemTrackNumberTextBox.Enabled = showSongTagData;
+        }
+
+        private string linkStateToText(NodeLink linkState)
+        {
+            switch (linkState)
+            {
+                case NodeLink.Parent:
+                    return "\u21911";
+                case NodeLink.ParentOfParent:
+                    return "\u21912";
+                case NodeLink.ParentPartially:
+                    return "(\u21911)";
+                case NodeLink.ParentOfParentPartially:
+                    return "(\u21912)";
+                case NodeLink.None:
+                default:
+                    return "-";
+            }
+        }
+        #endregion
+
+        #region Show exceptional events
+
+        //TODO remove because there are no references
+        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
+        {
+            MessageBox.Show(e.ToString());
         }
 
         private void _library_FileNameAlreadyExists(object sender, FileNameAlreadyExistsEventArgs e)
@@ -452,27 +480,16 @@ namespace PlaylistSyncGUI
                 e.Cancel = true;
             }
         }
-
-        private void openInExplorerButton_Click(object sender, EventArgs e)
-        {
-            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
-            OpenPathInExplorer(libraryItem.DirectoryPath);
-        }
-        private void openPathInKid3Button_Click(object sender, EventArgs e)
-        {
-            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
-            OpenPathInKid(libraryItem.DirectoryPath);
-        }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            ShowDataOfSelectedNode();
-        }
-        private void applyButton_Click(object sender, EventArgs e)
-        {
-            ApplyChanges();
-        }
         #endregion
+
+        #region Library configuration
+        private void ShowListboxEntries()
+        {
+            playlistListBox.Items.Clear();
+            playlistListBox.Items.AddRange(_playlists.Select(filepath => Path.GetFileName(filepath)).ToArray());
+            foldersListBox.Items.Clear();
+            foldersListBox.Items.AddRange(_folders.Select(filepath => Path.GetFileName(filepath)).ToArray());
+        }
 
         private void changeFoldersButton_Click(object sender, EventArgs e)
         {
@@ -494,77 +511,9 @@ namespace PlaylistSyncGUI
             ShowLibrary();
             Cursor.Current = Cursors.Default;
         }
+        #endregion
 
-        private void EditMusicLibraryForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            System.Collections.Specialized.StringCollection folderCollection = new System.Collections.Specialized.StringCollection();
-            System.Collections.Specialized.StringCollection playlistCollection = new System.Collections.Specialized.StringCollection();
-            folderCollection.AddRange(_folders.ToArray());
-            playlistCollection.AddRange(_playlists.ToArray());
-            Properties.Settings.Default.MusicLibraryFolders = folderCollection;
-            Properties.Settings.Default.MusicLibraryPlaylists = playlistCollection;
-            Properties.Settings.Default.Save();
-        }
-
-        private void EditMusicLibraryForm_Load(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-
-            var folderCollection = Properties.Settings.Default.MusicLibraryFolders;
-            var playlistCollection = Properties.Settings.Default.MusicLibraryPlaylists;
-            if (folderCollection != null)
-            {
-                _folders = Properties.Settings.Default.MusicLibraryFolders.Cast<string>().ToList();
-            }
-            if (playlistCollection != null)
-            {
-                _playlists = Properties.Settings.Default.MusicLibraryPlaylists.Cast<string>().ToList();
-            }
-            ShowListboxEntries();
-            CreateMusicLibrary();
-            ShowLibrary();
-
-            Cursor.Current = Cursors.Default;
-        }
-
-        private void debugButton_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void openInNotepadButton_Click(object sender, EventArgs e)
-        {
-            if (playlistListBox.SelectedItem != null)
-            {
-                var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
-                OpenFileInNotepad(playlistPath);
-            }
-        }
-
-        private void expandAllButton_Click(object sender, EventArgs e)
-        {
-            libraryTreeView.ExpandAll();
-            if (libraryTreeView.SelectedNode != null)
-            {
-                libraryTreeView.SelectedNode.EnsureVisible();
-            }
-        }
-
-        private void reduceAllButton_Click(object sender, EventArgs e)
-        {
-            libraryTreeView.CollapseAll();
-
-            foreach (TreeNode rootNode in libraryTreeView.Nodes)
-            {
-                rootNode.Expand();
-                TreeNode subject = rootNode;
-                while (subject.Nodes.Count == 1)
-                {
-                    subject = subject.Nodes[0];
-                    subject.Expand();
-                }
-            }
-        }
-
+        #region Validate input (item name)
         private void itemNameTextBox_TextChanged(object sender, EventArgs e)
         {
             if (!IsValidFilename(itemNameTextBox.Text))
@@ -588,6 +537,27 @@ namespace PlaylistSyncGUI
 
             return true;
         }
+        #endregion
+
+        #region Open stuff externally
+        private void openInExplorerButton_Click(object sender, EventArgs e)
+        {
+            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
+            OpenPathInExplorer(libraryItem.DirectoryPath);
+        }
+        private void openPathInKid3Button_Click(object sender, EventArgs e)
+        {
+            var libraryItem = selectedItemGroupBox.Tag as MusicLibraryItem;
+            OpenPathInKid(libraryItem.DirectoryPath);
+        }
+        private void openInNotepadButton_Click(object sender, EventArgs e)
+        {
+            if (playlistListBox.SelectedItem != null)
+            {
+                var playlistPath = _playlists.Find(entry => Path.GetFileName(entry) == playlistListBox.SelectedItem.ToString());
+                OpenFileInNotepad(playlistPath);
+            }
+        }
 
         private void openSelectedItemButton_Click(object sender, EventArgs e)
         {
@@ -601,12 +571,12 @@ namespace PlaylistSyncGUI
             try
             {
                 Process process = OpenPathWithStandardApplication(fullPath);
-                int maxTimeInMiliseconds = 5*1000;
+                int maxTimeInMiliseconds = 5 * 1000;
                 bool done = process.WaitForExit(maxTimeInMiliseconds);
                 if (!done)
                 {
                     process.Kill();
-                    MessageBox.Show("Could not open the item in a resonable time (" + maxTimeInMiliseconds + "ms). You might have to restart the standard application for this file type.", "Error while trying to open the item",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Could not open the item in a resonable time (" + maxTimeInMiliseconds + "ms). You might have to restart the standard application for this file type.", "Error while trying to open the item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -614,6 +584,33 @@ namespace PlaylistSyncGUI
                 MessageBox.Show(ex.Message + "\n(Path: '" + fullPath + "')", "Error while opening " + Path.GetFileName(fullPath));
             }
             Cursor = Cursors.Default;
+        }
+        #endregion
+
+        #region Reduce and Expand (Tree view items)
+        private void expandAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.ExpandAll();
+            if (libraryTreeView.SelectedNode != null)
+            {
+                libraryTreeView.SelectedNode.EnsureVisible();
+            }
+        }
+
+        private void reduceAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.CollapseAll();
+
+            foreach (TreeNode rootNode in libraryTreeView.Nodes)
+            {
+                rootNode.Expand();
+                TreeNode subject = rootNode;
+                while (subject.Nodes.Count == 1)
+                {
+                    subject = subject.Nodes[0];
+                    subject.Expand();
+                }
+            }
         }
 
         private void reduceAllExceptMissingItemsButton_Click(object sender, EventArgs e)
@@ -657,6 +654,9 @@ namespace PlaylistSyncGUI
             ReduceAllTreeViewItemsExceptConditionMet(isArtistBad);
         }
 
+        /// <summary>
+        /// Returns wether the item has music tags that don't fit to the parent folders. In most cases this means that the file is not well organized.
+        /// </summary>
         private bool isArtistBad(MusicLibraryItem item)
         {
             if (item is MusicLibraryFile)
@@ -664,11 +664,6 @@ namespace PlaylistSyncGUI
                 return ((item as MusicLibraryFile).ArtistLink == NodeLink.None);
             }
             return false;
-        }
-
-        private void copyFullPathButton_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText((selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
         }
 
         private void reduceChildrenButton_Click(object sender, EventArgs e)
@@ -685,7 +680,9 @@ namespace PlaylistSyncGUI
             Cursor = DefaultCursor;
             libraryTreeView.Focus();
         }
-
+        #endregion
+        
+        #region Handle key presses
         private void selectedSongButton_KeyDown(object sender, KeyEventArgs e)
         {
             handleArrowKeysInSelectedSongControls(e);
@@ -736,10 +733,31 @@ namespace PlaylistSyncGUI
                     break;
             }
         }
+        #endregion
+
+        #region Various Click Handlers
+        private void copyFullPathButton_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText((selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
+        }
 
         private void appendPathToClipboardButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(Clipboard.GetText() + "\n" + (selectedItemGroupBox.Tag as MusicLibraryItem).FullPath);
         }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            ShowDataOfSelectedNode();
+        }
+        private void applyButton_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
+        }
+        
+        private void debugButton_Click(object sender, EventArgs e)
+        {
+        }
+        #endregion
     }
 }
