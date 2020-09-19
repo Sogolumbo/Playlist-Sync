@@ -49,7 +49,7 @@ namespace Playlist
                             }
                         }
                     }
-                    else if (File.Exists(DirectoryPath + "\\" + value))
+                    else if (File.Exists(DirectoryPath + "\\" + value) && (value.ToLower() != _name.ToLower()))
                     {
                         FireFileNameAlreadyExists(this, new FileNameAlreadyExistsEventArgs(_name, value));
                         return;
