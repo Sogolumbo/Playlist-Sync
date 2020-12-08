@@ -86,3 +86,6 @@ Copy the following lines from the default settings into your user settings. Then
 ```
 
 It happened to me multiple times that I lost my settings. If this happens to you you can most likely restore the old settings by finding the old `user.config` file and copying the contents into the new file.
+
+## Screenshot
+![Playlist-Sync_v1 1 2](https://user-images.githubusercontent.com/33571916/101524396-27be8700-398a-11eb-9115-8c6a907b014f.png)
