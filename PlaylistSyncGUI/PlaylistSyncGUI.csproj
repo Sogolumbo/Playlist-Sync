@@ -180,4 +180,8 @@
     <None Include="Properties\Icon - Smart Playlist by icons8.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release copy "$(SolutionDir)LICENSE.txt" "$(TargetDir)LICENSE.txt" /Y
+if $(ConfigurationName) == Release copy "$(SolutionDir)README.md" "$(TargetDir)README.md" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
