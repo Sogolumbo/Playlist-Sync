@@ -36,10 +36,14 @@
             this.editMusicLibraryButton = new System.Windows.Forms.Button();
             this.iconlabel = new System.Windows.Forms.Label();
             this.iconLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.iconLinkToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.linkLabelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.cleanM3uFilesButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.openSettingsFolderButton = new System.Windows.Forms.Button();
+            this.projectLabel = new System.Windows.Forms.Label();
+            this.sourceCodeLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.issuesLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.releasesLinkLabel = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // button1
@@ -86,7 +90,8 @@
             // 
             this.iconlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iconlabel.AutoSize = true;
-            this.iconlabel.Location = new System.Drawing.Point(12, 236);
+            this.iconlabel.Location = new System.Drawing.Point(9, 256);
+            this.iconlabel.Margin = new System.Windows.Forms.Padding(0, 5, 3, 0);
             this.iconlabel.Name = "iconlabel";
             this.iconlabel.Size = new System.Drawing.Size(31, 13);
             this.iconlabel.TabIndex = 4;
@@ -96,20 +101,21 @@
             // 
             this.iconLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iconLinkLabel.AutoSize = true;
-            this.iconLinkLabel.Location = new System.Drawing.Point(49, 236);
+            this.iconLinkLabel.Location = new System.Drawing.Point(46, 256);
+            this.iconLinkLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.iconLinkLabel.Name = "iconLinkLabel";
             this.iconLinkLabel.Size = new System.Drawing.Size(140, 13);
             this.iconLinkLabel.TabIndex = 20;
             this.iconLinkLabel.TabStop = true;
             this.iconLinkLabel.Text = "Smart Playlist by icons8.com";
-            this.iconLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.iconLinkLabel_LinkClicked);
+            this.iconLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
             // 
-            // iconLinkToolTip
+            // linkLabelToolTip
             // 
-            this.iconLinkToolTip.AutomaticDelay = 0;
-            this.iconLinkToolTip.ToolTipTitle = "Links:";
-            this.iconLinkToolTip.UseAnimation = false;
-            this.iconLinkToolTip.UseFading = false;
+            this.linkLabelToolTip.AutomaticDelay = 0;
+            this.linkLabelToolTip.ToolTipTitle = "Links:";
+            this.linkLabelToolTip.UseAnimation = false;
+            this.linkLabelToolTip.UseFading = false;
             // 
             // cleanM3uFilesButton
             // 
@@ -141,11 +147,65 @@
             this.openSettingsFolderButton.UseVisualStyleBackColor = true;
             this.openSettingsFolderButton.Click += new System.EventHandler(this.openSettingsFolderButton_Click);
             // 
+            // projectLabel
+            // 
+            this.projectLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.projectLabel.AutoSize = true;
+            this.projectLabel.Location = new System.Drawing.Point(9, 238);
+            this.projectLabel.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.projectLabel.Name = "projectLabel";
+            this.projectLabel.Size = new System.Drawing.Size(43, 13);
+            this.projectLabel.TabIndex = 21;
+            this.projectLabel.Text = "Project:";
+            // 
+            // sourceCodeLinkLabel
+            // 
+            this.sourceCodeLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.sourceCodeLinkLabel.AutoSize = true;
+            this.sourceCodeLinkLabel.Location = new System.Drawing.Point(139, 238);
+            this.sourceCodeLinkLabel.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.sourceCodeLinkLabel.Name = "sourceCodeLinkLabel";
+            this.sourceCodeLinkLabel.Size = new System.Drawing.Size(69, 13);
+            this.sourceCodeLinkLabel.TabIndex = 22;
+            this.sourceCodeLinkLabel.TabStop = true;
+            this.sourceCodeLinkLabel.Text = "Source Code";
+            this.sourceCodeLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // issuesLinkLabel
+            // 
+            this.issuesLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.issuesLinkLabel.AutoSize = true;
+            this.issuesLinkLabel.Location = new System.Drawing.Point(103, 238);
+            this.issuesLinkLabel.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.issuesLinkLabel.Name = "issuesLinkLabel";
+            this.issuesLinkLabel.Size = new System.Drawing.Size(37, 13);
+            this.issuesLinkLabel.TabIndex = 23;
+            this.issuesLinkLabel.TabStop = true;
+            this.issuesLinkLabel.Text = "Issues";
+            this.issuesLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // releasesLinkLabel
+            // 
+            this.releasesLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.releasesLinkLabel.AutoSize = true;
+            this.releasesLinkLabel.Location = new System.Drawing.Point(52, 238);
+            this.releasesLinkLabel.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.releasesLinkLabel.Name = "releasesLinkLabel";
+            this.releasesLinkLabel.Size = new System.Drawing.Size(51, 13);
+            this.releasesLinkLabel.TabIndex = 24;
+            this.releasesLinkLabel.TabStop = true;
+            this.releasesLinkLabel.Text = "Releases";
+            this.releasesLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
             // PlaylistToolsMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 256);
+            this.ClientSize = new System.Drawing.Size(220, 278);
+            this.Controls.Add(this.releasesLinkLabel);
+            this.Controls.Add(this.issuesLinkLabel);
+            this.Controls.Add(this.sourceCodeLinkLabel);
+            this.Controls.Add(this.projectLabel);
             this.Controls.Add(this.openSettingsFolderButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.iconLinkLabel);
@@ -171,9 +231,13 @@
         private System.Windows.Forms.Button editMusicLibraryButton;
         private System.Windows.Forms.Label iconlabel;
         private System.Windows.Forms.LinkLabel iconLinkLabel;
-        private System.Windows.Forms.ToolTip iconLinkToolTip;
+        private System.Windows.Forms.ToolTip linkLabelToolTip;
         private System.Windows.Forms.Button cleanM3uFilesButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button openSettingsFolderButton;
+        private System.Windows.Forms.Label projectLabel;
+        private System.Windows.Forms.LinkLabel sourceCodeLinkLabel;
+        private System.Windows.Forms.LinkLabel issuesLinkLabel;
+        private System.Windows.Forms.LinkLabel releasesLinkLabel;
     }
 }

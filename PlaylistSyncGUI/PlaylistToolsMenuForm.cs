@@ -19,8 +19,9 @@ namespace PlaylistSyncGUI
         {
             InitializeComponent();
 
+            //LinkedLabels - icon
             string iconSourceUrl = "https://www.visualpharm.com/free-icons/smart%20playlist-595b40b85ba036ed117daac8";
-            string directSourceUrl = "https://icons8.com/icon/31561/smart-playlist";
+            string direcIconSourceUrl = "https://icons8.com/icon/31561/smart-playlist";
             string iconOwnerUrl = "https://icons8.com/";
 
             LinkLabel.Link iconLink = new LinkLabel.Link(0, 14, iconSourceUrl);
@@ -28,7 +29,22 @@ namespace PlaylistSyncGUI
 
             LinkLabel.Link iconOwnerLink = new LinkLabel.Link(18, 10, iconOwnerUrl);
             iconLinkLabel.Links.Add(iconOwnerLink);
-            iconLinkToolTip.SetToolTip(iconLinkLabel, iconSourceUrl + "\n" + iconOwnerUrl);
+            linkLabelToolTip.SetToolTip(iconLinkLabel, iconSourceUrl + "\n" + iconOwnerUrl);
+
+            //LinkedLabels - project
+            string releasesUrl = "https://github.com/Sogolumbo/Playlist-Sync/releases";
+            string issuesUrl = "https://github.com/Sogolumbo/Playlist-Sync/issues";
+            string sourceCodeUrl = "https://github.com/Sogolumbo/Playlist-Sync";
+
+            LinkLabel.Link releasesLink = new LinkLabel.Link(0, releasesLinkLabel.Text.Length, releasesUrl);
+            releasesLinkLabel.Links.Add(releasesLink);
+            linkLabelToolTip.SetToolTip(releasesLinkLabel, releasesUrl);
+            LinkLabel.Link issuesLink = new LinkLabel.Link(0, issuesLinkLabel.Text.Length, issuesUrl);
+            issuesLinkLabel.Links.Add(issuesLink);
+            linkLabelToolTip.SetToolTip(issuesLinkLabel, issuesUrl);
+            LinkLabel.Link sourceCodeLink = new LinkLabel.Link(0, sourceCodeLinkLabel.Text.Length, sourceCodeUrl);
+            sourceCodeLinkLabel.Links.Add(sourceCodeLink);
+            linkLabelToolTip.SetToolTip(sourceCodeLinkLabel, sourceCodeUrl);
 
         }
 
@@ -62,7 +78,7 @@ namespace PlaylistSyncGUI
             OpenForm(new M3uCleanerGUI());
         }
 
-        private void iconLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(e.Link.LinkData.ToString());
         }
