@@ -48,7 +48,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(95, 60);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Sync / \r\nMultiple\r\nConversion";
+            this.button1.Text = "Sync / \r\nMultiple\r\nConversion...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -58,7 +58,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 60);
             this.button2.TabIndex = 11;
-            this.button2.Text = "Conversion\r\nPreview";
+            this.button2.Text = "Conversion\r\nPreview...";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -68,7 +68,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(95, 60);
             this.button3.TabIndex = 10;
-            this.button3.Text = "Edit playlist \r\nand folder\r\n structure";
+            this.button3.Text = "Edit playlist \r\nand folder\r\n structure...";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -78,7 +78,7 @@
             this.editMusicLibraryButton.Name = "editMusicLibraryButton";
             this.editMusicLibraryButton.Size = new System.Drawing.Size(95, 60);
             this.editMusicLibraryButton.TabIndex = 1;
-            this.editMusicLibraryButton.Text = "Edit Music Library";
+            this.editMusicLibraryButton.Text = "Edit Music Library...";
             this.editMusicLibraryButton.UseVisualStyleBackColor = true;
             this.editMusicLibraryButton.Click += new System.EventHandler(this.editMusicLibraryButton_Click);
             // 
@@ -117,7 +117,7 @@
             this.cleanM3uFilesButton.Name = "cleanM3uFilesButton";
             this.cleanM3uFilesButton.Size = new System.Drawing.Size(95, 60);
             this.cleanM3uFilesButton.TabIndex = 2;
-            this.cleanM3uFilesButton.Text = "Clean M3u files";
+            this.cleanM3uFilesButton.Text = "Clean M3u files...";
             this.cleanM3uFilesButton.UseVisualStyleBackColor = true;
             this.cleanM3uFilesButton.Click += new System.EventHandler(this.cleanM3uFilesButton_Click);
             // 
