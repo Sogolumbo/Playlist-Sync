@@ -1,6 +1,6 @@
 # Playlist-Sync
 
-**Platform: Windows**
+**Platform: Windows** (can also be built for Linux)
 
 ## Warning
 
