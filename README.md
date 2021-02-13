@@ -32,7 +32,7 @@ This setup is what I personally use. I do most organization work on the pc and t
 
 Use Playlist-Sync to change file names and folder names or move files and folders in your music library.
 
-Use git version control on the playlist files ("User\Music\Playlists"). Recommended GUI: [ungit](https://github.com/FredrikNoren/ungit/releases).
+Use [git](https://git-scm.com/) version control on the playlist files ("User\Music\Playlists"). Recommended GUI: [ungit](https://github.com/FredrikNoren/ungit/releases).
 
 Use [freac](https://www.freac.org/)to copy your cds (works, whenever Windows Media Player crashes).
 
@@ -40,13 +40,13 @@ Use [kid3](https://kid3.kde.org/) to tag and name new files correctly. (This can
 
 #### Android Playlist sync
 
-This setup only allows you to change the playlists on one device at once. You have to copy the changes to before making changes on the next device. The git version control will help whenever you forgot to copy changes before changing the device.
+This setup only allows you to edit playlists only on one device at once. You have to copy the changes before making changes on the next device. The git version control will help whenever you forgot to copy changes before changing the device.
 
 ###### pc -> phone
 
 Use Playlist-Sync and  to convert the playlists into Smart-backup .xml files.
 
-Use [Free file sync](https://freefilesync.org/) or other synchronization software to setup a configuration which will copy the .xml files and music files onto your phone.
+Use [Syncthing](https://syncthing.net/) ~~[Free file sync](https://freefilesync.org/)~~ or other synchronization software to setup a configuration which will copy the .xml files and music files onto your phone.
 
 Use [my version](https://github.com/Sogolumbo/Slight-backup/releases) of [Smart-backup](https://github.com/handschuh/Slight-backup) to import the .xml files into the android playlist database.
 
@@ -58,7 +58,7 @@ Use any app of your choice or [my version](https://github.com/Sogolumbo/Phonogra
 
 Use any version of Smart-backup to export the .xml files onto your phone.
 
-Use Free file sync to copy the .xml files from your phone to your pc.
+Once set up, Syncthing will copy your new files onto your pc. ~~Use Free file sync to copy the .xml files from your phone to your pc.~~
 
 Use Playlist-Sync to convert the newest .xml file into m3u playlists and save them into your folder.
 
@@ -74,8 +74,6 @@ To use the external programs (notepad++, kid3) you might have to change the file
 
 Copy the following lines from the default settings into your user settings. Then replace the file paths with the file paths of your system.
 
-
-
 ```xml
     <setting name="kid3_FilePath" serializeAs="String">
         <value>C:\Portable Programs\kid3-3.7.0-win32\kid3.exe</value>
@@ -88,4 +86,5 @@ Copy the following lines from the default settings into your user settings. Then
 It happened to me multiple times that I lost my settings. If this happens to you you can most likely restore the old settings by finding the old `user.config` file and copying the contents into the new file.
 
 ## Screenshot
+
 ![Playlist-Sync_v1 1 2](https://user-images.githubusercontent.com/33571916/101524396-27be8700-398a-11eb-9115-8c6a907b014f.png)
