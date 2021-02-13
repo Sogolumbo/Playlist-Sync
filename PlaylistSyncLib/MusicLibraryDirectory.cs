@@ -58,7 +58,7 @@ namespace Playlist
                         file.UnauthorizedAccess += ThrowUnauthorizedAccessException;
                         file.FileNameAlreadyExists += FireFileNameAlreadyExists;
                     }
-                    else if (!(nonAudioDataTypes.Contains(extensionWithoutDot)) && item[0] != '.')
+                    else if (!(nonAudioDataTypes.Contains(extensionWithoutDot)) && Path.GetFileName(item)[0] != '.')
                     {
                         throw new NonAudioDataTypeMissingException(item, extensionWithoutDot);
                     }
@@ -143,7 +143,7 @@ namespace Playlist
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"..\Local\PlaylistConverterGUI\");
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"..\Local\PlaylistSyncGUI\");
             }
         }
 

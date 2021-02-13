@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="StringExt.cs" />
     <EmbeddedResource Include="ConfigureMusicLibrary.resx">
       <DependentUpon>ConfigureMusicLibrary.cs</DependentUpon>
@@ -168,7 +169,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlaylistSyncLib\PlaylistSyncLib.csproj">

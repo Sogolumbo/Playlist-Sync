@@ -20,6 +20,12 @@
     <Setting Name="MusicLibraryFolders" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="kid3_FilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Portable Programs\kid3-3.7.0-win32\kid3.exe</Value>
+    </Setting>
+    <Setting Name="notepadPlusPlus_FilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Notepad++\notepad++.exe</Value>
+    </Setting>
     <Setting Name="nonAudioDataTypes" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
@@ -33,13 +39,9 @@
   &lt;string&gt;db&lt;/string&gt;
   &lt;string&gt;pdf&lt;/string&gt;
   &lt;string&gt;reapeaks&lt;/string&gt;
+  &lt;string&gt;stignore&lt;/string&gt;
+  &lt;string&gt;txt&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="kid3_FilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Portable Programs\kid3-3.7.0-win32\kid3.exe</Value>
-    </Setting>
-    <Setting Name="notepadPlusPlus_FilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files (x86)\Notepad++\notepad++.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>
