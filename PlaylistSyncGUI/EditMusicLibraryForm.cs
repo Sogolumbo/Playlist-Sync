@@ -238,10 +238,9 @@ namespace PlaylistSyncGUI
             }
 
             /// Write Data to PlaylistFile
-            var windowsEncoding = Encoding.GetEncoding(1252);
             foreach (var playlistPair in selectedLibraryItem.PlaylistItems)
             {
-                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines(), windowsEncoding);
+                File.WriteAllLines(playlistPair.Playlist.Path + "\\" + playlistPair.Playlist.Name, playlistPair.Playlist.ToPlaylistLines(), PlaylistEncoding.GetEncoding(playlistPair.Playlist.Name));
             }
 
             /// Reload View of libraryItem

@@ -15,7 +15,7 @@ namespace Playlist
         Xml  // this type specifies .xml files exported by the "Slight Backup" Android app (https://github.com/airon90/Slight-backup)
     }
 
-    static class PlaylistEncoding
+    public static class PlaylistEncoding
     {
         public static Encoding GetEncoding(PlaylistType type)
         {
@@ -32,6 +32,11 @@ namespace Playlist
                 default:
                     throw new NotImplementedException();
             }
+        }
+        public static Encoding GetEncoding(string path)
+        {
+            PlaylistType type = (PlaylistType) Enum.Parse(typeof(Playlist.PlaylistType), Path.GetExtension(path).Replace(".", ""), true);
+            return GetEncoding(type);
         }
     }
 }

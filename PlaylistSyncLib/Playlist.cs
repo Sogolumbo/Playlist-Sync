@@ -14,9 +14,7 @@ namespace Playlist
 
             File.ReadAllLines(
                 filepath,
-                PlaylistEncoding.GetEncoding(
-                    (PlaylistType)Enum.Parse(typeof(PlaylistType), System.IO.Path.GetExtension(filepath).Replace(".", ""), true)
-                )
+                PlaylistEncoding.GetEncoding(filepath)
             ),
             System.IO.Path.GetFileName(filepath),
             filepath.Replace("\\" + System.IO.Path.GetFileName(filepath), ""),

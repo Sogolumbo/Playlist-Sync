@@ -20,7 +20,7 @@ namespace Playlist
 
         public static void CleanFile(string filePath, bool fixRelativePaths)
         {
-            string[] oldLines = File.ReadAllLines(filePath, PlaylistEncoding.GetEncoding(PlaylistType.M3u));
+            string[] oldLines = File.ReadAllLines(filePath, PlaylistEncoding.GetEncoding(filePath));
             List<string> newLines = new List<string>();
             oldLines = CleanLines(oldLines);
 
@@ -40,7 +40,7 @@ namespace Playlist
                 }
             }
 
-            File.WriteAllLines(filePath, newLines.ToArray(), PlaylistEncoding.GetEncoding(PlaylistType.M3u));
+            File.WriteAllLines(filePath, newLines.ToArray(), PlaylistEncoding.GetEncoding(filePath));
         }
     }
 }
