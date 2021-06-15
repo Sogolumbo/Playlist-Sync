@@ -461,12 +461,6 @@ namespace PlaylistSyncGUI
 
         #region Show exceptional events
 
-        //TODO remove because there are no references
-        private void SelectedPlaylistItem_UnauthorizedAccess(object sender, UnauthorizedAccessEventArgs e)
-        {
-            MessageBox.Show(e.ToString());
-        }
-
         private void _library_FileNameAlreadyExists(object sender, FileNameAlreadyExistsEventArgs e)
         {
             MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
