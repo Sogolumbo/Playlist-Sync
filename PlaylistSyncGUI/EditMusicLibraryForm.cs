@@ -190,6 +190,8 @@ namespace PlaylistSyncGUI
             bool ParentOfParentChanged = false;
 
             selectedLibraryItem.Name = itemNameTextBox.Text;
+            libraryTreeView.SelectedNode.Name = itemNameTextBox.Text; //later in the code the Node Name/Texts are used. So they also have to change
+            libraryTreeView.SelectedNode.Text = itemNameTextBox.Text;
             if (selectedLibraryItem.DirectoryPath != itemPathTextBox.Text)
             {
                 ParentChanged = true;
@@ -254,7 +256,7 @@ namespace PlaylistSyncGUI
                 highestModifiedNode = highestModifiedNode.Parent;
             }
             ReloadNode(highestModifiedNode);
-            var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true);
+            var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true); //TODO I don't remember what this block (from here to the end of the paragraph) is for
             var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem);
             if (nodesToReload.Count() == 1)
             {
