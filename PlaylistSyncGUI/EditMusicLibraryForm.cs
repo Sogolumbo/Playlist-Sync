@@ -257,7 +257,7 @@ namespace PlaylistSyncGUI
             }
             ReloadNode(highestModifiedNode);
             var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true); //TODO I don't remember what this block (from here to the end of the paragraph) is for
-            var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem);
+            var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem); //TODO Check this line. Maybe this line is the reason for Bug https://github.com/Sogolumbo/Playlist-Sync/issues/6
             if (nodesToReload.Count() == 1)
             {
                 ReloadNode(nodesToReload.First());
