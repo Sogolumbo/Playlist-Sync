@@ -675,8 +675,36 @@ namespace PlaylistSyncGUI
             Cursor = DefaultCursor;
             libraryTreeView.Focus();
         }
+
+        private void reduceNonlistedButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(isListed);
+        }
+        private void reduceListedButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(isNonlisted);
+
+        }
+
+        /// <summary>
+        /// Returns whether the item is in not in any playlist
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private bool isListed(MusicLibraryItem item)
+        {
+            if (item is MusicLibraryFile)
+            {
+                return (item.PlaylistItems.Count > 0);
+            }
+            return false;
+        }
+        private bool isNonlisted(MusicLibraryItem item)
+        {
+            return !isListed(item);
+        }
         #endregion
-        
+
         #region Handle key presses
         private void selectedSongButton_KeyDown(object sender, KeyEventArgs e)
         {
@@ -754,5 +782,6 @@ namespace PlaylistSyncGUI
         {
         }
         #endregion
+
     }
 }

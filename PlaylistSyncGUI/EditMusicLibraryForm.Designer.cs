@@ -70,6 +70,8 @@
             this.reduceAllExceptMissingItemsButton = new System.Windows.Forms.Button();
             this.reduceAllExceptBadArtistItemsButton = new System.Windows.Forms.Button();
             this.reduceChildrenButton = new System.Windows.Forms.Button();
+            this.reduceNonlistedButton = new System.Windows.Forms.Button();
+            this.reduceListedButton = new System.Windows.Forms.Button();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +84,7 @@
             this.libraryTreeView.HideSelection = false;
             this.libraryTreeView.Location = new System.Drawing.Point(13, 13);
             this.libraryTreeView.Name = "libraryTreeView";
-            this.libraryTreeView.Size = new System.Drawing.Size(695, 712);
+            this.libraryTreeView.Size = new System.Drawing.Size(695, 741);
             this.libraryTreeView.TabIndex = 0;
             this.libraryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView_AfterSelect);
             // 
@@ -158,7 +160,7 @@
             // applyButton
             // 
             this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.applyButton.Location = new System.Drawing.Point(1104, 705);
+            this.applyButton.Location = new System.Drawing.Point(1104, 734);
             this.applyButton.Name = "applyButton";
             this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 11;
@@ -169,7 +171,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(1023, 705);
+            this.cancelButton.Location = new System.Drawing.Point(1023, 734);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
@@ -204,7 +206,7 @@
             this.selectedItemGroupBox.Controls.Add(this.label5);
             this.selectedItemGroupBox.Controls.Add(this.label3);
             this.selectedItemGroupBox.Controls.Add(this.label4);
-            this.selectedItemGroupBox.Location = new System.Drawing.Point(714, 266);
+            this.selectedItemGroupBox.Location = new System.Drawing.Point(714, 295);
             this.selectedItemGroupBox.Name = "selectedItemGroupBox";
             this.selectedItemGroupBox.Size = new System.Drawing.Size(465, 433);
             this.selectedItemGroupBox.TabIndex = 16;
@@ -477,9 +479,9 @@
             // debugButton
             // 
             this.debugButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.debugButton.Location = new System.Drawing.Point(1104, 237);
+            this.debugButton.Location = new System.Drawing.Point(1132, 237);
             this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.Size = new System.Drawing.Size(47, 23);
             this.debugButton.TabIndex = 28;
             this.debugButton.Text = "Debug";
             this.debugButton.UseVisualStyleBackColor = true;
@@ -512,20 +514,20 @@
             this.reduceAllExceptMissingItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.reduceAllExceptMissingItemsButton.Location = new System.Drawing.Point(714, 237);
             this.reduceAllExceptMissingItemsButton.Name = "reduceAllExceptMissingItemsButton";
-            this.reduceAllExceptMissingItemsButton.Size = new System.Drawing.Size(141, 23);
+            this.reduceAllExceptMissingItemsButton.Size = new System.Drawing.Size(115, 23);
             this.reduceAllExceptMissingItemsButton.TabIndex = 31;
-            this.reduceAllExceptMissingItemsButton.Text = "Collapse all except missing";
+            this.reduceAllExceptMissingItemsButton.Text = "Collapse non-missing";
             this.reduceAllExceptMissingItemsButton.UseVisualStyleBackColor = true;
             this.reduceAllExceptMissingItemsButton.Click += new System.EventHandler(this.reduceAllExceptMissingItemsButton_Click);
             // 
             // reduceAllExceptBadArtistItemsButton
             // 
             this.reduceAllExceptBadArtistItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reduceAllExceptBadArtistItemsButton.Location = new System.Drawing.Point(861, 237);
+            this.reduceAllExceptBadArtistItemsButton.Location = new System.Drawing.Point(835, 237);
             this.reduceAllExceptBadArtistItemsButton.Name = "reduceAllExceptBadArtistItemsButton";
-            this.reduceAllExceptBadArtistItemsButton.Size = new System.Drawing.Size(149, 23);
+            this.reduceAllExceptBadArtistItemsButton.Size = new System.Drawing.Size(156, 23);
             this.reduceAllExceptBadArtistItemsButton.TabIndex = 32;
-            this.reduceAllExceptBadArtistItemsButton.Text = "Collapse all except bad artist";
+            this.reduceAllExceptBadArtistItemsButton.Text = "Collapse properly tagged artist";
             this.reduceAllExceptBadArtistItemsButton.UseVisualStyleBackColor = true;
             this.reduceAllExceptBadArtistItemsButton.Click += new System.EventHandler(this.reduceAllExceptBadArtistItemsButton_Click);
             // 
@@ -540,11 +542,35 @@
             this.reduceChildrenButton.UseVisualStyleBackColor = true;
             this.reduceChildrenButton.Click += new System.EventHandler(this.reduceChildrenButton_Click);
             // 
+            // reduceNonlistedButton
+            // 
+            this.reduceNonlistedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reduceNonlistedButton.Location = new System.Drawing.Point(714, 266);
+            this.reduceNonlistedButton.Name = "reduceNonlistedButton";
+            this.reduceNonlistedButton.Size = new System.Drawing.Size(110, 23);
+            this.reduceNonlistedButton.TabIndex = 34;
+            this.reduceNonlistedButton.Text = "Collapse non-listed";
+            this.reduceNonlistedButton.UseVisualStyleBackColor = true;
+            this.reduceNonlistedButton.Click += new System.EventHandler(this.reduceNonlistedButton_Click);
+            // 
+            // reduceListedButton
+            // 
+            this.reduceListedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reduceListedButton.Location = new System.Drawing.Point(830, 266);
+            this.reduceListedButton.Name = "reduceListedButton";
+            this.reduceListedButton.Size = new System.Drawing.Size(90, 23);
+            this.reduceListedButton.TabIndex = 35;
+            this.reduceListedButton.Text = "Collapse listed";
+            this.reduceListedButton.UseVisualStyleBackColor = true;
+            this.reduceListedButton.Click += new System.EventHandler(this.reduceListedButton_Click);
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1191, 737);
+            this.ClientSize = new System.Drawing.Size(1191, 766);
+            this.Controls.Add(this.reduceListedButton);
+            this.Controls.Add(this.reduceNonlistedButton);
             this.Controls.Add(this.reduceChildrenButton);
             this.Controls.Add(this.reduceAllExceptBadArtistItemsButton);
             this.Controls.Add(this.reduceAllExceptMissingItemsButton);
@@ -613,5 +639,7 @@
         private System.Windows.Forms.Button copyFullPathButton;
         private System.Windows.Forms.Button reduceChildrenButton;
         private System.Windows.Forms.Button appendPathToClipboardButton;
+        private System.Windows.Forms.Button reduceNonlistedButton;
+        private System.Windows.Forms.Button reduceListedButton;
     }
 }
