@@ -22,6 +22,8 @@ namespace PlaylistSyncGUI
         {
             InitializeComponent();
             itemTypeComboBox.DataSource = Enum.GetValues(typeof(PlaylistItemType));
+            toolTip.SetToolTip(reduceListedButton, "Collapse folders in which all songs are contained in at least one playlist.");
+            toolTip.SetToolTip(reduceIfAnyIsListedButton, "Collapse folders in which any song is contained in at least one playlist.");
         }
 
         Form _libraryConfiguration;
@@ -583,84 +585,6 @@ namespace PlaylistSyncGUI
         #endregion
 
         #region Reduce and Expand (Tree view items)
-        private void expandAllButton_Click(object sender, EventArgs e)
-        {
-            libraryTreeView.ExpandAll();
-            if (libraryTreeView.SelectedNode != null)
-            {
-                libraryTreeView.SelectedNode.EnsureVisible();
-            }
-        }
-
-        private void reduceAllButton_Click(object sender, EventArgs e)
-        {
-            libraryTreeView.CollapseAll();
-
-            foreach (TreeNode rootNode in libraryTreeView.Nodes)
-            {
-                rootNode.Expand();
-                TreeNode subject = rootNode;
-                while (subject.Nodes.Count == 1)
-                {
-                    subject = subject.Nodes[0];
-                    subject.Expand();
-                }
-            }
-        }
-
-        private void reduceAllExceptMissingItemsButton_Click(object sender, EventArgs e)
-        {
-            ReduceAllTreeViewItemsExceptConditionMet(item => item is MusicLibraryMissingElement);
-        }
-
-        void ReduceAllTreeViewItemsExceptConditionMet(Func<MusicLibraryItem, bool> ConditionMet)
-        {
-            libraryTreeView.CollapseAll();
-
-            foreach (TreeNode rootNode in libraryTreeView.Nodes)
-            {
-                ExpandIfConditionMetRecursive(rootNode, ConditionMet);
-            }
-        }
-
-        bool ExpandIfConditionMetRecursive(TreeNode treeNode, Func<MusicLibraryItem, bool> ConditionMet)
-        {
-            bool conditionMet = false;
-            if (treeNode.Nodes.Count > 0)
-            {
-                foreach (TreeNode node in treeNode.Nodes)
-                {
-                    conditionMet |= ExpandIfConditionMetRecursive(node, ConditionMet);
-                }
-                if (conditionMet)
-                {
-                    treeNode.Expand();
-                }
-            }
-            else
-            {
-                conditionMet = ConditionMet(treeNode.Tag as MusicLibraryItem);
-            }
-            return conditionMet;
-        }
-
-        private void reduceAllExceptBadArtistItemsButton_Click(object sender, EventArgs e)
-        {
-            ReduceAllTreeViewItemsExceptConditionMet(isArtistBad);
-        }
-
-        /// <summary>
-        /// Returns wether the item has music tags that don't fit to the parent folders. In most cases this means that the file is not well organized.
-        /// </summary>
-        private bool isArtistBad(MusicLibraryItem item)
-        {
-            if (item is MusicLibraryFile)
-            {
-                return ((item as MusicLibraryFile).ArtistLink == NodeLink.None);
-            }
-            return false;
-        }
-
         private void reduceChildrenButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -675,7 +599,28 @@ namespace PlaylistSyncGUI
             Cursor = DefaultCursor;
             libraryTreeView.Focus();
         }
+        private void expandAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.ExpandAll();
+            if (libraryTreeView.SelectedNode != null)
+            {
+                libraryTreeView.SelectedNode.EnsureVisible();
+            }
+        }
+        private void reduceAllButton_Click(object sender, EventArgs e)
+        {
+            libraryTreeView.CollapseAll();
 
+            EnsureVisibilityOfLibraryBaseNodes();
+        }
+        private void reduceAllExceptMissingItemsButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(item => item is MusicLibraryMissingElement);
+        }
+        private void reduceAllExceptBadArtistItemsButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(isArtistBad);
+        }
         private void reduceNonlistedButton_Click(object sender, EventArgs e)
         {
             ReduceAllTreeViewItemsExceptConditionMet(isListed);
@@ -683,11 +628,67 @@ namespace PlaylistSyncGUI
         private void reduceListedButton_Click(object sender, EventArgs e)
         {
             ReduceAllTreeViewItemsExceptConditionMet(isNonlisted);
+        }
+        private void reduceIfAnyIsListedButton_Click(object sender, EventArgs e)
+        {
+            ReduceAllTreeViewItemsExceptConditionMet(isNonlisted, true);
+        }
 
+        private void ReduceAllTreeViewItemsExceptConditionMet(Func<MusicLibraryItem, bool> ConditionMet, bool ConditionNeedsToBeMetByAll = false)
+        {
+            libraryTreeView.CollapseAll();
+
+            foreach (TreeNode rootNode in libraryTreeView.Nodes)
+            {
+                ExpandIfConditionMetRecursive(rootNode, ConditionMet, ConditionNeedsToBeMetByAll);
+            }
+
+            if (ConditionNeedsToBeMetByAll)
+            {
+                EnsureVisibilityOfLibraryBaseNodes();
+            }
+        }
+        private bool ExpandIfConditionMetRecursive(TreeNode treeNode, Func<MusicLibraryItem, bool> ConditionMet, bool ConditionNeedsToBeMetByAll = false)
+        {
+            bool conditionMet = ConditionNeedsToBeMetByAll;
+            if (treeNode.Nodes.Count > 0)
+            {
+                foreach (TreeNode node in treeNode.Nodes)
+                {
+                    if (ConditionNeedsToBeMetByAll)
+                    {
+                        conditionMet &= ExpandIfConditionMetRecursive(node, ConditionMet, ConditionNeedsToBeMetByAll);
+                    }
+                    else
+                    {
+                        conditionMet |= ExpandIfConditionMetRecursive(node, ConditionMet, ConditionNeedsToBeMetByAll);
+                    }
+                }
+                if (conditionMet)
+                {
+                    treeNode.Expand();
+                }
+            }
+            else
+            {
+                conditionMet = ConditionMet(treeNode.Tag as MusicLibraryItem);
+            }
+            return conditionMet;
         }
 
         /// <summary>
-        /// Returns whether the item is in not in any playlist
+        /// Returns wether the item has music tags that don't fit to the parent folders. In most cases this means that the file is not well organized.
+        /// </summary>
+        private bool isArtistBad(MusicLibraryItem item)
+        {
+            if (item is MusicLibraryFile)
+            {
+                return ((item as MusicLibraryFile).ArtistLink == NodeLink.None);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Returns whether the item is in any playlist
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -702,6 +703,20 @@ namespace PlaylistSyncGUI
         private bool isNonlisted(MusicLibraryItem item)
         {
             return !isListed(item);
+        }
+
+        private void EnsureVisibilityOfLibraryBaseNodes()
+        {
+            foreach (TreeNode rootNode in libraryTreeView.Nodes)
+            {
+                rootNode.Expand();
+                TreeNode subject = rootNode;
+                while (subject.Nodes.Count == 1)
+                {
+                    subject = subject.Nodes[0];
+                    subject.Expand();
+                }
+            }
         }
         #endregion
 
@@ -782,6 +797,5 @@ namespace PlaylistSyncGUI
         {
         }
         #endregion
-
     }
 }

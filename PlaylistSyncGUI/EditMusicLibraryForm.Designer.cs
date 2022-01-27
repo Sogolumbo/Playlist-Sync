@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditMusicLibraryForm));
             this.libraryTreeView = new System.Windows.Forms.TreeView();
             this.itemNameTextBox = new System.Windows.Forms.TextBox();
@@ -72,6 +73,8 @@
             this.reduceChildrenButton = new System.Windows.Forms.Button();
             this.reduceNonlistedButton = new System.Windows.Forms.Button();
             this.reduceListedButton = new System.Windows.Forms.Button();
+            this.reduceIfAnyIsListedButton = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -558,17 +561,35 @@
             this.reduceListedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.reduceListedButton.Location = new System.Drawing.Point(830, 266);
             this.reduceListedButton.Name = "reduceListedButton";
-            this.reduceListedButton.Size = new System.Drawing.Size(90, 23);
+            this.reduceListedButton.Size = new System.Drawing.Size(124, 23);
             this.reduceListedButton.TabIndex = 35;
-            this.reduceListedButton.Text = "Collapse listed";
+            this.reduceListedButton.Text = "Collapse (entirely) listed";
             this.reduceListedButton.UseVisualStyleBackColor = true;
             this.reduceListedButton.Click += new System.EventHandler(this.reduceListedButton_Click);
+            // 
+            // reduceIfAnyIsListedButton
+            // 
+            this.reduceIfAnyIsListedButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reduceIfAnyIsListedButton.Location = new System.Drawing.Point(960, 266);
+            this.reduceIfAnyIsListedButton.Name = "reduceIfAnyIsListedButton";
+            this.reduceIfAnyIsListedButton.Size = new System.Drawing.Size(114, 23);
+            this.reduceIfAnyIsListedButton.TabIndex = 36;
+            this.reduceIfAnyIsListedButton.Text = "Collapse (any) listed";
+            this.reduceIfAnyIsListedButton.UseVisualStyleBackColor = true;
+            this.reduceIfAnyIsListedButton.Click += new System.EventHandler(this.reduceIfAnyIsListedButton_Click);
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 5000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
             // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1191, 766);
+            this.Controls.Add(this.reduceIfAnyIsListedButton);
             this.Controls.Add(this.reduceListedButton);
             this.Controls.Add(this.reduceNonlistedButton);
             this.Controls.Add(this.reduceChildrenButton);
@@ -641,5 +662,7 @@
         private System.Windows.Forms.Button appendPathToClipboardButton;
         private System.Windows.Forms.Button reduceNonlistedButton;
         private System.Windows.Forms.Button reduceListedButton;
+        private System.Windows.Forms.Button reduceIfAnyIsListedButton;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
