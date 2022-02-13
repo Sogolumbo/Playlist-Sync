@@ -643,10 +643,7 @@ namespace PlaylistSyncGUI
                 ExpandIfConditionMetRecursive(rootNode, ConditionMet, ConditionNeedsToBeMetByAll);
             }
 
-            if (ConditionNeedsToBeMetByAll)
-            {
-                EnsureVisibilityOfLibraryBaseNodes();
-            }
+            EnsureVisibilityOfLibraryBaseNodes();
         }
         private bool ExpandIfConditionMetRecursive(TreeNode treeNode, Func<MusicLibraryItem, bool> ConditionMet, bool ConditionNeedsToBeMetByAll = false)
         {
