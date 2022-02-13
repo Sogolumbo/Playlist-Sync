@@ -185,6 +185,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release copy "$(SolutionDir)LICENSE.txt" "$(TargetDir)LICENSE.txt" /Y
-if $(ConfigurationName) == Release copy "$(SolutionDir)README.md" "$(TargetDir)README.md" /Y</PostBuildEvent>
+if $(ConfigurationName) == Release copy "$(SolutionDir)README.md" "$(TargetDir)README.md" /Y
+if $(ConfigurationName) == Release (powershell Compress-Archive -Path '$(TargetDir)*' -DestinationPath '$(SolutionDir)bin\zip\$(SolutionName)_current.zip' -Force)</PostBuildEvent>
   </PropertyGroup>
 </Project>
