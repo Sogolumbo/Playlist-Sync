@@ -248,25 +248,35 @@ namespace PlaylistSyncGUI
             }
 
             /// Reload View of libraryItem
-            var highestModifiedNode = libraryTreeView.SelectedNode;
-            if (ParentOfParentChanged)
+            if (_missingElementFound)
             {
-                highestModifiedNode = highestModifiedNode.Parent.Parent;
-            }
-            else if (ParentChanged)
-            {
-                highestModifiedNode = highestModifiedNode.Parent;
-            }
-            ReloadNode(highestModifiedNode);
-            var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true); //TODO I don't remember what this block (from here to the end of the paragraph) is for
-            var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem); //TODO Check this line. Maybe this line is the reason for Bug https://github.com/Sogolumbo/Playlist-Sync/issues/6
-            if (nodesToReload.Count() == 1)
-            {
-                ReloadNode(nodesToReload.First());
+                FullReload(); //TODO implement a quick & efficient alternative (This action takes too much time).
             }
             else
             {
-                FullReload();
+                // Needed when renaming item, album and/or artist
+                var highestModifiedNode = libraryTreeView.SelectedNode;
+                if (ParentOfParentChanged)
+                {
+                    highestModifiedNode = highestModifiedNode.Parent.Parent;
+                }
+                else if (ParentChanged)
+                {
+                    highestModifiedNode = highestModifiedNode.Parent;
+                }
+                ReloadNode(highestModifiedNode);
+
+                // Needed when an item is moved
+                var modifiedTreeNode = libraryTreeView.Nodes.Find(modifiedLibraryItem.Name, true);
+                var nodesToReload = modifiedTreeNode.Where(trNode => trNode.Tag == modifiedLibraryItem);
+                if (nodesToReload.Count() == 1)
+                {
+                    ReloadNode(nodesToReload.First());
+                }
+                else
+                {
+                    FullReload(); //TODO this line seems to be unecessary 
+                }
             }
 
             RestoreTreeViewSelection(selectedLibraryItem);
@@ -296,11 +306,7 @@ namespace PlaylistSyncGUI
         private void ReloadNode(TreeNode changedTreeNode)
         {
             Cursor.Current = Cursors.WaitCursor;
-            if (_missingElementFound)
-            {
-                FullReload();
-            }
-            else if (changedTreeNode.Parent != null)
+            if (changedTreeNode.Parent != null)
             {
                 var parent = changedTreeNode.Parent;
                 int index = parent.Nodes.IndexOf(changedTreeNode);
@@ -789,7 +795,7 @@ namespace PlaylistSyncGUI
         {
             ApplyChanges();
         }
-        
+
         private void debugButton_Click(object sender, EventArgs e)
         {
         }
