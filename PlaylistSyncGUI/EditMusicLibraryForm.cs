@@ -281,7 +281,7 @@ namespace PlaylistSyncGUI
             }
             else
             {
-                throw new NotImplementedException("Could not restore selected Item. Missing implementation to uniquely identify the object.");
+                libraryTreeView.SelectedNode = previouslySelectedNodes.Where(node => node.FullPath == selectedLibraryItem.FullPath).First();
             }
         }
 

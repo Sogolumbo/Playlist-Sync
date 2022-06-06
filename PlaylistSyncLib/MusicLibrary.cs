@@ -103,7 +103,7 @@ namespace Playlist
                 MoveItem(item, newParent);
                 return newParent;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("newParent = null"); //TODO (not sure if this is right): (Find out if the new path is part of the music library?) Create the necessary folders (if possible).
         }
 
         public void MoveItem(MusicLibraryItem item, MusicLibraryItem newParent)
