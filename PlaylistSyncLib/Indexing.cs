@@ -8,6 +8,7 @@ namespace Playlist
         internal static int DecrementLibIndex(Stack<Index> stack, bool checkChildren)
         {
             var TopIndex = stack.Peek();
+            int returnValue = 0;
             if (TopIndex.Number > 0)
             {
                 TopIndex.Number--;
@@ -16,23 +17,27 @@ namespace Playlist
                     var children = MusicLibrary.GetChildrenSorted(TopLibraryItem(stack));
                     bool childrenExist = children != null && children.Count > 0;
 
-                    if (childrenExist)
+                    while (childrenExist)
                     {
                         stack.Push(new Index(children.Count - 1, children));
-                        return 1;
+                        returnValue += 1;
+
+                        children = MusicLibrary.GetChildrenSorted(TopLibraryItem(stack));
+                        childrenExist = children != null && children.Count > 0;
                     }
                 }
-                return 0;
             }
             else
             {
                 stack.Pop();
-                return -1;
+                returnValue = - 1;
             }
+            return returnValue;
         }
         internal static int DecrementPlIndex(Stack<Index> stack, bool checkChildren)
         {
             var TopIndex = stack.Peek();
+            int returnValue = 0;
             if (TopIndex.Number > 0)
             {
                 TopIndex.Number--;
@@ -41,19 +46,22 @@ namespace Playlist
                     var children = TopPlaylistItem(stack).Children;
                     bool childrenExist = children != null && children.Count > 0;
 
-                    if (childrenExist)
+                    while (childrenExist)
                     {
                         stack.Push(new Index(children.Count - 1, children.ToList<object>()));
-                        return 1;
+                        returnValue += 1;
+
+                        children = TopPlaylistItem(stack).Children;
+                        childrenExist = children != null && children.Count > 0;
                     }
                 }
-                return 0;
             }
             else
             {
                 stack.Pop();
-                return -1;
+                returnValue = -1;
             }
+            return returnValue;
         }
 
         internal static void IncrementIndexAndRemoveIndexIfStackEmpty(PlaylistIndex plIndex, List<PlaylistIndex> playlistIndices)
@@ -99,6 +107,7 @@ namespace Playlist
             {
                 children = (stack.Peek().Node as PlaylistItem).Children?.ToList<object>();
             }
+
             if (includeChildren && children != null && children.Count > 0)
             {
                 stack.Push(new Index(0, children));

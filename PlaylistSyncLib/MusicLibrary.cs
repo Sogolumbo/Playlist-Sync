@@ -468,14 +468,10 @@ namespace Playlist
         {
             if (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath))
             {
-                var prevDirection = 1;
-                while (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath) && prevDirection > 0)
-                {
-                    prevDirection = DecrementLibIndex(libraryIndex, true);
-                }
+                DecrementLibIndex(libraryIndex, true);
                 while (0 != playlistItem.Path.CompareTo(TopLibraryItem(libraryIndex).FullPath))
                 {
-                    prevDirection = DecrementLibIndex(libraryIndex, false);
+                    DecrementLibIndex(libraryIndex, false);
                 }
             }
             var folder = TopLibraryItem(libraryIndex);
