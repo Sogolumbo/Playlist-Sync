@@ -303,20 +303,24 @@ namespace Playlist
                 }
             }
 
-            bool libraryFinished = false;
+
+            
             //TODO remove debugging tools
             int loopCounter = 0;
             int loopCounterDecrement = 0;
             StringBuilder history = new StringBuilder();
-
+            /// We go through all elements once only. They need to be sorted so that this will work
+            /// The while loop goes through all the library items. The other indices get incremented to match the sorting as close as possible.
+            bool libraryFinished = false;
             while (!(libraryFinished && playlistIndices.Count == 0))
             {
                 foreach (var plIndex in playlistIndices.ToArray())
                 {
                     var forLoopIndexDebug = playlistIndices.IndexOf(plIndex); //TODO remove debugging tools
                     var comparisonValueDebug = CompareFilePaths(TopPlaylistItem(plIndex).FullPath, TopLibraryItem(libraryIndex).FullPath); //TODO remove debugging tools
-                    var temp1 = TopPlaylistItem(plIndex).FullPath;
+                    var temp1 = TopPlaylistItem(plIndex).FullPath; //TODO remove debugging tools
                     var temp2 = TopLibraryItem(libraryIndex).FullPath; //TODO remove debugging tools
+
                     var comparisonValue = AddPlaylistItem(plIndex, libraryIndex, playlistIndices);
                     if (comparisonValue == 0) // playlistItem has been added => increment playlist index
                     {
@@ -330,14 +334,15 @@ namespace Playlist
                             IncrementIndexAndRemoveIndexIfStackEmpty(plIndex, playlistIndices);
                         }
                     }
-                    else if (comparisonValue < 0)
+                    else if (comparisonValue < 0) //playlistItem is before libraryItem -> add misssing playlistItem and move libraryIndex back to that item
                     {
-                        loopCounterDecrement++;
-                        history.AppendLine("     (" + (-comparisonValue).ToString() + ") Elements added from [" + playlistIndices.IndexOf(plIndex) + "] (" + plIndex.Playlist.Name + "):      " + TopPlaylistItem(plIndex).Name);
-                        IncrementIndexAndRemoveIndexIfStackEmpty(plIndex, playlistIndices);
+                        loopCounterDecrement++; //TODO remove debugging tools
+                        history.AppendLine("     (" + (-comparisonValue).ToString() + ") Elements added from [" + playlistIndices.IndexOf(plIndex) + "] (" + plIndex.Playlist.Name + "):      " + TopPlaylistItem(plIndex).Name); //TODO remove debugging tools
 
+                        IncrementIndexAndRemoveIndexIfStackEmpty(plIndex, playlistIndices);
                         libraryIndex.Peek().List = GetChildrenSorted(libraryIndex.ToArray<Index>()[1].Node as MusicLibraryItem);
                     }
+                    // comparisonValue > 0: playlistItem is comes after libraryItem -> do nothing (wait, until the libraryIndex is incremented)
                 }
 
                 history.AppendLine(loopCounter.ToString() + "  " + TopLibraryItem(libraryIndex).FullPath);
@@ -403,7 +408,7 @@ namespace Playlist
                 TopLibraryItem(libraryIndex).PlaylistItems.Add(new PlaylistLink(plItem, playlistIndex.Playlist));
             }
             else if (comparisonValue <= -1) //playlist item preceeds library item
-                                            //this playlist item is missing in the library item
+                                            //this playlist item is missing somewhere between this and the previous library index position
             {
                 MusicLibraryMissingElement missingElement = AddMissingElement(playlistIndex, libraryIndex);
                 comparisonValue = -RecursiveAmountOfElements(missingElement);
