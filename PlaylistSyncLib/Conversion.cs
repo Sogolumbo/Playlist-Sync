@@ -138,7 +138,7 @@ namespace Playlist
             List<Tuple<string, string[]>> lostSongsPerPlaylist = new List<Tuple<string, string[]>>();
             foreach (Tuple<string, string[]> PlaylistTuple in neutralPlaylists)
             {
-                targetFile = Path.Combine(TargetPlaylistFolderPath, TargetFileNamePrefix + PlaylistTuple.Item1 + '.' + TargetPlaylistType.ToString().ToLower() + TargetFileTypeSuffix);
+                targetFile = Path.Combine(TargetPlaylistFolderPath, TargetFileNamePrefix + PlaylistTuple.Item1 + '.' + TargetPlaylistType.ToString().ToLower() + TargetFileTypeSuffix); // can throw ArgumentException if the playlist name contains illegal characters
                 File.WriteAllLines(targetFile, converter.GetConvertedLines(PlaylistTuple.Item2), GetTargetEncoding());
                 string[] missingLines = converter.GetMissingLines();
                 if (missingLines.Length > 0)

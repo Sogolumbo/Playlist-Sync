@@ -185,6 +185,7 @@ namespace Playlist
         wav,
         m4a,
         flac,
-        opus
+        opus,
+        ogg
     }
 }

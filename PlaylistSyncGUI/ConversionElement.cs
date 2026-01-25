@@ -56,8 +56,12 @@ namespace PlaylistSyncGUI
                 string playlistName = Path.GetFileNameWithoutExtension(tuple.Item1);
                 string missingLines = String.Join("\n", tuple.Item2);
                 string caption = "Error while converting the playlist \"" + playlistName + "\"!";
-                string text = "The following songs/lines are left out in the playlist \"" + playlistName + "\":\n" + missingLines;
-                MessageBox.Show(text, caption);
+                string text = "The following songs/lines are left out in the playlist \"" + playlistName + "\":\n" + missingLines + "\n\nContinue showing errors from other playlists (if present)?";
+                DialogResult result = MessageBox.Show(text, caption, MessageBoxButtons.YesNo);
+                if (result == DialogResult.No)
+                {
+                    break;
+                }
             }
         }
     }

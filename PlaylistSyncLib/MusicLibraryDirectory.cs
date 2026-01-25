@@ -117,6 +117,13 @@ namespace Playlist
             get => Files.Concat(Directories);
         }
 
+        public IEnumerable<MusicLibraryFile> GetMusicLibraryFiles()
+        {
+            var a = Children.OfType<MusicLibraryFile>();
+            var b = Children.OfType<MusicLibraryDirectory>().SelectMany((x) => x.GetMusicLibraryFiles());
+            return Enumerable.Concat<MusicLibraryFile>(a, b);
+        }
+
         protected override void LocationChange()
         {
             foreach (MusicLibraryItem item in Children)

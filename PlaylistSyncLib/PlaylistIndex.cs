@@ -13,7 +13,7 @@ namespace Playlist
         public PlaylistItem Playlist { get; }
         public override string ToString()
         {
-            return Stack.Peek().ToString();
+            return Playlist.Name + ": " + Stack.Peek().ToString();
         }
     }
 }

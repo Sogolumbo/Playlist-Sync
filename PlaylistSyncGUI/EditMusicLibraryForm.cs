@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Globalization;
+using CsvHelper;
 
 using Playlist;
 using static PlaylistSyncGUI.OpenExternalStuff;
@@ -78,7 +80,7 @@ namespace PlaylistSyncGUI
             {
                 string exceptionHeader = "Unknown Fily Type in Music Library detected";
                 MessageBox.Show(e.Message, exceptionHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                var res = MessageBox.Show("Do you want to open the folder to change the ignored file type? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+                var res = MessageBox.Show("Do you want to open the folder to change the list of ignored file types? (Restart Playlist-Sync to see the changes!)", exceptionHeader, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
                 Close(); //TODO remove this line if the rest of the program won't crash
                 if (res == DialogResult.Yes)
                 {
@@ -448,6 +450,9 @@ namespace PlaylistSyncGUI
             itemArtistTextBox.Enabled = showSongTagData;
             itemGenreTextBox.Enabled = showSongTagData;
             itemTrackNumberTextBox.Enabled = showSongTagData;
+
+            renameItemButton.Enabled = showSongTagData;
+            renamingSchemeComboBox.Enabled = showSongTagData;
         }
 
         private string linkStateToText(NodeLink linkState)
@@ -796,9 +801,64 @@ namespace PlaylistSyncGUI
             ApplyChanges();
         }
 
+        private void renameItemButton_Click(object sender, EventArgs e)
+        {
+            RenameItemFromTags();
+        }
+
+        private void RenameItemFromTags()
+        {
+            MusicLibraryFile selectedLibraryItem = libraryTreeView.SelectedNode.Tag as MusicLibraryFile;
+
+
+            String newName;
+            switch (renamingSchemeComboBox.Text)
+            {
+                case "Nr. Title":
+                    int tracknumber = int.Parse(itemTrackNumberTextBox.Text);
+                    newName = tracknumber.ToString("D2") + " " + itemTitleTextBox.Text;
+                    break;
+                case "Artist - Title":
+                    newName = itemArtistTextBox.Text + " - " + itemTitleTextBox.Text;
+                    break;
+                default:
+                    throw new NotImplementedException("Renaming Scheme not implemented: " + renamingSchemeComboBox.Text);
+                    break;
+            }
+            newName += "." + selectedLibraryItem.Type;
+
+            itemNameTextBox.Text = newName;
+
+        }
+
         private void debugButton_Click(object sender, EventArgs e)
         {
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = ".csv";
+            saveFileDialog.FileName = "Song list for data analysis.csv";
+            DialogResult dialogResult = saveFileDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                var files = _library.ItemFolder.GetMusicLibraryFiles();
+                var test = files.First().PlaylistItems.Select((x) => x.Playlist.Name).ToArray();
+                var records = files.Select((x) => new {Path = x.FullPath, Filename = x.Name,
+                                                       Title = x.Tag.Title, Artist = x.Tag.Artist, Album = x.Tag.Album, 
+                                                       Playlists = String.Join(";;", x.PlaylistItems.Select((link) => link.Playlist.Name)),
+                                                       Genres = String.Join(";;", x.Tag.Genres)
+                });
+
+                using (var writer = new StreamWriter(saveFileDialog.FileName))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(records);
+                }
+                Cursor.Current = Cursors.Default;
+            }
+
         }
         #endregion
     }
+
 }

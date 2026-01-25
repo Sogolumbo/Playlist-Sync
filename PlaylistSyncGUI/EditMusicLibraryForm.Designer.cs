@@ -75,6 +75,8 @@
             this.reduceListedButton = new System.Windows.Forms.Button();
             this.reduceIfAnyIsListedButton = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.renameItemButton = new System.Windows.Forms.Button();
+            this.renamingSchemeComboBox = new System.Windows.Forms.ComboBox();
             this.selectedItemGroupBox.SuspendLayout();
             this.MusicFoldersGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -185,6 +187,8 @@
             // selectedItemGroupBox
             // 
             this.selectedItemGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectedItemGroupBox.Controls.Add(this.renamingSchemeComboBox);
+            this.selectedItemGroupBox.Controls.Add(this.renameItemButton);
             this.selectedItemGroupBox.Controls.Add(this.appendPathToClipboardButton);
             this.selectedItemGroupBox.Controls.Add(this.copyFullPathButton);
             this.selectedItemGroupBox.Controls.Add(this.openSelectedItemButton);
@@ -584,6 +588,33 @@
             this.toolTip.InitialDelay = 500;
             this.toolTip.ReshowDelay = 100;
             // 
+            // renameItemButton
+            // 
+            this.renameItemButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.renameItemButton.Location = new System.Drawing.Point(303, 127);
+            this.renameItemButton.Name = "renameItemButton";
+            this.renameItemButton.Size = new System.Drawing.Size(63, 23);
+            this.renameItemButton.TabIndex = 31;
+            this.renameItemButton.Text = "Rename";
+            this.toolTip.SetToolTip(this.renameItemButton, "Rename the item by using information from the music tags.\r\nThe name is defined by" +
+        " the scheme in the combo box next to this button.");
+            this.renameItemButton.UseVisualStyleBackColor = true;
+            this.renameItemButton.Click += new System.EventHandler(this.renameItemButton_Click);
+            // 
+            // renamingSchemeComboBox
+            // 
+            this.renamingSchemeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.renamingSchemeComboBox.Items.AddRange(new object[] {
+            "Nr. Title",
+            "Artist - Title"});
+            this.renamingSchemeComboBox.Location = new System.Drawing.Point(372, 127);
+            this.renamingSchemeComboBox.Name = "renamingSchemeComboBox";
+            this.renamingSchemeComboBox.Size = new System.Drawing.Size(87, 21);
+            this.renamingSchemeComboBox.TabIndex = 32;
+            this.renamingSchemeComboBox.Text = "Nr. Title";
+            this.toolTip.SetToolTip(this.renamingSchemeComboBox, "Scheme used to rename the item.\r\nNr. Title (E.g. \"01 Help!\")\r\nArtist Title (E.g. " +
+        "\"Beatles - Help!)\r\n");
+            // 
             // EditMusicLibraryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -664,5 +695,7 @@
         private System.Windows.Forms.Button reduceListedButton;
         private System.Windows.Forms.Button reduceIfAnyIsListedButton;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ComboBox renamingSchemeComboBox;
+        private System.Windows.Forms.Button renameItemButton;
     }
 }

@@ -93,7 +93,6 @@ namespace Playlist
             return CompareAtoB(pathPartsA, pathPartsB);
         }
 
-
         /// <returns>The highest modified node</returns>
         public MusicLibraryItem MoveItem(MusicLibraryItem item, string newDirectoryPath)
         {
