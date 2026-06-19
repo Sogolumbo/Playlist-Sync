@@ -30,7 +30,7 @@ namespace Playlist
                         result = ".+\\.m3u";
                         break;
                     case PlaylistType.M3u8:
-                        result = ".+\\.mu3u8";
+                        result = ".+\\.m3u8";
                         break;
                     case PlaylistType.Playlistsync:
                         result = ".+\\.playlistsync(\\.txt)?";
